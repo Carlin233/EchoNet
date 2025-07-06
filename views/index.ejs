@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>EchoNet - Feed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">EchoNet</div>
+    <nav>
+      <a href="/">Página Inicial</a>
+      <a href="/perfil">Perfil</a>
+      <a href="#" id="abrirModal">Criar</a>
+      <a href="/logout">Sair</a>
+    </nav>
+  </div>
+
+  <!-- Feed -->
+  <main class="main-feed">
+    <div class="feed">
+      <h2>Olá, <span id="username"><%= username %></span> 👋</h2>
+
+      <% posts.forEach(post => { %>
+        <div class="post-card">
+          <div class="post-header">
+            <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Perfil" class="profile-pic" />
+            <span>@<%= post.usuario %></span>
+          </div>
+          <div class="post-image">
+            <img src="<%= post.imagem %>" alt="Postagem" />
+          </div>
+          <div class="post-footer">
+            <div class="likes">1.951 curtidas</div>
+            <div class="caption"><%= post.legenda %></div>
+            <div class="comments">Ver todos os comentários</div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+
+  <!-- Modal de Postagem -->
+  <div id="modalCriar" class="modal">
+    <div class="modal-conteudo estilizado">
+      <span class="fechar" id="fecharModal">&times;</span>
+      <h3>Criar nova publicação</h3>
+      <form action="/postar" method="POST" enctype="multipart/form-data" class="post-form" id="formPostagem">
+        <label class="upload-area" for="uploadInput">
+          <span class="upload-text">Clique para selecionar uma imagem</span>
+          <img id="previewImagem" src="" alt="Preview" class="preview" />
+          <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden required />
+        </label>
+        <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
+        <button type="submit">Compartilhar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("modalCriar");
+    const abrir = document.getElementById("abrirModal");
+    const fechar = document.getElementById("fecharModal");
+    const uploadInput = document.getElementById("uploadInput");
+    const preview = document.getElementById("previewImagem");
+
+    abrir.onclick = () => {
+      modal.style.display = "block";
+      preview.style.display = "none";
+      preview.src = "";
+      document.querySelector(".upload-text").style.display = "block";
+    };
+
+    fechar.onclick = () => modal.style.display = "none";
+
+    window.onclick = (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    };
+
+    uploadInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          preview.src = reader.result;
+          preview.style.display = "block";
+          document.querySelector(".upload-text").style.display = "none";
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  </script>
+</body>
+</html>

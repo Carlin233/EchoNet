@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro | EchoNet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-box">
+      <h1 class="logo">EchoNet</h1>
+      <form action="/register" method="POST">
+        <input type="text" name="username" placeholder="Nome de usuário" required />
+        <input type="email" name="email" placeholder="E-mail" required />
+        <input type="password" name="password" placeholder="Senha" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+      <p class="small-text">
+        Já tem uma conta?
+        <a href="/login.html">Entrar</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>EchoNet - Meu Perfil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">EchoNet</div>
+    <nav>
+      <a href="/">Página Inicial</a>
+      <a href="/perfil" class="active">Perfil</a>
+      <a href="#" id="abrirModal">Criar</a>
+      <a href="/logout">Sair</a>
+    </nav>
+  </div>
+
+  <!-- Perfil -->
+  <main class="main-feed">
+    <div class="perfil-container">
+      <div class="perfil-header">
+        <div class="perfil-foto">
+          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Foto de Perfil" />
+        </div>
+        <div class="perfil-info">
+          <h2><%= username %></h2>
+          <p class="nome-real"></p>
+          <p class="bio">Bem-vindo ao meu perfil!</p>
+          <p class="contadores"><%= posts.length %> publicações</p>
+        </div>
+      </div>
+
+      <hr class="linha" />
+
+      <% if (posts.length === 0) { %>
+        <p style="color: #ccc;">Você ainda não postou nada.</p>
+      <% } else { %>
+        <div class="grade-postagens">
+          <% posts.forEach(post => { %>
+            <div class="item-postagem">
+              <form action="/deletar-post/<%= post.id %>" method="POST" class="delete-form">
+                <button type="submit" class="btn-delete">🗑️</button>
+              </form>
+              <img src="<%= post.imagem %>" alt="Post" />
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <!-- Modal de Postagem -->
+  <div id="modalCriar" class="modal">
+    <div class="modal-conteudo estilizado">
+      <span class="fechar" id="fecharModal">&times;</span>
+      <h3>Criar nova publicação</h3>
+      <form action="/postar" method="POST" enctype="multipart/form-data" class="post-form" id="formPostagem">
+        <label class="upload-area" for="uploadInput">
+          <span class="upload-text">Clique para selecionar uma imagem</span>
+          <img id="previewImagem" src="" alt="Preview" class="preview" />
+          <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden required />
+        </label>
+        <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
+        <button type="submit">Compartilhar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const modal = document.getElementById("modalCriar");
+    const abrir = document.getElementById("abrirModal");
+    const fechar = document.getElementById("fecharModal");
+    const uploadInput = document.getElementById("uploadInput");
+    const preview = document.getElementById("previewImagem");
+
+    abrir.onclick = () => {
+      modal.style.display = "block";
+      preview.style.display = "none";
+      preview.src = "";
+      document.querySelector(".upload-text").style.display = "block";
+    };
+
+    fechar.onclick = () => modal.style.display = "none";
+
+    window.onclick = (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    };
+
+    uploadInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          preview.src = reader.result;
+          preview.style.display = "block";
+          document.querySelector(".upload-text").style.display = "none";
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>EchoNet - Mensagens</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #00122c;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    .sidebar {
+      background-color: #131313;
+      width: 250px;
+      height: 100vh;
+      padding: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .sidebar .logo {
+      font-size: 28px;
+      color: #00bcd4;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .sidebar nav a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .sidebar nav a:hover {
+      color: #00bcd4;
+    }
+
+    .mensagem-container {
+      margin-left: 250px;
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .mensagem-topo {
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .chat-box {
+      flex-grow: 1;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .msg {
+      max-width: 70%;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 18px;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+
+    .msg.eu {
+      background-color: #00bcd4;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+    }
+
+    .msg.outro {
+      background-color: #e0e0e0;
+      color: #000;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+
+    .form-mensagem {
+      display: flex;
+      margin-top: 15px;
+    }
+
+    .form-mensagem input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px 0 0 8px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .form-mensagem button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #00bcd4;
+      color: white;
+      font-weight: bold;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+    }
+
+    .form-mensagem button:hover {
+      background-color: #0097a7;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">EchoNet</div>
+    <nav>
+      <a href="/">Página Inicial</a>
+      <a href="/perfil">Perfil</a>
+      <a href="/logout">Sair</a>
+    </nav>
+  </div>
+
+  <div class="mensagem-container">
+    <div class="mensagem-topo">Conversando com: <%= destinatario %></div>
+
+    <div class="chat-box" id="chatBox">
+      <% mensagens.forEach(m => { %>
+        <div class="msg <%= m.remetente === usuarioLogado ? 'eu' : 'outro' %>">
+          <%= m.conteudo %>
+        </div>
+      <% }) %>
+    </div>
+
+    <form class="form-mensagem" method="POST" action="/mensagens">
+      <input type="hidden" name="destinatario" value="<%= destinatario %>">
+      <input type="text" name="conteudo" placeholder="Digite sua mensagem..." required>
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <script>
+    // Scroll para a última mensagem
+    const chatBox = document.getElementById("chatBox");
+    chatBox.scrollTop = chatBox.scrollHeight;
+  </script>
+</body>
+</html>
