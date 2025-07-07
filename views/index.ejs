@@ -29,22 +29,25 @@
     <div class="feed" id="feedContainer">
       <h2>Olá, <span id="username"><%= username %></span> 👋</h2>
 
-      <% posts.forEach(post => { %>
-        <div class="post-card">
-          <div class="post-header">
-            <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Perfil" class="profile-pic" />
-            <span>@<%= post.usuario %></span>
+      <% if (posts.length === 0) { %>
+        <p style="text-align: center; color: #ccc; margin-top: 40px;">
+          Nenhuma publicação ainda. Seja o primeiro a postar!
+        </p>
+      <% } else { %>
+        <% posts.forEach(post => { %>
+          <div class="post-card">
+            <div class="post-header">
+              <span>@<%= post.usuario %></span>
+            </div>
+            <div class="post-image">
+              <img src="<%= post.imagem %>" alt="Postagem" />
+            </div>
+            <div class="post-footer">
+              <div class="caption"><%= post.legenda %></div>
+            </div>
           </div>
-          <div class="post-image">
-            <img src="<%= post.imagem %>" alt="Postagem" />
-          </div>
-          <div class="post-footer">
-            <div class="likes">1.951 curtidas</div>
-            <div class="caption"><%= post.legenda %></div>
-            <div class="comments">Ver todos os comentários</div>
-          </div>
-        </div>
-      <% }) %>
+        <% }) %>
+      <% } %>
     </div>
   </main>
 
@@ -92,7 +95,7 @@
       reader.readAsDataURL(file);
     };
 
-    // Submissão via Ajax — adiciona o post AO FINAL do feed
+    // Submissão via Ajax — agora com reload no lugar da duplicação
     const form = document.getElementById("formPostagem");
     form.addEventListener("submit", async e => {
       e.preventDefault(); // impede recarregar a página
@@ -105,10 +108,9 @@
         alert("Erro ao postar!");
         return;
       }
-      const novoCard = await res.text();
-      // Inserção ao final para não empurrar posts antigos para fora
-      document.getElementById("feedContainer")
-              .insertAdjacentHTML("beforeend", novoCard);
+
+      // Recarrega a página para mostrar o post sem duplicação
+      window.location.reload();
 
       modal.style.display = "none";
       form.reset();

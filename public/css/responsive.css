@@ -1,4 +1,3 @@
-/* ===== RESPONSIVE.CSS ===== */
 @media (max-width: 600px) {
   .post-image img {
     max-height: 300px;
@@ -14,10 +13,10 @@
     margin: 0 auto 20px auto;
   }
 
+  /* CORRIGIDO AQUI */
   .main-feed {
-    margin-left: 250px;
-    padding: 20px;
-    margin-top: 60px;
+    overflow-y: visible;
+    height: auto;
   }
 
   .sidebar {
