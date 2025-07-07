@@ -125,3 +125,87 @@
 .suggestion-item button:hover {
   background-color: #0097a7;
 }
+/* COMEÇO DO ONLINE*/
+.barra-online {
+  position: fixed;
+  top: 40px; /* ou 80px se sua navbar for maior */
+  right: 0;
+  width: 300px;
+  background-color: #f5f6f7;
+  color: #1d2129;
+  padding: 10px 12px;
+  border-left: 1px solid #ddd;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  z-index: 10;
+}
+
+.barra-online h3 {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #4b4f56;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.barra-online ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.barra-online li {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+  color: #1c1e21;
+  cursor: default;
+}
+
+.barra-online li:hover {
+  background-color: #e9ebee;
+}
+
+.dot-online {
+  width: 8px;
+  height: 8px;
+  background-color: #31a24c;
+  border-radius: 50%;
+  margin-right: 8px;
+  margin-left: 2px;
+}
+
+.barra-online::-webkit-scrollbar {
+  width: 6px;
+}
+.barra-online::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+.dot-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  margin-left: 2px;
+  display: inline-block;
+}
+
+/* Cores por status */
+.dot-status.online {
+  background-color: #31a24c; /* verde */
+}
+
+.dot-status.away {
+  background-color: #f4c430; /* amarelo */
+}
+
+.dot-status.offline {
+  background-color: #ccc; /* cinza claro */
+}
+
+/* FIM DO ONLINE */

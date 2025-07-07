@@ -26,7 +26,19 @@
 
   <!-- Feed -->
   <main class="main-feed">
-    <div class="feed" id="feedContainer">
+<aside class="barra-online">
+  <h3>Contatos</h3>
+  <ul id="usuariosOnline">
+    <li><span class="dot-online"></span> Carlos</li>
+    <li><span class="dot-online"></span> Ana</li>
+    <li><span class="dot-online"></span> João</li>
+    <li><span class="dot-status online"></span> Carlos</li>
+    <li><span class="dot-status away"></span> Ana</li>
+    <li><span class="dot-status offline"></span> João</li>
+  </ul>
+</aside>
+    
+<div class="feed" id="feedContainer">
       <h2>Olá, <span id="username"><%= username %></span> 👋</h2>
 
       <% if (posts.length === 0) { %>
@@ -115,6 +127,27 @@
       modal.style.display = "none";
       form.reset();
     });
+  // Atualiza ultimo_ativo a cada 30s
+setInterval(() => {
+  fetch("/atualizar-ativo", { method: "POST" });
+}, 30000);
+
+// Busca usuários online a cada 10s
+function carregarUsuariosOnline() {
+  fetch("/online-users")
+    .then(res => res.json())
+    .then(lista => {
+      const ul = document.getElementById("usuariosOnline");
+      ul.innerHTML = "";
+      lista.forEach(usuario => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
+        ul.appendChild(li);
+      });
+    });
+}
+setInterval(carregarUsuariosOnline, 10000);
+carregarUsuariosOnline(); // chama na primeira vez
   </script>
 </body>
 </html>

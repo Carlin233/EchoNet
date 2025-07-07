@@ -269,3 +269,33 @@ app.post("/mensagens", (req, res) => {
     }
   );
 });
+
+app.post("/atualizar-ativo", (req, res) => {
+  const usuario = req.session.usuario;
+  if (!usuario) return res.sendStatus(401);
+
+  const query = `UPDATE users SET ultimo_ativo = datetime('now') WHERE username = ?`;
+  db.run(query, [usuario], (err) => {
+    if (err) return res.sendStatus(500);
+    res.sendStatus(200);
+  });
+});
+
+app.get("/online-users", (req, res) => {
+  const query = `
+    SELECT username, 
+      CASE
+        WHEN ultimo_ativo >= datetime('now', '-1 minute') THEN 'online'
+        WHEN ultimo_ativo >= datetime('now', '-5 minutes') THEN 'away'
+        ELSE 'offline'
+      END as status
+    FROM users
+    WHERE username != ?
+    ORDER BY username;
+  `;
+
+  db.all(query, [req.session.usuario], (err, rows) => {
+    if (err) return res.sendStatus(500);
+    res.json(rows);
+  });
+});
