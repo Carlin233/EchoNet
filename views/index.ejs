@@ -26,19 +26,7 @@
 
   <!-- Feed -->
   <main class="main-feed">
-<aside class="barra-online">
-  <h3>Contatos</h3>
-  <ul id="usuariosOnline">
-    <li><span class="dot-online"></span> Carlos</li>
-    <li><span class="dot-online"></span> Ana</li>
-    <li><span class="dot-online"></span> João</li>
-    <li><span class="dot-status online"></span> Carlos</li>
-    <li><span class="dot-status away"></span> Ana</li>
-    <li><span class="dot-status offline"></span> João</li>
-  </ul>
-</aside>
-    
-<div class="feed" id="feedContainer">
+    <div class="feed" id="feedContainer">
       <h2>Olá, <span id="username"><%= username %></span> 👋</h2>
 
       <% if (posts.length === 0) { %>
@@ -62,6 +50,14 @@
       <% } %>
     </div>
   </main>
+
+  <!-- Barra de usuários online -->
+  <aside class="barra-online">
+    <h3>Contatos</h3>
+    <ul id="usuariosOnline">
+      <!-- Lista será preenchida dinamicamente -->
+    </ul>
+  </aside>
 
   <!-- Modal de Postagem -->
   <div id="modalCriar" class="modal">
@@ -107,47 +103,52 @@
       reader.readAsDataURL(file);
     };
 
-    // Submissão via Ajax — agora com reload no lugar da duplicação
+    // Submissão via Ajax — com reload automático
     const form = document.getElementById("formPostagem");
     form.addEventListener("submit", async e => {
-      e.preventDefault(); // impede recarregar a página
+      e.preventDefault();
       const data = new FormData(form);
       const res = await fetch("/postar", {
         method: "POST",
-        body: data
+        body: data,
+        credentials: "include"
       });
       if (!res.ok) {
         alert("Erro ao postar!");
         return;
       }
-
-      // Recarrega a página para mostrar o post sem duplicação
       window.location.reload();
-
       modal.style.display = "none";
       form.reset();
     });
-  // Atualiza ultimo_ativo a cada 30s
-setInterval(() => {
-  fetch("/atualizar-ativo", { method: "POST" });
-}, 30000);
 
-// Busca usuários online a cada 10s
-function carregarUsuariosOnline() {
-  fetch("/online-users")
-    .then(res => res.json())
-    .then(lista => {
-      const ul = document.getElementById("usuariosOnline");
-      ul.innerHTML = "";
-      lista.forEach(usuario => {
-        const li = document.createElement("li");
-        li.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
-        ul.appendChild(li);
+    // Atualiza ultimo_ativo a cada 30s (mantém o usuário online)
+    setInterval(() => {
+      fetch("/atualizar-ativo", {
+        method: "POST",
+        credentials: "include"
       });
-    });
-}
-setInterval(carregarUsuariosOnline, 10000);
-carregarUsuariosOnline(); // chama na primeira vez
+    }, 30000);
+
+    // Carrega lista de usuários online/away/offline
+    function carregarUsuariosOnline() {
+      fetch("/online-users", {
+        credentials: "include"
+      })
+        .then(res => res.json())
+        .then(lista => {
+          const ul = document.getElementById("usuariosOnline");
+          ul.innerHTML = "";
+          lista.forEach(usuario => {
+            const li = document.createElement("li");
+            li.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
+            ul.appendChild(li);
+          });
+        });
+    }
+
+    setInterval(carregarUsuariosOnline, 10000);
+    carregarUsuariosOnline();
   </script>
 </body>
 </html>
