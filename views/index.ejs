@@ -1,20 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <title>EchoNet - Feed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/feed.css">
+  <link rel="stylesheet" href="/css/modal.css">
+  <link rel="stylesheet" href="/css/responsive.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/css/global.css">
-<link rel="stylesheet" href="/css/navbar.css">
-<link rel="stylesheet" href="/css/sidebar.css">
-<link rel="stylesheet" href="/css/perfil.css">
-<link rel="stylesheet" href="/css/responsive.css">
 </head>
-
-
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
@@ -29,7 +26,7 @@
 
   <!-- Feed -->
   <main class="main-feed">
-    <div class="feed">
+    <div class="feed" id="feedContainer">
       <h2>Olá, <span id="username"><%= username %></span> 👋</h2>
 
       <% posts.forEach(post => { %>
@@ -56,7 +53,7 @@
     <div class="modal-conteudo estilizado">
       <span class="fechar" id="fecharModal">&times;</span>
       <h3>Criar nova publicação</h3>
-      <form action="/postar" method="POST" enctype="multipart/form-data" class="post-form" id="formPostagem">
+      <form id="formPostagem" enctype="multipart/form-data">
         <label class="upload-area" for="uploadInput">
           <span class="upload-text">Clique para selecionar uma imagem</span>
           <img id="previewImagem" src="" alt="Preview" class="preview" />
@@ -69,37 +66,51 @@
   </div>
 
   <script>
+    // Modal
     const modal = document.getElementById("modalCriar");
-    const abrir = document.getElementById("abrirModal");
-    const fechar = document.getElementById("fecharModal");
+    document.getElementById("abrirModal").onclick = () => {
+      modal.style.display = "block";
+      document.querySelector(".upload-text").style.display = "block";
+      document.getElementById("previewImagem").style.display = "none";
+      document.getElementById("previewImagem").src = "";
+    };
+    document.getElementById("fecharModal").onclick = () => modal.style.display = "none";
+    window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+
+    // Preview de imagem
     const uploadInput = document.getElementById("uploadInput");
     const preview = document.getElementById("previewImagem");
-
-    abrir.onclick = () => {
-      modal.style.display = "block";
-      preview.style.display = "none";
-      preview.src = "";
-      document.querySelector(".upload-text").style.display = "block";
-    };
-
-    fechar.onclick = () => modal.style.display = "none";
-
-    window.onclick = (e) => {
-      if (e.target === modal) modal.style.display = "none";
-    };
-
-    uploadInput.onchange = (e) => {
+    uploadInput.onchange = e => {
       const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          preview.src = reader.result;
-          preview.style.display = "block";
-          document.querySelector(".upload-text").style.display = "none";
-        };
-        reader.readAsDataURL(file);
-      }
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        preview.src = reader.result;
+        preview.style.display = "block";
+        document.querySelector(".upload-text").style.display = "none";
+      };
+      reader.readAsDataURL(file);
     };
+
+    // Submissão via Ajax
+    const form = document.getElementById("formPostagem");
+    form.addEventListener("submit", async e => {
+      e.preventDefault(); // impede reload
+      const data = new FormData(form);
+      const res = await fetch("/postar", {
+        method: "POST",
+        body: data
+      });
+      if (!res.ok) {
+        alert("Erro ao postar!");
+        return;
+      }
+      // supondo que o servidor retorne o HTML do novo card:
+      const novoCard = await res.text();
+      document.getElementById("feedContainer").insertAdjacentHTML("afterbegin", novoCard);
+      modal.style.display = "none";
+      form.reset();
+    });
   </script>
 </body>
 </html>
