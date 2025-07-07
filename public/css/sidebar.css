@@ -1,8 +1,8 @@
 /* ===== SIDEBAR.CSS ===== */
 .sidebar {
   background-color: #131313;
-  width: 250px;
-  height: 100vh;
+  width: 370px;
+  height: 150vh;
   display: flex;
   flex-direction: column;
   align-items: center;

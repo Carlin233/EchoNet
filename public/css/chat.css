@@ -1,67 +1,95 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  margin: 0;
+  background: #f0f2f5;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .mensagem-container {
-  margin-left: 220px;
+  margin-left: 100px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background: #f4f4f4;
+  height: 100%;
+  max-width: 1182px;
+  margin-inline: auto;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  background: white;
+  box-sizing: border-box;
 }
 
 .mensagem-topo {
-  background: #0066cc;
+  background: #1877f2;
   color: white;
   padding: 16px;
   font-weight: 600;
+  border-bottom: 1px solid #ccc;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .chat-box {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 20px; /* 👈 era 200px */
   display: flex;
   flex-direction: column;
   gap: 10px;
+  box-sizing: border-box;
 }
 
 .msg {
-  max-width: 60%;
+  max-width: 75%;
   padding: 10px 15px;
   border-radius: 20px;
+  font-size: 15px;
   line-height: 1.4;
+  word-wrap: break-word;
 }
 
 .msg.eu {
-  background: #d1e7ff;
+  background: #e4f0ff;
   align-self: flex-end;
 }
 
 .msg.outro {
-  background: #ffffff;
+  background: #f0f0f0;
   align-self: flex-start;
-  border: 1px solid #ddd;
 }
 
 .form-mensagem {
   display: flex;
   padding: 15px;
-  background: #fff;
   border-top: 1px solid #ccc;
+  background: #fff;
+  box-sizing: border-box;
 }
 
 .form-mensagem input[type="text"] {
   flex: 1;
-  padding: 10px;
+  padding: 10px 15px;
   border: 1px solid #ccc;
   border-radius: 20px;
   outline: none;
+  font-size: 14px;
   margin-right: 10px;
 }
 
 .form-mensagem button {
   padding: 10px 20px;
-  background: #0066cc;
+  background: #1877f2;
   color: white;
   border: none;
   border-radius: 20px;
+  font-weight: bold;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.form-mensagem button:hover {
+  background: #0f5eca;
 }
