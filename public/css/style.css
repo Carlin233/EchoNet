@@ -1,11 +1,10 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #121212;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #00122c;
+  font-family: 'Poppins', sans-serif;
+  overflow-y: auto;
 }
 
 .form-container {
@@ -321,13 +320,12 @@ button:hover {
 /* Sidebar (Menu Lateral) */
 .sidebar {
   background-color: #131313;
-  width: 350px;  /* Ajuste a largura da sidebar */
-  height: 500vh;
+  width: 250px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 120px;
+  padding-top: 80px;
   position: fixed;
   top: 0;
   left: 0;
@@ -584,9 +582,10 @@ button:hover {
   }
 
   .main-feed {
-    margin-left: 0 !important;
-    padding-top: 70px;
-  }
+  margin-left: 250px; /* espaço da sidebar */
+  padding: 20px;
+  margin-top: 60px;
+}
 
   .sidebar {
     position: fixed;

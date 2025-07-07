@@ -15,8 +15,10 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Banco de dados
-const db = require("./db"); // Importa conexão centralizada
-
+const db = new sqlite3.Database("./database.sqlite", (err) => {
+  if (err) console.error("Erro ao conectar ao banco:", err);
+  else console.log("Banco SQLite conectado.");
+});
 
 // Cria tabelas se não existirem
 db.run(`
