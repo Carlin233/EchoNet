@@ -256,11 +256,7 @@ button:hover {
 
 .post-image img {
   width: 100%;
-  max-width: 100%;
   height: auto;
-  max-height: 500px;
-  object-fit: contain;
-  border-radius: 8px;
   display: block;
 }
 
