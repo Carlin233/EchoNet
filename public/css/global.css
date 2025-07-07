@@ -1,0 +1,75 @@
+/* ===== GLOBAL.CSS ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #00122c;
+  font-family: 'Poppins', sans-serif;
+  overflow-y: auto;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #00122c;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  background: #1e1e1e;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #333;
+  width: 300px;
+}
+
+input, button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+}
+
+input {
+  background: #2c2c2c;
+  color: #fff;
+}
+
+button {
+  background-color: #00bcd4;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #0097a7;
+}
+
+main {
+  padding: 2rem;
+}
+
+.small-text {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.small-text a {
+  color: #00bcd4;
+  text-decoration: none;
+}
+
+.small-text a:hover {
+  text-decoration: underline;
+}

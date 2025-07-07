@@ -1,0 +1,75 @@
+/* ===== PERFIL.CSS ===== */
+.perfil-container {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+  color: #fff;
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.perfil-foto img {
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  object-fit: cover;
+  border: 0px solid #fff;
+}
+
+.perfil-info h2 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.perfil-info .nome-real {
+  font-size: 30px;
+  color: #ccc;
+}
+
+.perfil-info .bio {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.perfil-info .contadores {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.btn-sair {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 16px;
+  background: #e60000;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.linha {
+  margin: 10px 0;
+  border: none;
+  border-top: 1px solid #333;
+}
+
+/* Grade de postagens */
+.grade-postagens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+}
+
+.item-postagem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+}
