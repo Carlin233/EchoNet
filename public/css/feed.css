@@ -47,9 +47,8 @@
 
 .post-image img {
   width: 100%;
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
+  height: auto;           
+  object-fit: contain;    
   display: block;
   border-radius: 10px;
 }
