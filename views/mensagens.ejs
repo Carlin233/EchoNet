@@ -9,6 +9,37 @@
   <link rel="stylesheet" href="/css/sidebar.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/chat.css">
+  <style>
+    body {
+      display: flex;
+    }
+    .lista-contatos {
+      width: 200px;
+      padding: 20px;
+      background: #f9f9f9;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 2px 0 4px rgba(0,0,0,0.05);
+    }
+    .lista-contatos ul {
+      list-style: none;
+      padding: 0;
+    }
+    .lista-contatos li {
+      margin-bottom: 10px;
+    }
+    .lista-contatos a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    .mensagem-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
   <!-- Sidebar -->
@@ -18,74 +49,108 @@
       <a href="/">Página Inicial</a>
       <a href="/perfil">Perfil</a>
       <a href="/logout">Sair</a>
-      <a href="/mensagens/<%= usuarioLogado %>">Mensagens</a>
+      <a href="/mensagens">Mensagens</a>
     </nav>
   </div>
 
-  <!-- Container de Mensagem -->
-  <div class="mensagem-container">
-    <div class="mensagem-topo">Conversando com: <%= destinatario %></div>
+  <div class="lista-contatos" id="listaContatos">
+  <h3>Contatos</h3>
 
-    <div class="chat-box" id="chatBox">
-      <% mensagens.forEach(m => { %>
-        <div class="msg <%= m.remetente === usuarioLogado ? 'eu' : 'outro' %>">
-          <%= m.conteudo %>
-        </div>
-      <% }) %>
+  <!-- Teste: Exibe os dados brutos dos contatos -->
+  <pre style="font-size: 11px; color: gray;"><%= JSON.stringify(contatos, null, 2) %></pre>
+
+  <ul>
+    <% if (contatos.length === 0) { %>
+      <li style="color: #888;">Nenhum contato encontrado</li>
+    <% } else { %>
+      <% contatos.forEach(c => {
+        if (c.contato.trim().toLowerCase() !== usuarioLogado.trim().toLowerCase()) { %>
+        <li>
+          <a href="/mensagens/<%= encodeURIComponent(c.contato) %>">
+            <%= c.contato %>
+          </a>
+        </li>
+      <% }}); %>
+    <% } %>
+  </ul>
+</div>
+
+  <!-- Mensagem / Chat -->
+  <% if (destinatario) { %>
+    <div class="mensagem-container">
+      <div class="mensagem-topo">Conversando com: <%= destinatario %></div>
+
+      <div class="chat-box" id="chatBox">
+        <% mensagens.forEach(m => { %>
+          <div class="msg <%= m.remetente === usuarioLogado ? 'eu' : 'outro' %>">
+            <%= m.conteudo %>
+          </div>
+        <% }) %>
+      </div>
+
+      <form id="formMensagem" class="form-mensagem">
+        <input type="hidden" name="destinatario" value="<%= destinatario %>">
+        <input type="text" name="conteudo" placeholder="Digite sua mensagem..." required autocomplete="off">
+        <button type="submit">Enviar</button>
+      </form>
     </div>
-
-    <form id="formMensagem" class="form-mensagem">
-      <input type="hidden" name="destinatario" value="<%= destinatario %>">
-      <input type="text" name="conteudo" placeholder="Digite sua mensagem..." required autocomplete="off">
-      <button type="submit">Enviar</button>
-    </form>
-  </div>
+  <% } else { %>
+    <div class="mensagem-container">
+      <div class="mensagem-topo">Mensagens</div>
+      <div class="chat-box">
+        <p style="margin: auto; font-size: 16px; color: #888;">
+          Selecione um contato à esquerda para iniciar uma conversa.
+        </p>
+      </div>
+    </div>
+  <% } %>
 
   <script>
     const chatBox = document.getElementById("chatBox");
     const form = document.getElementById("formMensagem");
-    const destinatario = "<%= destinatario %>";
 
-    // Scroll para o final
-    function scrollParaFim() {
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+    if (chatBox && form) {
+      const destinatario = "<%= destinatario %>";
 
-    scrollParaFim();
+      function scrollParaFim() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
 
-    // Enviar mensagem via fetch
-    form.addEventListener("submit", async e => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const conteudo = formData.get("conteudo").trim();
-      if (!conteudo) return;
+      async function carregarMensagens() {
+        const res = await fetch("/mensagens/" + encodeURIComponent(destinatario), {
+          credentials: "include"
+        });
+        const html = await res.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const novasMsgs = doc.getElementById("chatBox").innerHTML;
+        chatBox.innerHTML = novasMsgs;
+        scrollParaFim();
+      }
 
-      await fetch("/mensagens", {
-        method: "POST",
-        body: formData,
-        credentials: "include"
+      form.addEventListener("submit", async e => {
+        e.preventDefault();
+
+        const conteudo = form.querySelector("input[name='conteudo']").value.trim();
+        if (!conteudo) return;
+
+        await fetch("/mensagens", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ destinatario, conteudo }),
+          credentials: "include"
+        });
+
+        form.reset();
+        await carregarMensagens();
+        scrollParaFim();
       });
 
-      form.reset();
-      await carregarMensagens();
       scrollParaFim();
-    });
-
-    // Buscar mensagens novas
-    async function carregarMensagens() {
-      const res = await fetch("/mensagens/" + encodeURIComponent(destinatario), {
-        credentials: "include"
-      });
-      const html = await res.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-      const novasMsgs = doc.getElementById("chatBox").innerHTML;
-      document.getElementById("chatBox").innerHTML = novasMsgs;
-      scrollParaFim();
+      setInterval(carregarMensagens, 5000);
     }
-
-    // Atualiza a cada 5 segundos
-    setInterval(carregarMensagens, 5000);
   </script>
 </body>
 </html>

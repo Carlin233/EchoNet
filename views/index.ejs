@@ -132,21 +132,29 @@
     }, 30000);
 
     // Carrega lista de usuários online/away/offline
-    function carregarUsuariosOnline() {
-      fetch("/online-users", {
-        credentials: "include"
-      })
-        .then(res => res.json())
-        .then(lista => {
-          const ul = document.getElementById("usuariosOnline");
-          ul.innerHTML = "";
-          lista.forEach(usuario => {
-            const li = document.createElement("li");
-            li.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
-            ul.appendChild(li);
-          });
-        });
-    }
+function carregarUsuariosOnline() {
+  fetch("/online-users", {
+    credentials: "include"
+  })
+    .then(res => res.json())
+    .then(lista => {
+      const ul = document.getElementById("usuariosOnline");
+      ul.innerHTML = "";
+
+      lista.forEach(usuario => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+
+        a.href = "/mensagens/" + encodeURIComponent(usuario.username);
+        a.style.textDecoration = "none";
+        a.style.color = "inherit";
+        a.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
+
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+    });
+}
 
     setInterval(carregarUsuariosOnline, 10000);
     carregarUsuariosOnline();

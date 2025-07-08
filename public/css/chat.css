@@ -4,7 +4,7 @@ body {
   margin: 0;
   background: #f0f2f5;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto; /* Alterei de hidden para auto */
 }
 
 .mensagem-container {
@@ -35,7 +35,7 @@ body {
 .chat-box {
   flex: 1;
   overflow-y: auto;
-  padding: 20px; /* 👈 era 200px */
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -63,7 +63,7 @@ body {
 
 .form-mensagem {
   display: flex;
-  padding: 15px;
+  padding: 30px;
   border-top: 1px solid #ccc;
   background: #fff;
   box-sizing: border-box;
@@ -72,11 +72,12 @@ body {
 .form-mensagem input[type="text"] {
   flex: 1;
   padding: 10px 15px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 20px;
   outline: none;
   font-size: 14px;
-  margin-right: 10px;
+  margin-right: 200px;
+  min-width: 200px; /* Tamanho mínimo para o campo */
 }
 
 .form-mensagem button {
@@ -93,3 +94,30 @@ body {
 .form-mensagem button:hover {
   background: #0f5eca;
 }
+
+.lista-contatos {
+  position: relative; /* Deixe como fluxo normal */
+  width: 200px;
+  padding: 20px;
+  background: #fff;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  font-family: Poppins, sans-serif;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.lista-contatos h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.lista-contatos a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  display: block;
+  padding: 4px 0;
+}
+
