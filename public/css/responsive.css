@@ -1,8 +1,7 @@
+/* === RESPONSIVO GERAL PARA CELULAR === */
 @media (max-width: 600px) {
-  .post-image img {
-    max-height: 300px;
-  }
 
+  /* Feed */
   .feed {
     padding: 10px;
     width: 100%;
@@ -13,12 +12,17 @@
     margin: 0 auto 20px auto;
   }
 
-  /* CORRIGIDO AQUI */
   .main-feed {
     overflow-y: visible;
     height: auto;
+    margin-top: 70px;
   }
 
+  .post-image img {
+    max-height: 300px;
+  }
+
+  /* Sidebar vira menu inferior */
   .sidebar {
     position: fixed;
     bottom: 0;
@@ -28,8 +32,7 @@
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    padding-top: 0;
-    padding-left: 0;
+    padding: 0;
     z-index: 999;
   }
 
@@ -48,5 +51,113 @@
 
   .sidebar .logo {
     display: none;
+  }
+
+  /* Navbar mais compacta */
+  .navbar {
+    height: 50px;
+    padding: 0 10px;
+  }
+
+  .navbar-content {
+    padding: 0;
+  }
+
+  .navbar nav a {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+
+  .navbar .logo {
+    font-size: 18px;
+  }
+
+  /* Perfil */
+  .perfil-container {
+    padding: 20px;
+  }
+
+  .perfil-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .perfil-foto img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .perfil-info h2,
+  .perfil-info .nome-real {
+    font-size: 18px;
+  }
+
+  .grade-postagens {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Modal */
+  .modal-conteudo.estilizado {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .upload-area {
+    height: 200px;
+  }
+
+  /* Chat */
+  .mensagem-container {
+    margin: 0;
+    max-width: 100%;
+    border: none;
+  }
+
+  .form-mensagem {
+    padding: 10px;
+    flex-wrap: wrap;
+  }
+
+  .form-mensagem input[type="text"] {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .form-mensagem button {
+    width: 100%;
+  }
+
+  .mensagem-topo {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .chat-box {
+    padding: 12px;
+  }
+
+  /* Lista de contatos */
+  .lista-contatos {
+    display: none; /* pode trocar para toggle por botão */
+  }
+
+  /* Barra de usuários online */
+  .barra-online {
+    display: none;
+  }
+
+  /* Login e Registro */
+  .auth-box {
+    width: 90%;
+    padding: 20px;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  button {
+    font-size: 14px;
   }
 }

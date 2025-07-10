@@ -19,7 +19,6 @@
   margin-top: 20px;
   max-width: 100%;
   border: 1px solid #ddd;
-  /* overflow: hidden; ← remova isso */
 }
 
 .post-header {
@@ -47,19 +46,19 @@
 
 .post-image {
   width: 100%;
-  max-width: 360px; /* 1080px na escala 2.25x (bom pra mobile e desktop) */
-  aspect-ratio: 4 / 5; /* proporção usada no feed vertical do Instagram */
+  max-width: 360px;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: 12px;
   margin: auto;
   margin-top: 10px;
-  background-color: #000; /* opcional, evita fundo branco se imagem for menor */
+  background-color: #000;
 }
 
 .post-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* corta suavemente para caber no frame */
+  object-fit: cover;
   display: block;
 }
 
@@ -125,10 +124,11 @@
 .suggestion-item button:hover {
   background-color: #0097a7;
 }
-/* COMEÇO DO ONLINE*/
+
+/* ===== ONLINE ===== */
 .barra-online {
   position: fixed;
-  top: 40px; /* ou 80px se sua navbar for maior */
+  top: 40px;
   right: 0;
   width: 300px;
   background-color: #f5f6f7;
@@ -186,6 +186,7 @@
   background-color: #ccc;
   border-radius: 4px;
 }
+
 .dot-status {
   width: 8px;
   height: 8px;
@@ -195,16 +196,56 @@
   display: inline-block;
 }
 
-/* Cores por status */
 .dot-status.online {
-  background-color: #31a24c; /* verde */
+  background-color: #31a24c;
 }
-
 .dot-status.away {
-  background-color: #f4c430; /* amarelo */
+  background-color: #f4c430;
+}
+.dot-status.offline {
+  background-color: #ccc;
 }
 
-.dot-status.offline {
-  background-color: #ccc; /* cinza claro */
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .main-feed {
+    padding: 10px;
+    margin-top: 60px;
+  }
+
+  .feed {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .post-card {
+    margin: 10px 0;
+    border-radius: 8px;
+  }
+
+  .post-header {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .post-image {
+    max-width: 100%;
+    border-radius: 10px;
+    aspect-ratio: 4 / 5;
+  }
+
+  .post-footer {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .barra-online {
+    display: none;
+  }
+
+  .suggestions {
+    display: none;
+  }
 }
-/* FIM DO ONLINE */

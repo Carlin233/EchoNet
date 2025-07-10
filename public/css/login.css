@@ -1,53 +1,111 @@
-/* ===== LOGIN.CSS ===== */
-.auth-container {
+/* ===== LOGIN PROFISSIONAL ===== */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+}
+
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+/* Lado esquerdo (imagem) */
+.login-left {
+  flex: 1;
+  background: #1da1f2; /* azul estilo Twitter */
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.side-logo {
+  width: 60%;
+  max-width: 300px;
+}
+
+/* Lado direito (formulário) */
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.form-box {
+  max-width: 400px;
   width: 100%;
 }
 
-.auth-box {
-  background: #2c2c2c;
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 350px;
-  text-align: center;
-}
-
-.logo {
-  font-size: 2rem;
-  color: #00bcd4;
-  margin-bottom: 25px;
+.form-title {
+  font-size: 28px;
   font-weight: 600;
+  margin-bottom: 25px;
+  color: #14171a;
 }
 
 input[type="email"],
-input[type="password"],
-input[type="text"] {
+input[type="password"] {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
+  padding: 14px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  background: #c4c4c4;
+  border-radius: 30px;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.2s;
+  background-color: #f5f8fa;
+}
+
+input:focus {
+  border-color: #1da1f2;
 }
 
 button {
   width: 100%;
-  padding: 12px;
-  background-color: #0055d4;
-  border: none;
-  border-radius: 6px;
+  padding: 14px;
+  background-color: #1da1f2;
   color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
   font-weight: 600;
-  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s;
 }
 
 button:hover {
-  background-color: #0097a7;
+  background-color: #1991da;
+}
+
+.small-text {
+  margin-top: 15px;
+  text-align: center;
+  color: #657786;
+}
+
+.small-text a {
+  color: #1da1f2;
+  text-decoration: none;
+}
+
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+  }
+
+  .login-left {
+    display: none;
+  }
+
+  .login-right {
+    width: 100%;
+    padding: 30px;
+  }
+
+  .form-box {
+    padding: 0 10px;
+  }
 }
