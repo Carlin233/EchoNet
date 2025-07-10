@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Redefinir Senha - EchoNet</title>
+  <link rel="stylesheet" href="/css/login.css" />
+  <style>
+   
+  </style>
+</head>
+<body>
+  <div class="reset-box">
+    <h2>Redefinir Senha</h2>
+    <form method="POST" action="/resetar-senha">
+      <input type="hidden" name="token" value="<%= token %>">
+      <input type="password" name="password" placeholder="Nova senha" required>
+      <input type="password" name="confirmPassword" placeholder="Confirmar nova senha" required>
+      <button type="submit">Atualizar senha</button>
+    </form>
+  </div>
+</body>
+</html>

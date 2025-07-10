@@ -1,5 +1,3 @@
-// server.js corrigido
-
 const express = require("express");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
@@ -132,16 +130,36 @@ app.post("/postar", upload.single("imagem"), (req, res) => {
 
 // Autenticação
 app.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { nome, telefone, email, password, confirmPassword } = req.body;
 
-  db.get("SELECT * FROM users WHERE email = ?", [email], async (err, row) => {
-    if (row) return res.send("E-mail já cadastrado. <a href='/register.html'>Tente outro</a>");
+  if (!nome || !telefone || !email || !password || !confirmPassword) {
+    return res.json({ success: false, message: "Todos os campos são obrigatórios." });
+  }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", [username, email, hashedPassword], (err) => {
-      if (err) return res.send("Erro ao cadastrar.");
-      res.send("Cadastro realizado com sucesso! <a href='/login.html'>Fazer login</a>");
-    });
+  if (password !== confirmPassword) {
+    return res.json({ success: false, message: "As senhas não coincidem." });
+  }
+
+  db.get("SELECT * FROM users WHERE email = ?", [email], (err, row) => {
+    if (err) {
+      return res.json({ success: false, message: "Erro no servidor." });
+    }
+
+    if (row) {
+      return res.json({ success: false, message: "Este e-mail já está cadastrado." });
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    db.run("INSERT INTO users (nome, telefone, email, password) VALUES (?, ?, ?, ?)",
+      [nome, telefone, email, hashedPassword],
+      function (err) {
+        if (err) {
+          return res.json({ success: false, message: "Erro ao criar conta." });
+        }
+        return res.json({ success: true });
+      }
+    );
   });
 });
 
@@ -231,12 +249,11 @@ app.get("/mensagens/:destinatario", (req, res) => {
         mensagens,
         usuarioLogado,
         destinatario,
-        contatos // 👈 ESSA LINHA TEM QUE EXISTIR
+        contatos
       });
     });
   });
 });
-
 
 app.post("/mensagens", (req, res) => {
   if (!req.session.user) return res.status(401).send("Não autenticado.");
@@ -307,11 +324,133 @@ app.get("/login.html", (req, res) => {
   res.sendFile(path.join(__dirname, "views/login.html"));
 });
 
-app.get("/register.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/register.html"));
+// O endpoint /register corrigido para sempre retornar JSON
+app.post("/register", async (req, res) => {
+  const { nome, telefone, email, password, confirmPassword } = req.body;
+
+  if (!nome || !telefone || !email || !password || !confirmPassword) {
+    return res.json({ success: false, message: "Todos os campos são obrigatórios." });
+  }
+
+  if (password !== confirmPassword) {
+    return res.json({ success: false, message: "As senhas não coincidem." });
+  }
+
+  db.get("SELECT * FROM users WHERE email = ?", [email], (err, row) => {
+    if (err) {
+      return res.json({ success: false, message: "Erro no servidor." });
+    }
+
+    if (row) {
+      return res.json({ success: false, message: "Este e-mail já está cadastrado." });
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    db.run("INSERT INTO users (nome, telefone, email, password) VALUES (?, ?, ?, ?)",
+      [nome, telefone, email, hashedPassword],
+      function (err) {
+        if (err) {
+          return res.json({ success: false, message: "Erro ao criar conta." });
+        }
+        return res.json({ success: true });
+      }
+    );
+  });
 });
 
 // Inicia o servidor
 app.listen(PORT, () => {
   console.log(`EchoNet rodando em http://localhost:${PORT}`);
+});
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS password_resets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL,
+    token TEXT NOT NULL,
+    expires_at DATETIME NOT NULL
+  )
+`);
+
+const crypto = require('crypto');
+
+app.post("/recuperar-senha", (req, res) => {
+  const { email } = req.body;
+
+  if (!email) return res.json({ success: false, message: "Informe o email." });
+
+  db.get("SELECT * FROM users WHERE email = ?", [email], (err, user) => {
+    if (err) return res.json({ success: false, message: "Erro no servidor." });
+
+    if (!user) {
+      // Não expor se email existe ou não
+      return res.json({ success: true, message: "Se o email existir, um link foi enviado." });
+    }
+
+    // Gerar token randomico
+    const token = crypto.randomBytes(20).toString('hex');
+    // Expira em 1h
+    const expiresAt = new Date(Date.now() + 3600 * 1000).toISOString();
+
+    // Salvar token na tabela
+    db.run("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)", [email, token, expiresAt], (err) => {
+      if (err) return res.json({ success: false, message: "Erro ao gerar token." });
+
+      // Aqui você mandaria um email real com o link tipo:
+      // http://localhost:3000/resetar-senha?token=TOKEN_AQUI
+      console.log(`Link de recuperação para ${email}: http://localhost:3000/resetar-senha?token=${token}`);
+
+      return res.json({ success: true, message: "Se o email existir, um link foi enviado." });
+    });
+  });
+});
+
+app.get("/resetar-senha", (req, res) => {
+  const { token } = req.query;
+
+  if (!token) return res.send("Token inválido.");
+
+  db.get("SELECT * FROM password_resets WHERE token = ?", [token], (err, row) => {
+    if (err || !row) return res.send("Token inválido ou expirado.");
+
+    const now = new Date();
+    if (new Date(row.expires_at) < now) {
+      return res.send("Token expirado.");
+    }
+
+    res.render("resetar-senha", { token });
+  });
+});
+
+app.post("/resetar-senha", (req, res) => {
+  const { token, password, confirmPassword } = req.body;
+
+  if (!token || !password || !confirmPassword) {
+    return res.json({ success: false, message: "Campos obrigatórios." });
+  }
+
+  if (password !== confirmPassword) {
+    return res.json({ success: false, message: "As senhas não coincidem." });
+  }
+
+  db.get("SELECT * FROM password_resets WHERE token = ?", [token], (err, row) => {
+    if (err || !row) return res.json({ success: false, message: "Token inválido ou expirado." });
+
+    const now = new Date();
+    if (new Date(row.expires_at) < now) {
+      return res.json({ success: false, message: "Token expirado." });
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    db.run("UPDATE users SET password = ? WHERE email = ?", [hashedPassword, row.email], (err) => {
+      if (err) return res.json({ success: false, message: "Erro ao atualizar senha." });
+
+      // Apaga o token para evitar reutilização
+      db.run("DELETE FROM password_resets WHERE token = ?", [token]);
+
+      return res.json({ success: true, message: "Senha atualizada com sucesso." });
+    });
+  });
 });

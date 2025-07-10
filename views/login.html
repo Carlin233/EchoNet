@@ -6,11 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/login.css" />
+  <style>
+    
+  </style>
 </head>
 <body>
+  <!-- Login Principal -->
   <div class="login-wrapper">
     <div class="login-left">
-      <img src="/img/echonet-logo.png" alt="EchoNet" class="side-logo">
+      <img src="/img/echonet-logo.png" alt="EchoNet" class="side-logo" />
     </div>
     <div class="login-right">
       <div class="form-box">
@@ -20,12 +24,169 @@
           <input type="password" name="password" placeholder="Senha" required />
           <button type="submit">Entrar</button>
         </form>
-        <p class="small-text">
-          Não tem conta?
-          <a href="/register.html">Cadastre-se</a>
-        </p>
+       <p class="small-text">
+  Não tem conta? <a id="openModalBtn" style="cursor:pointer;">Cadastre-se</a>
+</p>
+<p class="small-text" style="margin-top: 8px;">
+  <a id="openRecoveryBtn" style="cursor:pointer; ">Esqueci minha senha</a>
+</p>
       </div>
     </div>
   </div>
+
+  <!-- Modal de Cadastro -->
+  <div class="modal" id="modalCadastro">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModalCadastro">&times;</span>
+      <h2>Criar sua conta</h2>
+
+      <div id="registerError" class="error-message"></div>
+
+      <form id="registerForm">
+        <input type="text" name="nome" placeholder="Nome completo" required />
+        <input type="tel" name="telefone" placeholder="Telefone" required />
+        <input type="email" name="email" placeholder="E-mail" required />
+        <input type="password" name="password" placeholder="Senha" required />
+        <input type="password" name="confirmPassword" placeholder="Confirmar senha" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Recuperação de Senha -->
+  <div class="modal" id="modalRecuperacao">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModalRecuperacao">&times;</span>
+      <h2>Recuperar senha</h2>
+
+      <div id="recoveryError" class="error-message"></div>
+      <div id="recoverySuccess" style="color: #4CAF50; font-weight: 600; margin-bottom: 10px; text-align:center; display:none;"></div>
+
+      <form id="recoveryForm">
+        <input type="email" name="email" placeholder="Digite seu e-mail" required />
+        <button type="submit">Enviar link de recuperação</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Elementos modais e botões
+    const modalCadastro = document.getElementById("modalCadastro");
+    const modalRecuperacao = document.getElementById("modalRecuperacao");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const openRecoveryBtn = document.getElementById("openRecoveryBtn");
+    const closeModalCadastro = document.getElementById("closeModalCadastro");
+    const closeModalRecuperacao = document.getElementById("closeModalRecuperacao");
+
+    // Erros e sucessos
+    const registerError = document.getElementById("registerError");
+    const recoveryError = document.getElementById("recoveryError");
+    const recoverySuccess = document.getElementById("recoverySuccess");
+
+    // Formulários
+    const registerForm = document.getElementById("registerForm");
+    const recoveryForm = document.getElementById("recoveryForm");
+
+    // Abrir modal cadastro
+    openModalBtn.addEventListener("click", () => {
+      registerError.style.display = "none";
+      registerError.textContent = "";
+      registerForm.reset();
+      modalCadastro.style.display = "flex";
+    });
+
+    // Abrir modal recuperação
+    openRecoveryBtn.addEventListener("click", () => {
+      recoveryError.style.display = "none";
+      recoveryError.textContent = "";
+      recoverySuccess.style.display = "none";
+      recoverySuccess.textContent = "";
+      recoveryForm.reset();
+      modalRecuperacao.style.display = "flex";
+    });
+
+    // Fechar modais
+    closeModalCadastro.addEventListener("click", () => {
+      modalCadastro.style.display = "none";
+    });
+    closeModalRecuperacao.addEventListener("click", () => {
+      modalRecuperacao.style.display = "none";
+    });
+
+    // Fechar modais clicando fora do conteúdo
+    window.addEventListener("click", (e) => {
+      if (e.target === modalCadastro) {
+        modalCadastro.style.display = "none";
+      }
+      if (e.target === modalRecuperacao) {
+        modalRecuperacao.style.display = "none";
+      }
+    });
+
+    // Envio do cadastro via fetch
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      registerError.style.display = "none";
+      registerError.textContent = "";
+
+      const formData = new FormData(registerForm);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          window.location.href = "/feed";
+        } else {
+          registerError.textContent = result.message || "Erro ao cadastrar.";
+          registerError.style.display = "block";
+        }
+      } catch (error) {
+        registerError.textContent = "Erro na comunicação com o servidor.";
+        registerError.style.display = "block";
+      }
+    });
+
+    // Envio recuperação senha via fetch
+    recoveryForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      recoveryError.style.display = "none";
+      recoveryError.textContent = "";
+      recoverySuccess.style.display = "none";
+      recoverySuccess.textContent = "";
+
+      const formData = new FormData(recoveryForm);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch("/recover-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          recoverySuccess.textContent = result.message || "E-mail enviado com sucesso!";
+          recoverySuccess.style.display = "block";
+        } else {
+          recoveryError.textContent = result.message || "Erro na recuperação.";
+          recoveryError.style.display = "block";
+        }
+      } catch (error) {
+        recoveryError.textContent = "Erro na comunicação com o servidor.";
+        recoveryError.style.display = "block";
+      }
+    });
+  </script>
 </body>
 </html>
