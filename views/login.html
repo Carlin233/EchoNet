@@ -1,129 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>EchoNet - Mensagens</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/chat.css">
-  <link rel="stylesheet" href="/css/sidebar.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>Login | EchoNet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/login.css" />
 </head>
 <body>
-
-  <!-- SIDEBAR COM ÍCONES -->
-  <div class="sidebar">
-    <div class="logo">EchoNet</div>
-    <nav>
-      <a href="/" title="Início"><i class="fa-solid fa-house"></i></a>
-      <a href="/perfil" title="Perfil"><i class="fa-solid fa-user"></i></a>
-      <a href="#" id="abrirModal" title="Criar"><i class="fa-solid fa-plus"></i></a>
-      <a href="/logout" title="Sair"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
-      <a href="/mensagens/<%= usuarioLogado %>" title="Mensagens"><i class="fa-solid fa-comment-dots"></i></a>
-    </nav>
-  </div>
-
-  <!-- Lista de contatos -->
-  <div class="lista-contatos" id="listaContatos">
-    <h3>Mensagens</h3>
-    <ul>
-      <% if (contatos.length === 0) { %>
-        <li style="color: #888; font-size: 14px;">Nenhum contato encontrado</li>
-      <% } else { %>
-        <% contatos.forEach(c => {
-          const nome = c.contato;
-          const avatar = c.avatar || "/default-avatar.png";
-          const ultimaMensagem = c.ultima || "Clique para abrir a conversa";
-        %>
-        <li>
-          <a href="/mensagens/<%= encodeURIComponent(nome) %>">
-            <img src="<%= avatar %>" alt="Avatar">
-            <div class="contato-info">
-              <span class="nome"><%= nome %></span>
-              <span class="preview"><%= ultimaMensagem %></span>
-            </div>
-          </a>
-        </li>
-        <% }); %>
-      <% } %>
-    </ul>
-  </div>
-
-  <!-- Área do chat -->
-  <% if (destinatario) { %>
-    <div class="mensagem-container">
-      <div class="mensagem-topo">
-        <img src="/default-avatar.png" alt="avatar">
-        <span><%= destinatario %></span>
-      </div>
-
-      <div class="chat-box" id="chatBox">
-        <% mensagens.forEach(m => { %>
-          <div class="msg <%= m.remetente === usuarioLogado ? 'eu' : 'outro' %>" data-time="<%= new Date(m.enviado_em).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %>">
-            <%= m.conteudo %>
-          </div>
-        <% }) %>
-      </div>
-
-      <form id="formMensagem" class="form-mensagem">
-        <input type="hidden" name="destinatario" value="<%= destinatario %>">
-        <input type="text" name="conteudo" placeholder="Mensagem..." required autocomplete="off">
-        <button type="submit">Enviar</button>
-      </form>
+  <div class="login-wrapper">
+    <div class="login-left">
+      <img src="/img/echonet-logo.png" alt="EchoNet" class="side-logo">
     </div>
-  <% } else { %>
-    <div class="mensagem-container">
-      <div class="mensagem-topo">Mensagens</div>
-      <div class="chat-box">
-        <p style="margin: auto; font-size: 15px; color: #aaa;">
-          Selecione um contato à esquerda para iniciar uma conversa.
+    <div class="login-right">
+      <div class="form-box">
+        <h1 class="form-title">Entrar na EchoNet</h1>
+        <form action="/login" method="POST">
+          <input type="email" name="email" placeholder="E-mail" required />
+          <input type="password" name="password" placeholder="Senha" required />
+          <button type="submit">Entrar</button>
+        </form>
+        <p class="small-text">
+          Não tem conta?
+          <a href="/register.html">Cadastre-se</a>
         </p>
       </div>
     </div>
-  <% } %>
-
-  <script>
-    const chatBox = document.getElementById("chatBox");
-    const form = document.getElementById("formMensagem");
-
-    if (chatBox && form) {
-      const destinatario = "<%= destinatario %>";
-
-      function scrollParaFim() {
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-
-      async function carregarMensagens() {
-        const res = await fetch("/mensagens/" + encodeURIComponent(destinatario), {
-          credentials: "include"
-        });
-        const html = await res.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        const novasMsgs = doc.getElementById("chatBox").innerHTML;
-        chatBox.innerHTML = novasMsgs;
-        scrollParaFim();
-      }
-
-      form.addEventListener("submit", async e => {
-        e.preventDefault();
-        const conteudo = form.querySelector("input[name='conteudo']").value.trim();
-        if (!conteudo) return;
-
-        await fetch("/mensagens", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ destinatario, conteudo }),
-          credentials: "include"
-        });
-
-        form.reset();
-        await carregarMensagens();
-        scrollParaFim();
-      });
-
-      scrollParaFim();
-      setInterval(carregarMensagens, 5000);
-    }
-  </script>
+  </div>
 </body>
 </html>

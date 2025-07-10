@@ -19,6 +19,16 @@ body {
   max-width: 600px;
 }
 
+.logo-feed {
+  font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: #1DA1F2; /* Azul Twitter */
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-top: 20px;
+}
+
 .post-card {
   background: #192734;
   border-radius: 0;

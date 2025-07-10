@@ -218,3 +218,9 @@ body {
     margin-right: 8px;
   }
 }
+
+.logo img {
+  height: 30px;
+  display: block;
+  margin: 2 auto;
+}

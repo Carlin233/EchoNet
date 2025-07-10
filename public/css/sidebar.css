@@ -89,7 +89,7 @@
 
 /* === Sidebar compacta com ícones === */
 .sidebar.compacta {
-  width: 72px;
+  width: 60px;
   background-color: #111;
   padding: 20px 0;
   border-right: 1px solid #222;
@@ -115,6 +115,7 @@
 .sidebar.compacta nav a:hover {
   transform: scale(1.1);
 }
+
 
 .sidebar nav i {
   pointer-events: none;

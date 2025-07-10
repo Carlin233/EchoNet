@@ -12,21 +12,25 @@
   <link rel="stylesheet" href="/css/responsive.css">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Sidebar -->
-  <<div class="sidebar">
-  <div class="logo">EchoNet</div>
-  <nav>
-    <a href="/">Página Inicial</a>
-    <a href="/perfil">Perfil</a>
-    <a href="/mensagens/<%= username %>">Mensagens</a>
-    <a href="#" id="abrirModal">Criar</a>
-    <a href="/logout">Sair</a>
-  </nav>
-</div>
+  <div class="sidebar">
+    <div class="logo">EchoNet</div>
+    <nav>
+      <a href="/">Página Inicial</a>
+      <a href="/perfil" class="active">Perfil</a>
+      <a href="#" id="abrirModal">Criar</a>
+      <a href="/logout">Sair</a>
+      <a href="/mensagens/<%= username %>">Mensagens</a>
+    </nav>
+  </div>
 
   <!-- Feed -->
+  <div class="sidebar-logo">
+  <span class="echo">Echo</span><span class="net">Net</span>
+</div>
   <main class="main-feed">
     <div class="feed" id="feedContainer">
       <h2 style="color: #e1e8ed;">Olá, <span id="username"><%= username %></span> 👋</h2>
@@ -39,7 +43,6 @@
         <% posts.forEach(post => { %>
           <div class="post-card">
             <div class="post-header">
-              <!--<img src="/imagens/perfil/<%= post.usuario %>.jpg" alt="Avatar" class="profile-pic">-->
               <span>@<%= post.usuario %></span>
             </div>
             <% if (post.imagem) { %>
@@ -87,7 +90,6 @@
   </div>
 
   <script>
-    // Modal
     const modal = document.getElementById("modalCriar");
     document.getElementById("abrirModal").onclick = () => {
       modal.style.display = "block";
@@ -98,7 +100,6 @@
     document.getElementById("fecharModal").onclick = () => modal.style.display = "none";
     window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 
-    // Preview de imagem
     const uploadInput = document.getElementById("uploadInput");
     const preview = document.getElementById("previewImagem");
     uploadInput.onchange = e => {
@@ -113,7 +114,6 @@
       reader.readAsDataURL(file);
     };
 
-    // Postagem
     const form = document.getElementById("formPostagem");
     form.addEventListener("submit", async e => {
       e.preventDefault();
@@ -132,7 +132,6 @@
       form.reset();
     });
 
-    // Mantém usuário online
     setInterval(() => {
       fetch("/atualizar-ativo", {
         method: "POST",
@@ -140,7 +139,6 @@
       });
     }, 30000);
 
-    // Lista de usuários online
     function carregarUsuariosOnline() {
       fetch("/online-users", {
         credentials: "include"
