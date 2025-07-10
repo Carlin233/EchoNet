@@ -1,4 +1,12 @@
-/* ===== FEED.CSS ===== */
+/* ===== FEED.CSS - Echo Net estilo Twitter ===== */
+
+body {
+  background-color: #15202b;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+}
+
 .main-feed {
   margin-top: 80px;
   padding: 20px;
@@ -8,95 +16,155 @@
 
 .feed {
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
 }
 
 .post-card {
-  background: #fff;
-  border-radius: 10px;
+  background: #192734;
+  border-radius: 0;
   margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  max-width: 100%;
-  border: 1px solid #ddd;
+  padding: 15px 20px;
+  border-bottom: 1px solid #2f3336;
 }
 
 .post-header {
-  padding: 30px;
-  font-weight: 600;
-  color: #333;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #ddd;
-  justify-content: flex-start;
+  margin-bottom: 10px;
 }
 
 .profile-pic {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   margin-right: 10px;
+  background-color: #ccc;
 }
 
 .post-header span {
-  font-size: 14px;
-  color: #333;
-  margin-left: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffffff;
 }
 
 .post-image {
   width: 100%;
-  max-width: 360px;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
   border-radius: 12px;
-  margin: auto;
-  margin-top: 10px;
+  overflow: hidden;
+  margin-top: 12px;
   background-color: #000;
 }
 
 .post-image img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   display: block;
 }
 
 .post-footer {
-  padding: 16px;
-  font-size: 14px;
-  color: #333;
+  margin-top: 10px;
+}
+
+.caption {
+  margin-top: 6px;
+  font-size: 15px;
+  color: #e1e8ed;
 }
 
 .likes {
   font-weight: bold;
-  color: #333;
-}
-
-.caption {
-  margin-top: 10px;
-  color: #666;
-  font-size: 14px;
+  color: #8899a6;
 }
 
 .comments {
-  margin-top: 10px;
-  color: #00bcd4;
+  margin-top: 8px;
+  color: #1da1f2;
   font-size: 14px;
   cursor: pointer;
 }
-
 .comments:hover {
   text-decoration: underline;
 }
 
+.tweet-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 16px;
+  color: #8899a6;
+  max-width: 300px;
+}
+
+.tweet-actions span {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.tweet-actions span:hover {
+  color: #1da1f2;
+}
+
+/* ===== ONLINE ===== */
+.barra-online {
+  position: fixed;
+  top: 40px;
+  right: 0;
+  width: 300px;
+  background-color: #192734;
+  color: #e1e8ed;
+  padding: 10px 12px;
+  border-left: 1px solid #2f3336;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+  font-size: 13px;
+  z-index: 10;
+}
+
+.barra-online h3 {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  border-bottom: 1px solid #2f3336;
+  padding-bottom: 6px;
+}
+
+.barra-online li {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #2f3336;
+  cursor: default;
+}
+
+.dot-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.dot-status.online {
+  background-color: #31a24c;
+}
+.dot-status.away {
+  background-color: #f4c430;
+}
+.dot-status.offline {
+  background-color: #ccc;
+}
+
+/* ===== SUGESTÕES ===== */
 .suggestions {
   margin-top: 40px;
+  color: #e1e8ed;
 }
 
 .suggestions h3 {
   font-weight: 600;
-  color: #333;
+  color: #ffffff;
 }
 
 .suggestion-item {
@@ -113,97 +181,15 @@
 }
 
 .suggestion-item button {
-  background-color: #00bcd4;
+  background-color: #1da1f2;
   color: white;
   border: none;
   padding: 5px 15px;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
 }
-
 .suggestion-item button:hover {
-  background-color: #0097a7;
-}
-
-/* ===== ONLINE ===== */
-.barra-online {
-  position: fixed;
-  top: 40px;
-  right: 0;
-  width: 300px;
-  background-color: #f5f6f7;
-  color: #1d2129;
-  padding: 10px 12px;
-  border-left: 1px solid #ddd;
-  height: calc(100% - 60px);
-  overflow-y: auto;
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-  z-index: 10;
-}
-
-.barra-online h3 {
-  margin: 10px 0;
-  font-size: 14px;
-  font-weight: bold;
-  color: #4b4f56;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 6px;
-}
-
-.barra-online ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.barra-online li {
-  display: flex;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
-  color: #1c1e21;
-  cursor: default;
-}
-
-.barra-online li:hover {
-  background-color: #e9ebee;
-}
-
-.dot-online {
-  width: 8px;
-  height: 8px;
-  background-color: #31a24c;
-  border-radius: 50%;
-  margin-right: 8px;
-  margin-left: 2px;
-}
-
-.barra-online::-webkit-scrollbar {
-  width: 6px;
-}
-.barra-online::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 4px;
-}
-
-.dot-status {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 8px;
-  margin-left: 2px;
-  display: inline-block;
-}
-
-.dot-status.online {
-  background-color: #31a24c;
-}
-.dot-status.away {
-  background-color: #f4c430;
-}
-.dot-status.offline {
-  background-color: #ccc;
+  background-color: #0d8ddb;
 }
 
 /* ===== RESPONSIVO ===== */
@@ -219,33 +205,19 @@
   }
 
   .post-card {
-    margin: 10px 0;
-    border-radius: 8px;
+    border-radius: 0;
   }
 
   .post-header {
-    padding: 16px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+    flex-direction: row;
+    align-items: center;
   }
 
-  .post-image {
+  .barra-online, .suggestions {
+    display: none;
+  }
+
+  .tweet-actions {
     max-width: 100%;
-    border-radius: 10px;
-    aspect-ratio: 4 / 5;
-  }
-
-  .post-footer {
-    padding: 14px;
-    font-size: 13px;
-  }
-
-  .barra-online {
-    display: none;
-  }
-
-  .suggestions {
-    display: none;
   }
 }

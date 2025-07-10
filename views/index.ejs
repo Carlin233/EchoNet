@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="/css/feed.css">
   <link rel="stylesheet" href="/css/modal.css">
   <link rel="stylesheet" href="/css/responsive.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <!-- Sidebar -->
@@ -28,7 +29,7 @@
   <!-- Feed -->
   <main class="main-feed">
     <div class="feed" id="feedContainer">
-      <h2>Olá, <span id="username"><%= username %></span> 👋</h2>
+      <h2 style="color: #e1e8ed;">Olá, <span id="username"><%= username %></span> 👋</h2>
 
       <% if (posts.length === 0) { %>
         <p style="text-align: center; color: #ccc; margin-top: 40px;">
@@ -38,13 +39,21 @@
         <% posts.forEach(post => { %>
           <div class="post-card">
             <div class="post-header">
+              <!--<img src="/imagens/perfil/<%= post.usuario %>.jpg" alt="Avatar" class="profile-pic">-->
               <span>@<%= post.usuario %></span>
             </div>
-            <div class="post-image">
-              <img src="<%= post.imagem %>" alt="Postagem" />
-            </div>
+            <% if (post.imagem) { %>
+              <div class="post-image">
+                <img src="<%= post.imagem %>" alt="Postagem" />
+              </div>
+            <% } %>
             <div class="post-footer">
               <div class="caption"><%= post.legenda %></div>
+              <div class="tweet-actions">
+                <span><i class="fa-regular fa-comment"></i></span>
+                <span><i class="fa-solid fa-retweet"></i></span>
+                <span><i class="fa-regular fa-heart"></i></span>
+              </div>
             </div>
           </div>
         <% }) %>
@@ -69,7 +78,7 @@
         <label class="upload-area" for="uploadInput">
           <span class="upload-text">Clique para selecionar uma imagem</span>
           <img id="previewImagem" src="" alt="Preview" class="preview" />
-          <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden required />
+          <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden />
         </label>
         <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
         <button type="submit">Compartilhar</button>
@@ -78,7 +87,7 @@
   </div>
 
   <script>
-    // Controle do Modal
+    // Modal
     const modal = document.getElementById("modalCriar");
     document.getElementById("abrirModal").onclick = () => {
       modal.style.display = "block";
@@ -89,7 +98,7 @@
     document.getElementById("fecharModal").onclick = () => modal.style.display = "none";
     window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 
-    // Pré-visualização de Imagem
+    // Preview de imagem
     const uploadInput = document.getElementById("uploadInput");
     const preview = document.getElementById("previewImagem");
     uploadInput.onchange = e => {
@@ -104,7 +113,7 @@
       reader.readAsDataURL(file);
     };
 
-    // Submissão via Ajax — com reload automático
+    // Postagem
     const form = document.getElementById("formPostagem");
     form.addEventListener("submit", async e => {
       e.preventDefault();
@@ -123,7 +132,7 @@
       form.reset();
     });
 
-    // Atualiza ultimo_ativo a cada 30s (mantém o usuário online)
+    // Mantém usuário online
     setInterval(() => {
       fetch("/atualizar-ativo", {
         method: "POST",
@@ -131,30 +140,27 @@
       });
     }, 30000);
 
-    // Carrega lista de usuários online/away/offline
-function carregarUsuariosOnline() {
-  fetch("/online-users", {
-    credentials: "include"
-  })
-    .then(res => res.json())
-    .then(lista => {
-      const ul = document.getElementById("usuariosOnline");
-      ul.innerHTML = "";
-
-      lista.forEach(usuario => {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-
-        a.href = "/mensagens/" + encodeURIComponent(usuario.username);
-        a.style.textDecoration = "none";
-        a.style.color = "inherit";
-        a.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
-
-        li.appendChild(a);
-        ul.appendChild(li);
-      });
-    });
-}
+    // Lista de usuários online
+    function carregarUsuariosOnline() {
+      fetch("/online-users", {
+        credentials: "include"
+      })
+        .then(res => res.json())
+        .then(lista => {
+          const ul = document.getElementById("usuariosOnline");
+          ul.innerHTML = "";
+          lista.forEach(usuario => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = "/mensagens/" + encodeURIComponent(usuario.username);
+            a.style.textDecoration = "none";
+            a.style.color = "inherit";
+            a.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+        });
+    }
 
     setInterval(carregarUsuariosOnline, 10000);
     carregarUsuariosOnline();
