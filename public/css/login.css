@@ -13,15 +13,15 @@ body {
 /* Lado esquerdo (imagem) */
 .login-left {
   flex: 1;
-  background: #1da1f2; /* azul estilo Twitter */
+  background: #000000e8; /* azul estilo Twitter */
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center
 }
 
 .side-logo {
-  width: 60%;
-  max-width: 300px;
+  width: 90%;
+  max-width: 500px;
 }
 
 /* Lado direito (formulário) */
@@ -30,7 +30,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 300px;
 }
 
 .form-box {
@@ -59,7 +59,7 @@ input[type="password"] {
 }
 
 input:focus {
-  border-color: #1da1f2;
+  border-color: #00043d;
 }
 
 button {
