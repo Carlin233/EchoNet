@@ -195,6 +195,7 @@ body {
 /* ===== RESPONSIVO ===== */
 @media (max-width: 768px) {
   .main-feed {
+    
     padding: 10px;
     margin-top: 60px;
   }

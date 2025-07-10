@@ -1,37 +1,112 @@
-body {
-  font-family: 'Poppins', sans-serif;
-  display: flex;
+/* RESET GERAL */
+* {
+  box-sizing: border-box;
   margin: 0;
-  background: #f0f2f5;
-  height: 100vh;
-  overflow-y: auto; /* Alterei de hidden para auto */
+  padding: 0;
 }
 
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ======== LISTA DE CONTATOS ======== */
+.lista-contatos {
+  margin-left: 60px; /* Mesma largura da sidebar */
+  width: 320px;
+  background: #121212;
+  border-right: 1px solid #222;
+  padding: 15px 10px;
+  overflow-y: auto;
+}
+
+.lista-contatos h3 {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.lista-contatos ul {
+  list-style: none;
+}
+
+.lista-contatos li {
+  margin-bottom: 12px;
+}
+
+.lista-contatos a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.lista-contatos a:hover {
+  background: #1a1a1a;
+}
+
+.lista-contatos a img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+  background: #333;
+}
+
+.contato-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contato-info .nome {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.contato-info .preview {
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* ======== CONTAINER DO CHAT ======== */
 .mensagem-container {
-  margin-left: 100px;
   flex: 1;
+  
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 1182px;
-  margin-inline: auto;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  background: white;
-  box-sizing: border-box;
+  background: #000;
 }
 
+/* TOPO DO CHAT */
 .mensagem-topo {
-  background: #1877f2;
-  color: white;
-  padding: 16px;
+  background: #121212;
+  padding: 15px 20px;
   font-weight: 600;
-  border-bottom: 1px solid #ccc;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  font-size: 16px;
+  border-bottom: 1px solid #222;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
+.mensagem-topo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ÁREA DE MENSAGENS */
 .chat-box {
   flex: 1;
   overflow-y: auto;
@@ -39,85 +114,107 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 .msg {
-  max-width: 75%;
+  max-width: 70%;
   padding: 10px 15px;
-  border-radius: 20px;
-  font-size: 15px;
-  line-height: 1.4;
+  border-radius: 18px;
+  font-size: 14px;
+  position: relative;
   word-wrap: break-word;
+  line-height: 1.4;
 }
 
 .msg.eu {
-  background: #e4f0ff;
+  background: #3797f0;
+  color: white;
   align-self: flex-end;
 }
 
 .msg.outro {
-  background: #f0f0f0;
+  background: #2a2a2a;
+  color: #e0e0e0;
   align-self: flex-start;
 }
 
+.msg::after {
+  content: attr(data-time);
+  font-size: 10px;
+  color: #aaa;
+  position: absolute;
+  bottom: -15px;
+  right: 10px;
+}
+
+/* INPUT DE MENSAGEM */
 .form-mensagem {
   display: flex;
-  padding: 30px;
-  border-top: 1px solid #ccc;
-  background: #fff;
-  box-sizing: border-box;
+  align-items: center;
+  padding: 12px 20px;
+  border-top: 1px solid #222;
+  background: #121212;
 }
 
 .form-mensagem input[type="text"] {
   flex: 1;
-  padding: 10px 15px;
-  border: 2px solid #ccc;
+  background: #1f1f1f;
+  border: none;
   border-radius: 20px;
-  outline: none;
+  padding: 10px 15px;
+  color: white;
   font-size: 14px;
-  margin-right: 200px;
-  min-width: 200px; /* Tamanho mínimo para o campo */
+  margin-right: 10px;
+  outline: none;
 }
 
 .form-mensagem button {
-  padding: 10px 20px;
-  background: #1877f2;
-  color: white;
+  background: transparent;
   border: none;
-  border-radius: 20px;
+  color: #3797f0;
   font-weight: bold;
+  font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .form-mensagem button:hover {
-  background: #0f5eca;
+  opacity: 0.8;
 }
 
-.lista-contatos {
-  position: relative; /* Deixe como fluxo normal */
-  width: 200px;
-  padding: 20px;
-  background: #fff;
-  border-right: 1px solid #ccc;
-  overflow-y: auto;
-  font-family: Poppins, sans-serif;
-  height: 100vh;
-  box-sizing: border-box;
+/* ===== SCROLLBAR CUSTOMIZADA ===== */
+.chat-box::-webkit-scrollbar,
+.lista-contatos::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-box::-webkit-scrollbar-thumb,
+.lista-contatos::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
 }
 
-.lista-contatos h3 {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 15px;
-}
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
 
-.lista-contatos a {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  display: block;
-  padding: 4px 0;
-}
+  .lista-contatos {
+    width: 100vw;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #222;
+  }
 
+  .mensagem-container {
+    width: 100%;
+    max-width: 100%;
+    border-left: none;
+    border-right: none;
+  }
+
+  .form-mensagem input[type="text"] {
+    margin-right: 8px;
+  }
+}
