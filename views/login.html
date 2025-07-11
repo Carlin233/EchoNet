@@ -6,9 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/login.css" />
-  <style>
-    
-  </style>
 </head>
 <body>
   <!-- Login Principal -->
@@ -24,12 +21,12 @@
           <input type="password" name="password" placeholder="Senha" required />
           <button type="submit">Entrar</button>
         </form>
-       <p class="small-text">
-  Não tem conta? <a id="openModalBtn" style="cursor:pointer;">Cadastre-se</a>
-</p>
-<p class="small-text" style="margin-top: 8px;">
-  <a id="openRecoveryBtn" style="cursor:pointer; ">Esqueci minha senha</a>
-</p>
+        <p class="small-text">
+          Não tem conta? <a id="openModalBtn" style="cursor:pointer;">Cadastre-se</a>
+        </p>
+        <p class="small-text" style="margin-top: 8px;">
+          <a id="openRecoveryBtn" style="cursor:pointer;">Esqueci minha senha</a>
+        </p>
       </div>
     </div>
   </div>
@@ -39,12 +36,9 @@
     <div class="modal-content">
       <span class="close-btn" id="closeModalCadastro">&times;</span>
       <h2>Criar sua conta</h2>
-
       <div id="registerError" class="error-message"></div>
-
       <form id="registerForm">
-        <input type="text" name="nome" placeholder="Nome completo" required />
-        <input type="tel" name="telefone" placeholder="Telefone" required />
+        <input type="text" name="username" placeholder="Nome de usuário" required />
         <input type="email" name="email" placeholder="E-mail" required />
         <input type="password" name="password" placeholder="Senha" required />
         <input type="password" name="confirmPassword" placeholder="Confirmar senha" required />
@@ -58,10 +52,8 @@
     <div class="modal-content">
       <span class="close-btn" id="closeModalRecuperacao">&times;</span>
       <h2>Recuperar senha</h2>
-
       <div id="recoveryError" class="error-message"></div>
       <div id="recoverySuccess" style="color: #4CAF50; font-weight: 600; margin-bottom: 10px; text-align:center; display:none;"></div>
-
       <form id="recoveryForm">
         <input type="email" name="email" placeholder="Digite seu e-mail" required />
         <button type="submit">Enviar link de recuperação</button>
@@ -113,15 +105,6 @@
       modalRecuperacao.style.display = "none";
     });
 
-    // Fechar modais clicando fora do conteúdo
-    window.addEventListener("click", (e) => {
-      if (e.target === modalCadastro) {
-        modalCadastro.style.display = "none";
-      }
-      if (e.target === modalRecuperacao) {
-        modalRecuperacao.style.display = "none";
-      }
-    });
 
     // Envio do cadastro via fetch
     registerForm.addEventListener("submit", async (e) => {
@@ -143,7 +126,7 @@
         const result = await response.json();
 
         if (result.success) {
-          window.location.href = "/feed";
+          window.location.href = "/";
         } else {
           registerError.textContent = result.message || "Erro ao cadastrar.";
           registerError.style.display = "block";
@@ -167,7 +150,7 @@
       const data = Object.fromEntries(formData.entries());
 
       try {
-        const response = await fetch("/recover-password", {
+        const response = await fetch("/recuperar-senha", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),

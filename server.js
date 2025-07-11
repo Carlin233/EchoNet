@@ -130,9 +130,9 @@ app.post("/postar", upload.single("imagem"), (req, res) => {
 
 // Autenticação
 app.post("/register", async (req, res) => {
-  const { nome, telefone, email, password, confirmPassword } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
 
-  if (!nome || !telefone || !email || !password || !confirmPassword) {
+  if (!username || !email || !password || !confirmPassword) {
     return res.json({ success: false, message: "Todos os campos são obrigatórios." });
   }
 
@@ -151,8 +151,8 @@ app.post("/register", async (req, res) => {
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-    db.run("INSERT INTO users (nome, telefone, email, password) VALUES (?, ?, ?, ?)",
-      [nome, telefone, email, hashedPassword],
+    db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+      [username, email, hashedPassword],
       function (err) {
         if (err) {
           return res.json({ success: false, message: "Erro ao criar conta." });
