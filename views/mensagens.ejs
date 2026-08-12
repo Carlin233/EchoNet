@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>EchoNet - Mensagens</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
   <link rel="stylesheet" href="/css/chat.css">
   <link rel="stylesheet" href="/css/sidebar.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -82,6 +83,85 @@
       </div>
     </div>
   <% } %>
+=======
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/chat.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+</head>
+<body class="app-layout chat-layout">
+  <%- include('partials/sidebar') %>
+
+  <div class="app-content">
+    <div class="lista-contatos" id="listaContatos">
+      <h3>Mensagens</h3>
+      <ul>
+        <% if (contatos.length === 0) { %>
+          <li style="color: var(--text-muted); font-size: 14px; padding: 12px;">
+            Nenhuma conversa ainda. Inicie pelo feed!
+          </li>
+        <% } else { %>
+          <% contatos.forEach(c => {
+            const nome = c.contato;
+            const isActive = destinatario === nome;
+          %>
+          <li>
+            <a href="/mensagens/<%= encodeURIComponent(nome) %>" class="<%= isActive ? 'active' : '' %>">
+              <img src="/img/default-avatar.svg" alt="Avatar">
+              <div class="contato-info">
+                <span class="nome"><%= nome %></span>
+                <span class="preview">Clique para abrir</span>
+              </div>
+            </a>
+          </li>
+          <% }); %>
+        <% } %>
+      </ul>
+    </div>
+
+    <% if (destinatario) { %>
+      <div class="mensagem-container">
+        <div class="mensagem-topo">
+          <img src="/img/default-avatar.svg" alt="avatar">
+          <span><%= destinatario %></span>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+          <% if (mensagens.length === 0) { %>
+            <p class="chat-empty">Nenhuma mensagem ainda. Diga olá!</p>
+          <% } else { %>
+            <% mensagens.forEach(m => { %>
+              <div class="msg <%= m.remetente === usuarioLogado ? 'eu' : 'outro' %>"
+                   data-time="<%= new Date(m.enviado_em).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}) %>">
+                <%= m.conteudo %>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+
+        <form id="formMensagem" class="form-mensagem">
+          <input type="hidden" name="destinatario" value="<%= destinatario %>">
+          <input type="text" name="conteudo" placeholder="Escreva uma mensagem..." required autocomplete="off">
+          <button type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar</button>
+        </form>
+      </div>
+    <% } else { %>
+      <div class="mensagem-container">
+        <div class="mensagem-topo">Mensagens</div>
+        <div class="chat-box">
+          <p class="chat-empty">
+            <i class="fa-regular fa-comments" style="font-size:48px;display:block;margin-bottom:16px;"></i>
+            Selecione um contato para iniciar uma conversa.
+          </p>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('partials/modal-post') %>
+>>>>>>> 8d12746 (Atualização do projeto)
 
   <script>
     const chatBox = document.getElementById("chatBox");
@@ -95,6 +175,7 @@
       }
 
       async function carregarMensagens() {
+<<<<<<< HEAD
         const res = await fetch("/mensagens/" + encodeURIComponent(destinatario), {
           credentials: "include"
         });
@@ -104,6 +185,16 @@
         const novasMsgs = doc.getElementById("chatBox").innerHTML;
         chatBox.innerHTML = novasMsgs;
         scrollParaFim();
+=======
+        const res = await fetch("/mensagens/" + encodeURIComponent(destinatario), { credentials: "include" });
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const novoChat = doc.getElementById("chatBox");
+        if (novoChat) {
+          chatBox.innerHTML = novoChat.innerHTML;
+          scrollParaFim();
+        }
+>>>>>>> 8d12746 (Atualização do projeto)
       }
 
       form.addEventListener("submit", async e => {
@@ -120,7 +211,10 @@
 
         form.reset();
         await carregarMensagens();
+<<<<<<< HEAD
         scrollParaFim();
+=======
+>>>>>>> 8d12746 (Atualização do projeto)
       });
 
       scrollParaFim();
@@ -128,4 +222,8 @@
     }
   </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 8d12746 (Atualização do projeto)

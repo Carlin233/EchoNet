@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>EchoNet - Meu Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
   <link rel="stylesheet" href="/css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/css/global.css">
@@ -114,3 +115,59 @@
   </script>
 </body>
 </html>
+=======
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/perfil.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body class="app-layout">
+  <%- include('partials/sidebar') %>
+
+  <div class="app-content">
+    <main class="main-feed">
+      <div class="perfil-container">
+        <div class="perfil-header">
+          <div class="perfil-foto">
+            <img src="/img/default-avatar.svg" alt="Foto de Perfil" />
+          </div>
+          <div class="perfil-info">
+            <h2><%= username %></h2>
+            <p class="bio">Bem-vindo ao meu perfil no EchoNet!</p>
+            <p class="contadores"><strong><%= posts.length %></strong> publicações</p>
+          </div>
+        </div>
+
+        <hr class="linha" />
+
+        <% if (posts.length === 0) { %>
+          <div class="perfil-empty">
+            <i class="fa-regular fa-image" style="font-size:40px;margin-bottom:12px;display:block;"></i>
+            Você ainda não postou nada. Clique em <strong>Criar</strong> para começar!
+          </div>
+        <% } else { %>
+          <div class="grade-postagens">
+            <% posts.forEach(post => { %>
+              <div class="item-postagem">
+                <form action="/deletar-post/<%= post.id %>" method="POST" class="delete-form"
+                      onsubmit="return confirm('Deseja excluir esta publicação?')">
+                  <button type="submit" class="btn-delete" title="Excluir">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </form>
+                <img src="<%= post.imagem %>" alt="Post" loading="lazy" />
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </main>
+  </div>
+
+  <%- include('partials/modal-post') %>
+</body>
+</html>
+>>>>>>> 8d12746 (Atualização do projeto)

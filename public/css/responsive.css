@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* === RESPONSIVO GERAL PARA CELULAR === */
 @media (max-width: 600px) {
 
@@ -161,3 +162,19 @@
     font-size: 14px;
   }
 }
+=======
+/* ===== RESPONSIVE.CSS ===== */
+@media (max-width: 600px) {
+  .feed { max-width: 100%; }
+
+  .post-image img { max-height: 350px; }
+
+  .modal-conteudo.estilizado {
+    width: 95%;
+    padding: 20px;
+    margin: 16px;
+  }
+
+  .upload-area { height: 180px; }
+}
+>>>>>>> 8d12746 (Atualização do projeto)

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>EchoNet - Feed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/navbar.css">
   <link rel="stylesheet" href="/css/sidebar.css">
@@ -141,16 +142,92 @@
       fetch("/online-users", {
         credentials: "include"
       })
+=======
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/feed.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body class="app-layout">
+  <%- include('partials/sidebar') %>
+
+  <div class="app-content">
+    <main class="main-feed">
+      <div class="feed">
+        <div class="feed-header">
+          <h2>Olá, <span class="username-highlight"><%= username %></span> 👋</h2>
+        </div>
+
+        <% if (posts.length === 0) { %>
+          <div class="feed-empty">
+            <i class="fa-regular fa-images"></i>
+            <p>Nenhuma publicação ainda. Seja o primeiro a postar!</p>
+          </div>
+        <% } else { %>
+          <% posts.forEach(post => { %>
+            <article class="post-card">
+              <div class="post-header">
+                <img src="/img/default-avatar.svg" alt="" class="post-avatar" />
+                <div class="author">@<%= post.usuario %></div>
+              </div>
+              <% if (post.imagem) { %>
+                <div class="post-image">
+                  <img src="<%= post.imagem %>" alt="Postagem" loading="lazy" />
+                </div>
+              <% } %>
+              <div class="post-footer">
+                <div class="caption"><%= post.legenda %></div>
+                <div class="post-actions">
+                  <button type="button" title="Curtir"><i class="fa-regular fa-heart"></i></button>
+                  <button type="button" title="Comentar"><i class="fa-regular fa-comment"></i></button>
+                  <button type="button" title="Compartilhar"><i class="fa-solid fa-share"></i></button>
+                </div>
+              </div>
+            </article>
+          <% }) %>
+        <% } %>
+      </div>
+    </main>
+
+    <aside class="barra-online">
+      <h3><i class="fa-solid fa-circle" style="color:var(--success);font-size:8px;margin-right:6px;"></i> Online agora</h3>
+      <ul id="usuariosOnline"></ul>
+    </aside>
+  </div>
+
+  <%- include('partials/modal-post') %>
+
+  <script>
+    setInterval(() => {
+      fetch("/atualizar-ativo", { method: "POST", credentials: "include" });
+    }, 30000);
+
+    function carregarUsuariosOnline() {
+      fetch("/online-users", { credentials: "include" })
+>>>>>>> 8d12746 (Atualização do projeto)
         .then(res => res.json())
         .then(lista => {
           const ul = document.getElementById("usuariosOnline");
           ul.innerHTML = "";
+<<<<<<< HEAD
+=======
+          if (lista.length === 0) {
+            ul.innerHTML = '<li style="color:var(--text-muted);font-size:13px;padding:8px 12px;">Ninguém online</li>';
+            return;
+          }
+>>>>>>> 8d12746 (Atualização do projeto)
           lista.forEach(usuario => {
             const li = document.createElement("li");
             const a = document.createElement("a");
             a.href = "/mensagens/" + encodeURIComponent(usuario.username);
+<<<<<<< HEAD
             a.style.textDecoration = "none";
             a.style.color = "inherit";
+=======
+>>>>>>> 8d12746 (Atualização do projeto)
             a.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
             li.appendChild(a);
             ul.appendChild(li);
@@ -162,4 +239,8 @@
     carregarUsuariosOnline();
   </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 8d12746 (Atualização do projeto)

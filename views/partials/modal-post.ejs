@@ -1,0 +1,64 @@
+<div id="modalCriar" class="modal">
+  <div class="modal-conteudo estilizado">
+    <span class="fechar" id="fecharModal">&times;</span>
+    <h3>Criar nova publicação</h3>
+    <form id="formPostagem" enctype="multipart/form-data">
+      <label class="upload-area" for="uploadInput">
+        <span class="upload-text"><i class="fa-solid fa-image"></i> Clique para selecionar uma imagem</span>
+        <img id="previewImagem" src="" alt="Preview" class="preview" />
+        <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden required />
+      </label>
+      <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
+      <button type="submit"><i class="fa-solid fa-paper-plane"></i> Compartilhar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  const modal = document.getElementById("modalCriar");
+  const abrir = document.getElementById("abrirModal");
+  const fechar = document.getElementById("fecharModal");
+  const uploadInput = document.getElementById("uploadInput");
+  const preview = document.getElementById("previewImagem");
+  const form = document.getElementById("formPostagem");
+
+  if (!modal || !abrir) return;
+
+  abrir.onclick = (e) => {
+    e.preventDefault();
+    modal.style.display = "flex";
+    if (preview) { preview.style.display = "none"; preview.src = ""; }
+    const txt = document.querySelector(".upload-text");
+    if (txt) txt.style.display = "block";
+  };
+
+  if (fechar) fechar.onclick = () => modal.style.display = "none";
+  window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+
+  if (uploadInput && preview) {
+    uploadInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        preview.src = reader.result;
+        preview.style.display = "block";
+        const txt = document.querySelector(".upload-text");
+        if (txt) txt.style.display = "none";
+      };
+      reader.readAsDataURL(file);
+    };
+  }
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const res = await fetch("/postar", { method: "POST", body: data, credentials: "include" });
+      if (!res.ok) { alert("Erro ao postar!"); return; }
+      window.location.reload();
+    });
+  }
+})();
+</script>

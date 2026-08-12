@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Login | EchoNet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/login.css" />
 </head>
@@ -12,26 +13,50 @@
   <div class="login-wrapper">
     <div class="login-left">
       <img src="/img/echonet-logo.png" alt="EchoNet" class="side-logo" />
+=======
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-left">
+      <img src="/img/echonet-logo.svg" alt="EchoNet" class="side-logo" />
+      <p class="login-tagline">Conecte-se. Compartilhe. Comunique.</p>
+>>>>>>> 8d12746 (Atualização do projeto)
     </div>
     <div class="login-right">
       <div class="form-box">
         <h1 class="form-title">Entrar na EchoNet</h1>
+<<<<<<< HEAD
+=======
+        <p class="form-subtitle">Bem-vindo de volta!</p>
+>>>>>>> 8d12746 (Atualização do projeto)
         <form action="/login" method="POST">
           <input type="email" name="email" placeholder="E-mail" required />
           <input type="password" name="password" placeholder="Senha" required />
           <button type="submit">Entrar</button>
         </form>
         <p class="small-text">
+<<<<<<< HEAD
           Não tem conta? <a id="openModalBtn" style="cursor:pointer;">Cadastre-se</a>
         </p>
         <p class="small-text" style="margin-top: 8px;">
           <a id="openRecoveryBtn" style="cursor:pointer;">Esqueci minha senha</a>
+=======
+          Não tem conta? <a id="openModalBtn">Cadastre-se</a>
+        </p>
+        <p class="small-text">
+          <a id="openRecoveryBtn">Esqueci minha senha</a>
+>>>>>>> 8d12746 (Atualização do projeto)
         </p>
       </div>
     </div>
   </div>
 
+<<<<<<< HEAD
   <!-- Modal de Cadastro -->
+=======
+>>>>>>> 8d12746 (Atualização do projeto)
   <div class="modal" id="modalCadastro">
     <div class="modal-content">
       <span class="close-btn" id="closeModalCadastro">&times;</span>
@@ -47,13 +72,20 @@
     </div>
   </div>
 
+<<<<<<< HEAD
   <!-- Modal de Recuperação de Senha -->
+=======
+>>>>>>> 8d12746 (Atualização do projeto)
   <div class="modal" id="modalRecuperacao">
     <div class="modal-content">
       <span class="close-btn" id="closeModalRecuperacao">&times;</span>
       <h2>Recuperar senha</h2>
       <div id="recoveryError" class="error-message"></div>
+<<<<<<< HEAD
       <div id="recoverySuccess" style="color: #4CAF50; font-weight: 600; margin-bottom: 10px; text-align:center; display:none;"></div>
+=======
+      <div id="recoverySuccess" class="success-message" style="display:none;"></div>
+>>>>>>> 8d12746 (Atualização do projeto)
       <form id="recoveryForm">
         <input type="email" name="email" placeholder="Digite seu e-mail" required />
         <button type="submit">Enviar link de recuperação</button>
@@ -62,6 +94,7 @@
   </div>
 
   <script>
+<<<<<<< HEAD
     // Elementos modais e botões
     const modalCadastro = document.getElementById("modalCadastro");
     const modalRecuperacao = document.getElementById("modalRecuperacao");
@@ -71,10 +104,15 @@
     const closeModalRecuperacao = document.getElementById("closeModalRecuperacao");
 
     // Erros e sucessos
+=======
+    const modalCadastro = document.getElementById("modalCadastro");
+    const modalRecuperacao = document.getElementById("modalRecuperacao");
+>>>>>>> 8d12746 (Atualização do projeto)
     const registerError = document.getElementById("registerError");
     const recoveryError = document.getElementById("recoveryError");
     const recoverySuccess = document.getElementById("recoverySuccess");
 
+<<<<<<< HEAD
     // Formulários
     const registerForm = document.getElementById("registerForm");
     const recoveryForm = document.getElementById("recoveryForm");
@@ -118,25 +156,63 @@
 
       try {
         const response = await fetch("/register", {
+=======
+    document.getElementById("openModalBtn").onclick = () => {
+      registerError.style.display = "none";
+      document.getElementById("registerForm").reset();
+      modalCadastro.style.display = "flex";
+    };
+
+    document.getElementById("openRecoveryBtn").onclick = () => {
+      recoveryError.style.display = "none";
+      recoverySuccess.style.display = "none";
+      document.getElementById("recoveryForm").reset();
+      modalRecuperacao.style.display = "flex";
+    };
+
+    document.getElementById("closeModalCadastro").onclick = () => modalCadastro.style.display = "none";
+    document.getElementById("closeModalRecuperacao").onclick = () => modalRecuperacao.style.display = "none";
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      registerError.style.display = "none";
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const res = await fetch("/register", {
+>>>>>>> 8d12746 (Atualização do projeto)
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
+<<<<<<< HEAD
 
         const result = await response.json();
 
         if (result.success) {
           window.location.href = "/";
+=======
+        const result = await res.json();
+        if (result.success) {
+          modalCadastro.style.display = "none";
+          alert("Conta criada com sucesso! Faça login para continuar.");
+          e.target.reset();
+>>>>>>> 8d12746 (Atualização do projeto)
         } else {
           registerError.textContent = result.message || "Erro ao cadastrar.";
           registerError.style.display = "block";
         }
+<<<<<<< HEAD
       } catch (error) {
+=======
+      } catch {
+>>>>>>> 8d12746 (Atualização do projeto)
         registerError.textContent = "Erro na comunicação com o servidor.";
         registerError.style.display = "block";
       }
     });
 
+<<<<<<< HEAD
     // Envio recuperação senha via fetch
     recoveryForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -151,13 +227,27 @@
 
       try {
         const response = await fetch("/recuperar-senha", {
+=======
+    document.getElementById("recoveryForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      recoveryError.style.display = "none";
+      recoverySuccess.style.display = "none";
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const res = await fetch("/recuperar-senha", {
+>>>>>>> 8d12746 (Atualização do projeto)
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
+<<<<<<< HEAD
 
         const result = await response.json();
 
+=======
+        const result = await res.json();
+>>>>>>> 8d12746 (Atualização do projeto)
         if (result.success) {
           recoverySuccess.textContent = result.message || "E-mail enviado com sucesso!";
           recoverySuccess.style.display = "block";
@@ -165,11 +255,19 @@
           recoveryError.textContent = result.message || "Erro na recuperação.";
           recoveryError.style.display = "block";
         }
+<<<<<<< HEAD
       } catch (error) {
+=======
+      } catch {
+>>>>>>> 8d12746 (Atualização do projeto)
         recoveryError.textContent = "Erro na comunicação com o servidor.";
         recoveryError.style.display = "block";
       }
     });
   </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 8d12746 (Atualização do projeto)

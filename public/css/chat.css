@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* RESET GERAL */
 * {
   box-sizing: border-box;
@@ -10,10 +11,29 @@ body {
   background-color: #000;
   color: #fff;
   display: flex;
+=======
+/* ===== CHAT.CSS ===== */
+@import url('theme.css');
+
+body.chat-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+}
+
+.chat-layout .app-content {
+  display: flex;
+  flex: 1;
+  margin-left: var(--sidebar-width);
+>>>>>>> 8d12746 (Atualização do projeto)
   height: 100vh;
   overflow: hidden;
 }
 
+<<<<<<< HEAD
 /* ======== LISTA DE CONTATOS ======== */
 .lista-contatos {
   margin-left: 60px; /* Mesma largura da sidebar */
@@ -37,11 +57,34 @@ body {
 .lista-contatos li {
   margin-bottom: 12px;
 }
+=======
+.lista-contatos {
+  width: 320px;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  padding: 20px 12px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.lista-contatos h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.lista-contatos ul { list-style: none; }
+
+.lista-contatos li { margin-bottom: 4px; }
+>>>>>>> 8d12746 (Atualização do projeto)
 
 .lista-contatos a {
   display: flex;
   align-items: center;
   text-decoration: none;
+<<<<<<< HEAD
   color: #fff;
   padding: 10px;
   border-radius: 10px;
@@ -65,6 +108,29 @@ body {
   display: flex;
   flex-direction: column;
 }
+=======
+  color: var(--text-primary);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  transition: background var(--transition);
+}
+
+.lista-contatos a:hover,
+.lista-contatos a.active {
+  background: var(--bg-elevated);
+}
+
+.lista-contatos a img {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  margin-right: 12px;
+  object-fit: cover;
+  background: var(--bg-input);
+}
+
+.contato-info { display: flex; flex-direction: column; }
+>>>>>>> 8d12746 (Atualização do projeto)
 
 .contato-info .nome {
   font-weight: 600;
@@ -73,6 +139,7 @@ body {
 
 .contato-info .preview {
   font-size: 13px;
+<<<<<<< HEAD
   color: #888;
   margin-top: 2px;
 }
@@ -97,11 +164,36 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+=======
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.mensagem-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  min-width: 0;
+}
+
+.mensagem-topo {
+  background: var(--bg-secondary);
+  padding: 16px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .mensagem-topo img {
   width: 36px;
   height: 36px;
+<<<<<<< HEAD
   border-radius: 50%;
   object-fit: cover;
 }
@@ -137,11 +229,57 @@ body {
   background: #2a2a2a;
   color: #e0e0e0;
   align-self: flex-start;
+=======
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scroll-behavior: smooth;
+}
+
+.chat-empty {
+  margin: auto;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.msg {
+  max-width: 65%;
+  padding: 10px 16px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  position: relative;
+}
+
+.msg.eu {
+  background: var(--accent);
+  color: var(--bg-primary);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.msg.outro {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .msg::after {
   content: attr(data-time);
   font-size: 10px;
+<<<<<<< HEAD
   color: #aaa;
   position: absolute;
   bottom: -15px;
@@ -155,10 +293,27 @@ body {
   padding: 12px 20px;
   border-top: 1px solid #222;
   background: #121212;
+=======
+  opacity: 0.6;
+  display: block;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.form-mensagem {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+  gap: 12px;
+  flex-shrink: 0;
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .form-mensagem input[type="text"] {
   flex: 1;
+<<<<<<< HEAD
   background: #1f1f1f;
   border: none;
   border-radius: 20px;
@@ -224,3 +379,53 @@ body {
   display: block;
   margin: 2 auto;
 }
+=======
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 12px 20px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.form-mensagem input[type="text"]:focus {
+  border-color: var(--accent);
+}
+
+.form-mensagem button {
+  background: var(--accent);
+  border: none;
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  transition: background var(--transition);
+  white-space: nowrap;
+}
+
+.form-mensagem button:hover {
+  background: var(--accent-hover);
+}
+
+@media (max-width: 600px) {
+  .chat-layout .app-content {
+    margin-left: 0;
+    margin-bottom: 64px;
+    height: calc(100vh - 64px);
+  }
+
+  .lista-contatos {
+    width: 100%;
+    max-height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mensagem-container { min-height: 50vh; }
+}
+>>>>>>> 8d12746 (Atualização do projeto)

@@ -1,4 +1,5 @@
 /* ===== MODAL.CSS ===== */
+<<<<<<< HEAD
 .modal {
   display: none;
   position: fixed;
@@ -21,16 +22,33 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+=======
+.modal-conteudo.estilizado {
+  background: var(--bg-card);
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 480px;
+  position: relative;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .modal-conteudo h3 {
   margin-bottom: 20px;
   font-weight: 600;
   font-size: 20px;
+<<<<<<< HEAD
+=======
+  color: var(--text-primary);
+  text-align: center;
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .fechar {
   position: absolute;
+<<<<<<< HEAD
   top: 10px;
   right: 20px;
   font-size: 26px;
@@ -40,18 +58,40 @@
 
 .fechar:hover {
   color: #000;
+=======
+  top: 16px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color var(--transition);
+  background: none;
+  border: none;
+  line-height: 1;
+}
+
+.fechar:hover {
+  color: var(--text-primary);
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .upload-area {
   width: 100%;
+<<<<<<< HEAD
   height: 260px;
   border: 2px dashed #ccc;
   border-radius: 10px;
+=======
+  height: 240px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+>>>>>>> 8d12746 (Atualização do projeto)
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+<<<<<<< HEAD
   margin-bottom: 15px;
   position: relative;
   background-color: #fafafa;
@@ -60,6 +100,28 @@
 .upload-text {
   color: #888;
   font-size: 16px;
+=======
+  margin-bottom: 16px;
+  position: relative;
+  background: var(--bg-input);
+  transition: border-color var(--transition);
+}
+
+.upload-area:hover {
+  border-color: var(--accent);
+}
+
+.upload-text {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.upload-text i {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: var(--accent);
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .preview {
@@ -67,6 +129,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+<<<<<<< HEAD
   border-radius: 10px;
   position: absolute;
   top: 0;
@@ -114,3 +177,54 @@
 .btn-delete:hover {
   background-color: #d90000;
 }
+=======
+  border-radius: var(--radius-md);
+  position: absolute;
+  inset: 0;
+}
+
+#formPostagem textarea,
+.post-form textarea {
+  width: 100%;
+  height: 90px;
+  resize: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+#formPostagem textarea:focus,
+.post-form textarea:focus {
+  border-color: var(--accent);
+}
+
+#formPostagem button,
+.post-form button {
+  width: 100%;
+  background: var(--accent);
+  color: var(--bg-primary);
+  border: none;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 15px;
+  transition: background var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#formPostagem button:hover,
+.post-form button:hover {
+  background: var(--accent-hover);
+}
+>>>>>>> 8d12746 (Atualização do projeto)

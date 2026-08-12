@@ -1,21 +1,36 @@
 /* ===== PERFIL.CSS ===== */
 .perfil-container {
+<<<<<<< HEAD
   padding: 30px;
   max-width: 900px;
   margin: auto;
   color: #fff;
+=======
+  padding: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .perfil-header {
   display: flex;
   align-items: center;
+<<<<<<< HEAD
   gap: 30px;
+=======
+  gap: 32px;
+  padding: 32px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+>>>>>>> 8d12746 (Atualização do projeto)
   flex-wrap: wrap;
 }
 
 .perfil-foto img {
   width: 120px;
   height: 120px;
+<<<<<<< HEAD
   border-radius: 100%;
   object-fit: cover;
   border: 0px solid #fff;
@@ -64,12 +79,120 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 10px;
+=======
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 3px solid var(--accent-muted);
+}
+
+.perfil-info h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.perfil-info .bio {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.perfil-info .contadores {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.perfil-info .contadores strong {
+  color: var(--text-primary);
+}
+
+.linha {
+  margin: 24px 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.grade-postagens {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.item-postagem {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+>>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .item-postagem img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+<<<<<<< HEAD
   aspect-ratio: 1 / 1;
   border-radius: 0;
 }
+=======
+  transition: transform 0.3s ease;
+}
+
+.item-postagem:hover img {
+  transform: scale(1.05);
+}
+
+.item-postagem .delete-form {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.item-postagem:hover .delete-form {
+  opacity: 1;
+}
+
+.btn-delete {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+}
+
+.btn-delete:hover {
+  background: var(--danger);
+}
+
+.perfil-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border);
+}
+
+@media (max-width: 600px) {
+  .perfil-container { padding: 16px; }
+  .perfil-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+  .perfil-foto img { width: 96px; height: 96px; }
+  .grade-postagens { gap: 2px; }
+  .item-postagem .delete-form { opacity: 1; }
+}
+>>>>>>> 8d12746 (Atualização do projeto)

@@ -1,5 +1,6 @@
 /* ===== SIDEBAR.CSS ===== */
 .sidebar {
+<<<<<<< HEAD
   background-color: #131313;
   width: 370px;
   height: 400vh;
@@ -120,3 +121,144 @@
 .sidebar nav i {
   pointer-events: none;
 }
+=======
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--accent-muted);
+  text-decoration: none;
+  margin-bottom: 32px;
+  font-weight: 700;
+  font-size: 18px;
+  transition: transform var(--transition);
+}
+
+.sidebar-brand:hover {
+  transform: scale(1.05);
+}
+
+.brand-echo { color: var(--text-primary); }
+.brand-net { color: var(--accent); }
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 12px;
+}
+
+.sidebar-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 18px;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.sidebar-link span {
+  display: none;
+}
+
+.sidebar-link:hover {
+  background: var(--bg-elevated);
+  color: var(--accent);
+}
+
+.sidebar-link.active {
+  background: var(--accent-muted);
+  color: var(--accent);
+}
+
+.sidebar-link.active::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 0 3px 3px 0;
+}
+
+.sidebar-logout {
+  margin-top: auto;
+}
+
+.sidebar-logout:hover {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 64px;
+    flex-direction: row;
+    padding: 0 8px;
+    border-right: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .sidebar-brand { display: none; }
+
+  .sidebar-nav {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0;
+    gap: 0;
+  }
+
+  .sidebar-link {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  .sidebar-link.active::before {
+    left: 50%;
+    top: -8px;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+  }
+
+  .sidebar-logout { margin-top: 0; }
+
+  .app-content {
+    margin-left: 0;
+    margin-bottom: 64px;
+  }
+}
+>>>>>>> 8d12746 (Atualização do projeto)

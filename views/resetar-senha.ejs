@@ -2,21 +2,71 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+<<<<<<< HEAD
   <title>Redefinir Senha - EchoNet</title>
   <link rel="stylesheet" href="/css/login.css" />
   <style>
    
   </style>
+=======
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redefinir Senha - EchoNet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/login.css" />
+>>>>>>> 8d12746 (Atualização do projeto)
 </head>
 <body>
   <div class="reset-box">
     <h2>Redefinir Senha</h2>
+<<<<<<< HEAD
     <form method="POST" action="/resetar-senha">
+=======
+    <div id="resetError" class="error-message"></div>
+    <div id="resetSuccess" class="success-message" style="display:none;"></div>
+    <form id="resetForm">
+>>>>>>> 8d12746 (Atualização do projeto)
       <input type="hidden" name="token" value="<%= token %>">
       <input type="password" name="password" placeholder="Nova senha" required>
       <input type="password" name="confirmPassword" placeholder="Confirmar nova senha" required>
       <button type="submit">Atualizar senha</button>
     </form>
   </div>
+<<<<<<< HEAD
 </body>
 </html>
+=======
+
+  <script>
+    document.getElementById("resetForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("resetError");
+      const okEl = document.getElementById("resetSuccess");
+      errEl.style.display = "none";
+      okEl.style.display = "none";
+
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const res = await fetch("/resetar-senha", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const result = await res.json();
+        if (result.success) {
+          okEl.textContent = result.message;
+          okEl.style.display = "block";
+          setTimeout(() => window.location.href = "/login.html", 2000);
+        } else {
+          errEl.textContent = result.message;
+          errEl.style.display = "block";
+        }
+      } catch {
+        errEl.textContent = "Erro na comunicação com o servidor.";
+        errEl.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
+>>>>>>> 8d12746 (Atualização do projeto)

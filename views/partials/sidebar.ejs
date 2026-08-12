@@ -1,0 +1,27 @@
+<aside class="sidebar">
+  <a href="/" class="sidebar-brand" title="EchoNet">
+    <span class="brand-echo">E</span><span class="brand-net">N</span>
+  </a>
+  <nav class="sidebar-nav">
+    <a href="/" class="sidebar-link <%= currentPage === 'home' ? 'active' : '' %>" title="Início">
+      <i class="fa-solid fa-house"></i>
+      <span>Início</span>
+    </a>
+    <a href="/perfil" class="sidebar-link <%= currentPage === 'perfil' ? 'active' : '' %>" title="Perfil">
+      <i class="fa-solid fa-user"></i>
+      <span>Perfil</span>
+    </a>
+    <a href="/mensagens" class="sidebar-link <%= currentPage === 'mensagens' ? 'active' : '' %>" title="Mensagens">
+      <i class="fa-solid fa-comment-dots"></i>
+      <span>Mensagens</span>
+    </a>
+    <a href="#" class="sidebar-link" id="abrirModal" title="Criar">
+      <i class="fa-solid fa-plus"></i>
+      <span>Criar</span>
+    </a>
+    <a href="/logout" class="sidebar-link sidebar-logout" title="Sair">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span>Sair</span>
+    </a>
+  </nav>
+</aside>
