@@ -2,121 +2,8 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>EchoNet - Meu Perfil</title>
+  <title><%= username %> • EchoNet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<<<<<<< HEAD
-  <link rel="stylesheet" href="/css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/css/global.css">
-<link rel="stylesheet" href="/css/navbar.css">
-<link rel="stylesheet" href="/css/sidebar.css">
-<link rel="stylesheet" href="/css/perfil.css">
-<link rel="stylesheet" href="/css/responsive.css">>
- <link rel="stylesheet" href="/css/modal.css">
-</head>
-
-<body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">EchoNet</div>
-    <nav>
-      <a href="/">Página Inicial</a>
-      <a href="/perfil" class="active">Perfil</a>
-      <a href="#" id="abrirModal">Criar</a>
-      <a href="/logout">Sair</a>
-      <a href="/mensagens/<%= username %>">Mensagens</a>
-    </nav>
-  </div>
-
-  <!-- Perfil -->
-  <main class="main-feed">
-    <div class="perfil-container">
-      <div class="perfil-header">
-        <div class="perfil-foto">
-          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Foto de Perfil" />
-        </div>
-        <div class="perfil-info">
-          <h2><%= username %></h2>
-          <p class="nome-real"></p>
-          <p class="bio">Bem-vindo ao meu perfil!</p>
-          <p class="contadores"><%= posts.length %> publicações</p>
-        </div>
-      </div>
-
-      <hr class="linha" />
-
-      <% if (posts.length === 0) { %>
-        <p style="color: #ccc;">Você ainda não postou nada.</p>
-      <% } else { %>
-        <div class="grade-postagens">
-          <% posts.forEach(post => { %>
-            <div class="item-postagem">
-              <form action="/deletar-post/<%= post.id %>" method="POST" class="delete-form">
-                <button type="submit" class="btn-delete">🗑️</button>
-              </form>
-              <img src="<%= post.imagem %>" alt="Post" />
-            </div>
-          <% }) %>
-        </div>
-      <% } %>
-    </div>
-  </main>
-
-  <!-- Modal de Postagem -->
-  <div id="modalCriar" class="modal" style="display: none;">
-    <div class="modal-conteudo estilizado">
-      <span class="fechar" id="fecharModal">&times;</span>
-      <h3>Criar nova publicação</h3>
-      <form action="/postar" method="POST" enctype="multipart/form-data" class="post-form" id="formPostagem">
-        <label class="upload-area" for="uploadInput">
-          <span class="upload-text">Clique para selecionar uma imagem</span>
-          <img id="previewImagem" src="" alt="Preview" class="preview" />
-          <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden required />
-        </label>
-        <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
-        <button type="submit">Compartilhar</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Scripts do modal -->
-  <script>
-    const modal = document.getElementById("modalCriar");
-    const abrir = document.getElementById("abrirModal");
-    const fechar = document.getElementById("fecharModal");
-    const uploadInput = document.getElementById("uploadInput");
-    const preview = document.getElementById("previewImagem");
-
-    abrir.onclick = () => {
-      modal.style.display = "block";
-      preview.style.display = "none";
-      preview.src = "";
-      document.querySelector(".upload-text").style.display = "block";
-    };
-
-    fechar.onclick = () => modal.style.display = "none";
-
-    window.onclick = (e) => {
-      if (e.target === modal) modal.style.display = "none";
-    };
-
-    uploadInput.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          preview.src = reader.result;
-          preview.style.display = "block";
-          document.querySelector(".upload-text").style.display = "none";
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-  </script>
-</body>
-</html>
-=======
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="/css/global.css" />
   <link rel="stylesheet" href="/css/sidebar.css" />
@@ -128,46 +15,129 @@
   <%- include('partials/sidebar') %>
 
   <div class="app-content">
-    <main class="main-feed">
+    <main class="perfil-page">
       <div class="perfil-container">
-        <div class="perfil-header">
-          <div class="perfil-foto">
-            <img src="/img/default-avatar.svg" alt="Foto de Perfil" />
+
+        <!-- Cabeçalho do perfil -->
+        <header class="perfil-header">
+          <div class="perfil-avatar-desktop">
+            <div class="perfil-avatar-ring">
+              <img src="/img/default-avatar.svg" alt="Foto de perfil de <%= username %>" class="perfil-avatar" />
+            </div>
           </div>
-          <div class="perfil-info">
-            <h2><%= username %></h2>
-            <p class="bio">Bem-vindo ao meu perfil no EchoNet!</p>
-            <p class="contadores"><strong><%= posts.length %></strong> publicações</p>
+
+          <div class="perfil-mobile-top">
+            <div class="perfil-avatar-ring">
+              <img src="/img/default-avatar.svg" alt="Foto de perfil de <%= username %>" class="perfil-avatar" />
+            </div>
+            <ul class="perfil-stats perfil-stats-mobile">
+              <li><strong><%= posts.length %></strong><span>publicações</span></li>
+              <li><button type="button" class="stat-link"><strong>0</strong><span>seguidores</span></button></li>
+              <li><button type="button" class="stat-link"><strong>0</strong><span>seguindo</span></button></li>
+            </ul>
+          </div>
+
+          <div class="perfil-details">
+            <div class="perfil-top-row">
+              <h1 class="perfil-username"><%= username %></h1>
+              <div class="perfil-actions perfil-actions-desktop">
+                <button class="perfil-btn" type="button">Editar perfil</button>
+                <button class="perfil-btn" type="button">Ver arquivo</button>
+                <button class="perfil-btn perfil-btn-icon" type="button" title="Configurações">
+                  <i class="fa-solid fa-gear"></i>
+                </button>
+              </div>
+            </div>
+
+            <ul class="perfil-stats perfil-stats-desktop">
+              <li><strong><%= posts.length %></strong> publicações</li>
+              <li><button type="button" class="stat-link"><strong>0</strong> seguidores</button></li>
+              <li><button type="button" class="stat-link"><strong>0</strong> seguindo</button></li>
+            </ul>
+
+            <div class="perfil-actions perfil-actions-mobile">
+              <button class="perfil-btn" type="button">Editar perfil</button>
+              <button class="perfil-btn" type="button">Ver arquivo</button>
+              <button class="perfil-btn perfil-btn-icon" type="button" title="Configurações">
+                <i class="fa-solid fa-gear"></i>
+              </button>
+            </div>
+
+            <div class="perfil-bio">
+              <span class="perfil-name"><%= username %></span>
+              <span class="perfil-bio-text">Bem-vindo ao meu perfil no EchoNet ✨</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Destaques (visual) -->
+        <div class="perfil-highlights">
+          <div class="highlight-item">
+            <div class="highlight-ring">
+              <div class="highlight-inner"><i class="fa-solid fa-plus"></i></div>
+            </div>
+            <span>Novo</span>
           </div>
         </div>
 
-        <hr class="linha" />
+        <!-- Abas -->
+        <nav class="perfil-tabs" aria-label="Seções do perfil">
+          <button type="button" class="perfil-tab active" aria-current="page">
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Publicações</span>
+          </button>
+          <button type="button" class="perfil-tab">
+            <i class="fa-solid fa-film"></i>
+            <span>Reels</span>
+          </button>
+          <button type="button" class="perfil-tab">
+            <i class="fa-regular fa-bookmark"></i>
+            <span>Salvos</span>
+          </button>
+        </nav>
 
+        <!-- Grade de posts -->
         <% if (posts.length === 0) { %>
           <div class="perfil-empty">
-            <i class="fa-regular fa-image" style="font-size:40px;margin-bottom:12px;display:block;"></i>
-            Você ainda não postou nada. Clique em <strong>Criar</strong> para começar!
+            <div class="perfil-empty-icon">
+              <i class="fa-regular fa-image"></i>
+            </div>
+            <h3>Compartilhe fotos</h3>
+            <p>Quando você compartilhar fotos, elas aparecerão no seu perfil.</p>
+            <button type="button" class="perfil-btn perfil-btn-accent" id="abrirModalPerfil">
+              Compartilhar primeira foto
+            </button>
           </div>
         <% } else { %>
-          <div class="grade-postagens">
+          <div class="perfil-grid">
             <% posts.forEach(post => { %>
-              <div class="item-postagem">
+              <div class="grid-item">
+                <img src="<%= post.imagem %>" alt="Publicação" loading="lazy" />
+                <div class="grid-overlay">
+                  <span><i class="fa-solid fa-heart"></i></span>
+                  <span><i class="fa-solid fa-comment"></i></span>
+                </div>
                 <form action="/deletar-post/<%= post.id %>" method="POST" class="delete-form"
                       onsubmit="return confirm('Deseja excluir esta publicação?')">
                   <button type="submit" class="btn-delete" title="Excluir">
                     <i class="fa-solid fa-trash"></i>
                   </button>
                 </form>
-                <img src="<%= post.imagem %>" alt="Post" loading="lazy" />
               </div>
             <% }) %>
           </div>
         <% } %>
+
       </div>
     </main>
   </div>
 
   <%- include('partials/modal-post') %>
+
+  <script>
+    document.getElementById("abrirModalPerfil")?.addEventListener("click", () => {
+      document.getElementById("abrirModal")?.click();
+    });
+  </script>
 </body>
 </html>
->>>>>>> 8d12746 (Atualização do projeto)

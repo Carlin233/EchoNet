@@ -1,452 +1,345 @@
-<<<<<<< HEAD
-* {
-  box-sizing: border-box;
-}
-=======
-/* ===== LOGIN.CSS ===== */
+/* ===== LOGIN - Instagram Style ===== */
 @import url('theme.css');
 
-* { box-sizing: border-box; }
->>>>>>> 8d12746 (Atualização do projeto)
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-<<<<<<< HEAD
-  background-color: #fff;
-=======
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg-primary);
   min-height: 100vh;
->>>>>>> 8d12746 (Atualização do projeto)
+  -webkit-font-smoothing: antialiased;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
 }
 
 .login-wrapper {
   display: flex;
-<<<<<<< HEAD
-  height: 100vh;
-}
-
-/* Lado esquerdo */
-.login-left {
-  flex: 1;
-  background: #000000e8;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+  max-width: 935px;
 }
 
-.side-logo {
-  width: 90%;
-  max-width: 500px;
-}
-
-/* Lado direito */
-=======
-  min-height: 100vh;
-}
-
-.login-left {
-  flex: 1;
-  background: linear-gradient(135deg, #0a0e17 0%, #1a1040 50%, #0a2a3a 100%);
-  display: flex;
+/* Showcase esquerdo (desktop) */
+.login-showcase {
+  display: none;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 40px;
-  position: relative;
-  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.login-left::before {
+.phone-frame {
+  width: 250px;
+  height: 538px;
+  background: #1a1a1a;
+  border-radius: 40px;
+  padding: 10px;
+  box-shadow: 0 0 0 2px #333, 0 20px 60px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.phone-frame::before {
   content: '';
   position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
-  top: 20%;
-  left: 30%;
-  border-radius: 50%;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 6px;
+  background: #333;
+  border-radius: 3px;
 }
 
-.side-logo {
-  width: 80%;
-  max-width: 320px;
-  position: relative;
-  z-index: 1;
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-header {
+  padding: 36px 16px 12px;
+  border-bottom: 1px solid #efefef;
+  display: flex;
+  justify-content: center;
+}
+
+.phone-logo {
+  height: 28px;
+  width: auto;
+}
+
+.phone-feed {
+  flex: 1;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.phone-story-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.phone-story-row span {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  flex-shrink: 0;
+  padding: 2px;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+.phone-post {
+  height: 120px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.phone-post.short {
+  height: 80px;
 }
 
 .login-tagline {
-  color: var(--text-secondary);
-  font-size: 18px;
-  margin-top: 24px;
   text-align: center;
-  position: relative;
-  z-index: 1;
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.4;
+  max-width: 260px;
 }
 
->>>>>>> 8d12746 (Atualização do projeto)
-.login-right {
-  flex: 1;
+/* Formulários */
+.login-forms {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 40px;
-<<<<<<< HEAD
-=======
-  background: var(--bg-secondary);
->>>>>>> 8d12746 (Atualização do projeto)
+  gap: 10px;
+  width: 100%;
+  max-width: 350px;
 }
 
 .form-box {
-  max-width: 400px;
   width: 100%;
-}
-
-.form-title {
-  font-size: 28px;
-  font-weight: 600;
-<<<<<<< HEAD
-  margin-bottom: 25px;
-  color: #14171a;
-}
-
-input[type="email"],
-input[type="password"],
-input[type="text"] {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  font-size: 16px;
-  outline: none;
-  background-color: #f5f8fa;
-}
-
-input:focus {
-  border-color: #00043d;
-}
-
-button {
-  width: 100%;
-  padding: 14px;
-  background-color: #1da1f2;
-  color: white;
-  border: none;
-  border-radius: 30px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-button:hover {
-  background-color: #1991da;
-}
-
-.small-text {
-  margin-top: 15px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 36px 40px 24px;
   text-align: center;
-  color: #657786;
 }
 
-.small-text a {
-  color: #1da1f2;
-  text-decoration: none;
-  cursor: pointer;
+.form-logo {
+  font-family: 'Segoe UI', cursive;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+  line-height: 1;
 }
 
-/* Modal de Cadastro */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-=======
-  margin-bottom: 8px;
-  color: var(--text-primary);
+.form-logo .echo { color: var(--text-primary); }
+.form-logo .net {
+  background: var(--ig-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.form-subtitle {
-  color: var(--text-muted);
-  margin-bottom: 28px;
-  font-size: 15px;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+.login-form input,
 .form-box input[type="email"],
 .form-box input[type="password"],
 .form-box input[type="text"] {
   width: 100%;
-  padding: 14px 18px;
-  margin-bottom: 16px;
+  padding: 9px 8px 7px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  font-size: 15px;
+  border-radius: 3px;
+  font-size: 12px;
   font-family: inherit;
   outline: none;
-  background: var(--bg-input);
+  background: var(--bg-elevated);
   color: var(--text-primary);
   transition: border-color var(--transition);
 }
 
+.login-form input:focus,
 .form-box input:focus {
-  border-color: var(--accent);
+  border-color: #a8a8a8;
 }
 
+.login-form button[type="submit"],
 .form-box button[type="submit"] {
   width: 100%;
-  padding: 14px;
+  padding: 8px 16px;
   background: var(--accent);
-  color: var(--bg-primary);
+  color: #fff;
   border: none;
-  border-radius: var(--radius-md);
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background var(--transition);
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
+.login-form button[type="submit"]:hover,
 .form-box button[type="submit"]:hover {
   background: var(--accent-hover);
 }
 
-.small-text {
-  margin-top: 20px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 14px;
+.login-form button[type="submit"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.small-text a {
+.forgot-link {
+  margin: 16px 0 0;
+  font-size: 12px;
+}
+
+.forgot-link a {
   color: var(--accent);
   text-decoration: none;
-  cursor: pointer;
-  font-weight: 500;
 }
 
-.small-text a:hover {
+.forgot-link a:hover {
   text-decoration: underline;
+}
+
+.signup-box {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.signup-box a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signup-box a:hover {
+  text-decoration: underline;
+}
+
+.login-footer {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 /* Modals */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
->>>>>>> 8d12746 (Atualização do projeto)
+  background: rgba(0, 0, 0, 0.65);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 999;
+  padding: 16px;
 }
 
 .modal-content {
-<<<<<<< HEAD
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-=======
   background: var(--bg-card);
   padding: 32px;
   border-radius: var(--radius-lg);
-  width: 90%;
-  max-width: 440px;
+  width: 100%;
+  max-width: 400px;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-lg);
->>>>>>> 8d12746 (Atualização do projeto)
   position: relative;
 }
 
 .modal-content h2 {
-<<<<<<< HEAD
-  margin-top: 0;
-  margin-bottom: 20px;
-=======
-  margin: 0 0 24px;
-  font-size: 22px;
+  margin: 0 0 20px;
+  font-size: 16px;
   text-align: center;
   color: var(--text-primary);
+  font-weight: 600;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .modal-content input {
   width: 100%;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  background: var(--bg-input);
+  padding: 9px 8px 7px;
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   color: var(--text-primary);
-  border-radius: var(--radius-md);
+  border-radius: 3px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 12px;
   outline: none;
 }
 
 .modal-content input:focus {
-  border-color: var(--accent);
+  border-color: #a8a8a8;
 }
 
 .modal-content button[type="submit"] {
   width: 100%;
-  padding: 12px;
+  padding: 8px 16px;
   background: var(--accent);
-  color: var(--bg-primary);
+  color: #fff;
   font-weight: 600;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   margin-top: 8px;
   transition: background var(--transition);
 }
 
 .modal-content button[type="submit"]:hover {
   background: var(--accent-hover);
->>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .close-btn {
   position: absolute;
-<<<<<<< HEAD
-  top: 10px;
-  right: 20px;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
   font-size: 24px;
-  cursor: pointer;
-  color: #333;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .login-wrapper {
-    flex-direction: column;
-  }
-
-  .login-left {
-    display: none;
-  }
-
-  .login-right {
-    width: 100%;
-    padding: 30px;
-  }
-
-  .form-box {
-    padding: 0 10px;
-  }
-}
-
- /* Modal base */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background-color: #111;
-      color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      position: relative;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .modal-content h2 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 24px;
-      text-align: center;
-    }
-
-    .modal-content input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      background-color: #222;
-      border: 1px solid #444;
-      color: #fff;
-      border-radius: 5px;
-    }
-
-    .modal-content button {
-      width: 100%;
-      padding: 12px;
-      background-color: #1da1f2;
-      color: #fff;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 20px;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .small-text a {
-      cursor: pointer;
-    }
-
-    .error-message {
-  font-size: 14px;
-  background-color: #330000;
-  border: 1px solid #ff4d4d;
-  padding: 8px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-/* Modal de Recuperação de Senha */
-#modalRecuperacao .modal-content {
-  background-color: #111;
-  color: #fff;
-  padding: 20px 30px 30px 30px; /* mais espaço em cima e embaixo */
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#modalRecuperacao h2 {
-  margin: 0 0 25px 0; /* tira margens padrão e deixa só abaixo */
-  font-size: 24px;
-  text-align: center;
-  width: 100%; 
-}
-=======
-  top: 16px;
-  right: 20px;
-  font-size: 22px;
   cursor: pointer;
   color: var(--text-muted);
-  transition: color var(--transition);
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
 }
 
 .close-btn:hover {
@@ -454,8 +347,8 @@ button:hover {
 }
 
 .error-message {
-  font-size: 14px;
-  background: rgba(239, 68, 68, 0.15);
+  font-size: 13px;
+  background: rgba(237, 73, 86, 0.1);
   border: 1px solid var(--danger);
   color: var(--danger);
   padding: 10px;
@@ -466,8 +359,8 @@ button:hover {
 }
 
 .success-message {
-  font-size: 14px;
-  background: rgba(34, 197, 94, 0.15);
+  font-size: 13px;
+  background: rgba(46, 204, 113, 0.1);
   border: 1px solid var(--success);
   color: var(--success);
   padding: 10px;
@@ -477,48 +370,68 @@ button:hover {
 }
 
 /* Reset password page */
+.reset-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
 .reset-box {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 32px;
+  width: 100%;
+  max-width: 350px;
+  padding: 36px 40px;
   background: var(--bg-card);
-  border-radius: var(--radius-lg);
   border: 1px solid var(--border);
+}
+
+.reset-box .form-logo {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .reset-box h2 {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.reset-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .reset-box input {
   width: 100%;
-  padding: 14px 18px;
-  margin-bottom: 16px;
+  padding: 9px 8px 7px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg-input);
+  border-radius: 3px;
+  background: var(--bg-elevated);
   color: var(--text-primary);
   font-family: inherit;
-  font-size: 15px;
+  font-size: 12px;
   outline: none;
 }
 
 .reset-box input:focus {
-  border-color: var(--accent);
+  border-color: #a8a8a8;
 }
 
 .reset-box button {
   width: 100%;
-  padding: 14px;
+  padding: 8px 16px;
   background: var(--accent);
-  color: var(--bg-primary);
+  color: #fff;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
+  margin-top: 8px;
   transition: background var(--transition);
 }
 
@@ -526,9 +439,32 @@ button:hover {
   background: var(--accent-hover);
 }
 
-@media (max-width: 768px) {
-  .login-wrapper { flex-direction: column; }
-  .login-left { display: none; }
-  .login-right { padding: 30px 20px; }
+@media (min-width: 876px) {
+  .login-showcase {
+    display: flex;
+  }
 }
->>>>>>> 8d12746 (Atualização do projeto)
+
+@media (max-width: 450px) {
+  .login-page {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .login-forms {
+    max-width: 100%;
+  }
+
+  .form-box {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 32px 24px 20px;
+  }
+
+  .signup-box {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+}

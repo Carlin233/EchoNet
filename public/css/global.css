@@ -1,87 +1,12 @@
 /* ===== GLOBAL.CSS ===== */
-<<<<<<< HEAD
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: auto;
-}
-
-* {
-=======
 @import url('theme.css');
 
 *, *::before, *::after {
->>>>>>> 8d12746 (Atualização do projeto)
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-<<<<<<< HEAD
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #00122c;
-  min-height: 100vh;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.form-container {
-  background: #1e1e1e;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 15px #333;
-  width: 300px;
-}
-
-input, button {
-  display: block;
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 5px;
-}
-
-input {
-  background: #2c2c2c;
-  color: #fff;
-}
-
-button {
-  background-color: #00bcd4;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button:hover {
-  background-color: #0097a7;
-}
-
-main {
-  padding: 2rem;
-}
-
-.small-text {
-  margin-top: 15px;
-  font-size: 14px;
-}
-
-.small-text a {
-  color: #00bcd4;
-  text-decoration: none;
-}
-
-.small-text a:hover {
-  text-decoration: underline;
-}
-
-=======
 html, body {
   margin: 0;
   padding: 0;
@@ -89,10 +14,11 @@ html, body {
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 body.app-layout {
@@ -106,37 +32,24 @@ body.app-layout {
   min-height: 100vh;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* Modal base */
->>>>>>> 8d12746 (Atualização do projeto)
 .modal {
   display: none;
   position: fixed;
   z-index: 1000;
-<<<<<<< HEAD
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
-}
-=======
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.65);
   justify-content: center;
   align-items: center;
 }
 
 .error-message {
   font-size: 14px;
-  background-color: rgba(239, 68, 68, 0.15);
+  background-color: rgba(237, 73, 86, 0.1);
   border: 1px solid var(--danger);
   color: var(--danger);
   padding: 10px;
@@ -147,7 +60,7 @@ body.app-layout {
 
 .success-message {
   font-size: 14px;
-  background-color: rgba(34, 197, 94, 0.15);
+  background-color: rgba(46, 204, 113, 0.1);
   border: 1px solid var(--success);
   color: var(--success);
   padding: 10px;
@@ -155,4 +68,3 @@ body.app-layout {
   margin-bottom: 12px;
   text-align: center;
 }
->>>>>>> 8d12746 (Atualização do projeto)

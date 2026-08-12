@@ -1,35 +1,39 @@
-/* ===== ECHONET DESIGN SYSTEM ===== */
+/* ===== ECHONET - INSTAGRAM THEME ===== */
 :root {
-  --bg-primary: #0a0e17;
-  --bg-secondary: #111827;
-  --bg-card: #1a2332;
-  --bg-elevated: #243044;
-  --bg-input: #1e293b;
+  --bg-primary: #fafafa;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #f5f5f5;
+  --bg-input: #fafafa;
 
-  --accent: #00d4ff;
-  --accent-hover: #00b8e0;
-  --accent-muted: rgba(0, 212, 255, 0.15);
+  --accent: #0095f6;
+  --accent-hover: #1877f2;
+  --accent-muted: rgba(0, 149, 246, 0.1);
 
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
 
-  --border: #2d3a4f;
-  --border-light: #374151;
+  --text-primary: #262626;
+  --text-secondary: #737373;
+  --text-muted: #8e8e8e;
 
-  --success: #22c55e;
-  --danger: #ef4444;
+  --border: #dbdbdb;
+  --border-light: #efefef;
+
+  --success: #2ecc71;
+  --danger: #ed4956;
   --warning: #f59e0b;
 
-  --sidebar-width: 72px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --sidebar-width: 244px;
+  --sidebar-narrow: 72px;
+  --feed-width: 470px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  --transition: 0.2s ease;
+  --transition: 0.15s ease;
 }

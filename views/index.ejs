@@ -2,148 +2,8 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>EchoNet - Feed</title>
+  <title>EchoNet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<<<<<<< HEAD
-  <link rel="stylesheet" href="/css/global.css">
-  <link rel="stylesheet" href="/css/navbar.css">
-  <link rel="stylesheet" href="/css/sidebar.css">
-  <link rel="stylesheet" href="/css/feed.css">
-  <link rel="stylesheet" href="/css/modal.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-</head>
-<body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">EchoNet</div>
-    <nav>
-      <a href="/">Página Inicial</a>
-      <a href="/perfil" class="active">Perfil</a>
-      <a href="/mensagens/<%= username %>">Mensagens</a>
-      <a href="#" id="abrirModal">Criar</a>
-      <a href="/logout">Sair</a>
-    </nav>
-  </div>
-
-  <!-- Feed -->
-  <div class="sidebar-logo">
-  <span class="echo">Echo</span><span class="net">Net</span>
-</div>
-  <main class="main-feed">
-    <div class="feed" id="feedContainer">
-      <h2 style="color: #e1e8ed;">Olá, <span id="username"><%= username %></span> 👋</h2>
-
-      <% if (posts.length === 0) { %>
-        <p style="text-align: center; color: #ccc; margin-top: 40px;">
-          Nenhuma publicação ainda. Seja o primeiro a postar!
-        </p>
-      <% } else { %>
-        <% posts.forEach(post => { %>
-          <div class="post-card">
-            <div class="post-header">
-              <span>@<%= post.usuario %></span>
-            </div>
-            <% if (post.imagem) { %>
-              <div class="post-image">
-                <img src="<%= post.imagem %>" alt="Postagem" />
-              </div>
-            <% } %>
-            <div class="post-footer">
-              <div class="caption"><%= post.legenda %></div>
-              <div class="tweet-actions">
-                <span><i class="fa-regular fa-comment"></i></span>
-                <span><i class="fa-solid fa-retweet"></i></span>
-                <span><i class="fa-regular fa-heart"></i></span>
-              </div>
-            </div>
-          </div>
-        <% }) %>
-      <% } %>
-    </div>
-  </main>
-
-  <!-- Barra de usuários online -->
-  <aside class="barra-online">
-    <h3>Contatos</h3>
-    <ul id="usuariosOnline">
-      <!-- Lista será preenchida dinamicamente -->
-    </ul>
-  </aside>
-
-  <!-- Modal de Postagem -->
-  <div id="modalCriar" class="modal">
-    <div class="modal-conteudo estilizado">
-      <span class="fechar" id="fecharModal">&times;</span>
-      <h3>Criar nova publicação</h3>
-      <form id="formPostagem" enctype="multipart/form-data">
-        <label class="upload-area" for="uploadInput">
-          <span class="upload-text">Clique para selecionar uma imagem</span>
-          <img id="previewImagem" src="" alt="Preview" class="preview" />
-          <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden />
-        </label>
-        <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
-        <button type="submit">Compartilhar</button>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    const modal = document.getElementById("modalCriar");
-    document.getElementById("abrirModal").onclick = () => {
-      modal.style.display = "block";
-      document.querySelector(".upload-text").style.display = "block";
-      document.getElementById("previewImagem").style.display = "none";
-      document.getElementById("previewImagem").src = "";
-    };
-    document.getElementById("fecharModal").onclick = () => modal.style.display = "none";
-    window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
-
-    const uploadInput = document.getElementById("uploadInput");
-    const preview = document.getElementById("previewImagem");
-    uploadInput.onchange = e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        preview.src = reader.result;
-        preview.style.display = "block";
-        document.querySelector(".upload-text").style.display = "none";
-      };
-      reader.readAsDataURL(file);
-    };
-
-    const form = document.getElementById("formPostagem");
-    form.addEventListener("submit", async e => {
-      e.preventDefault();
-      const data = new FormData(form);
-      const res = await fetch("/postar", {
-        method: "POST",
-        body: data,
-        credentials: "include"
-      });
-      if (!res.ok) {
-        alert("Erro ao postar!");
-        return;
-      }
-      window.location.reload();
-      modal.style.display = "none";
-      form.reset();
-    });
-
-    setInterval(() => {
-      fetch("/atualizar-ativo", {
-        method: "POST",
-        credentials: "include"
-      });
-    }, 30000);
-
-    function carregarUsuariosOnline() {
-      fetch("/online-users", {
-        credentials: "include"
-      })
-=======
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="/css/global.css" />
   <link rel="stylesheet" href="/css/sidebar.css" />
@@ -157,21 +17,44 @@
   <div class="app-content">
     <main class="main-feed">
       <div class="feed">
-        <div class="feed-header">
-          <h2>Olá, <span class="username-highlight"><%= username %></span> 👋</h2>
+
+        <!-- Stories -->
+        <div class="stories-bar">
+          <div class="stories-scroll">
+            <a href="#" class="story-item story-add" id="abrirModalStory">
+              <div class="story-ring">
+                <img src="/img/default-avatar.svg" alt="" />
+              </div>
+              <span class="story-name">Seu story</span>
+            </a>
+            <% if (posts.length > 0) {
+              const usuariosUnicos = [...new Set(posts.map(p => p.usuario))].slice(0, 8);
+              usuariosUnicos.forEach((usuario, i) => { %>
+            <div class="story-item">
+              <div class="story-ring <%= i > 3 ? 'seen' : '' %>">
+                <img src="/img/default-avatar.svg" alt="<%= usuario %>" />
+              </div>
+              <span class="story-name"><%= usuario %></span>
+            </div>
+            <% }); } %>
+          </div>
         </div>
 
         <% if (posts.length === 0) { %>
           <div class="feed-empty">
             <i class="fa-regular fa-images"></i>
-            <p>Nenhuma publicação ainda. Seja o primeiro a postar!</p>
+            <p>Nenhuma publicação ainda.</p>
+            <p style="margin-top:8px;font-size:14px;">Siga pessoas para ver as fotos e vídeos delas.</p>
           </div>
         <% } else { %>
           <% posts.forEach(post => { %>
-            <article class="post-card">
+            <article class="post-card" data-post-id="<%= post.id %>">
               <div class="post-header">
                 <img src="/img/default-avatar.svg" alt="" class="post-avatar" />
-                <div class="author">@<%= post.usuario %></div>
+                <div class="author"><%= post.usuario %></div>
+                <button type="button" class="post-more" title="Mais opções">
+                  <i class="fa-solid fa-ellipsis"></i>
+                </button>
               </div>
               <% if (post.imagem) { %>
                 <div class="post-image">
@@ -179,12 +62,26 @@
                 </div>
               <% } %>
               <div class="post-footer">
-                <div class="caption"><%= post.legenda %></div>
                 <div class="post-actions">
-                  <button type="button" title="Curtir"><i class="fa-regular fa-heart"></i></button>
-                  <button type="button" title="Comentar"><i class="fa-regular fa-comment"></i></button>
-                  <button type="button" title="Compartilhar"><i class="fa-solid fa-share"></i></button>
+                  <button type="button" class="btn-like" title="Curtir">
+                    <i class="fa-regular fa-heart"></i>
+                  </button>
+                  <button type="button" title="Comentar">
+                    <i class="fa-regular fa-comment"></i>
+                  </button>
+                  <button type="button" title="Compartilhar">
+                    <i class="fa-regular fa-paper-plane"></i>
+                  </button>
+                  <button type="button" class="action-save" title="Salvar">
+                    <i class="fa-regular fa-bookmark"></i>
+                  </button>
                 </div>
+                <div class="post-likes"><span class="like-count">0</span> curtidas</div>
+                <div class="caption">
+                  <span class="author-name"><%= post.usuario %></span><%= post.legenda %>
+                </div>
+                <div class="post-comments-link">Ver todos os comentários</div>
+                <div class="post-time"><%= new Date(post.criado_em).toLocaleDateString('pt-BR', {day:'numeric', month:'short'}) %></div>
               </div>
             </article>
           <% }) %>
@@ -193,7 +90,21 @@
     </main>
 
     <aside class="barra-online">
-      <h3><i class="fa-solid fa-circle" style="color:var(--success);font-size:8px;margin-right:6px;"></i> Online agora</h3>
+      <div class="suggestions-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <span style="font-size:14px;font-weight:600;color:var(--text-secondary);"><%= username %></span>
+          <a href="/logout" style="font-size:12px;font-weight:600;color:var(--text-primary);text-decoration:none;">Sair</a>
+        </div>
+        <div class="user-row">
+          <img src="/img/default-avatar.svg" alt="" />
+          <div class="user-info">
+            <div class="name"><%= username %></div>
+            <div class="sub">Sua conta</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Sugestões para você</h3>
       <ul id="usuariosOnline"></ul>
     </aside>
   </div>
@@ -201,35 +112,68 @@
   <%- include('partials/modal-post') %>
 
   <script>
+    document.getElementById("abrirModalStory")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("abrirModal")?.click();
+    });
+
+    document.querySelectorAll(".btn-like").forEach(btn => {
+      const card = btn.closest(".post-card");
+      const postId = card.dataset.postId;
+      const countEl = card.querySelector(".like-count");
+      const key = "like_" + postId;
+
+      if (localStorage.getItem(key)) {
+        btn.classList.add("liked");
+        btn.querySelector("i").className = "fa-solid fa-heart";
+        countEl.textContent = localStorage.getItem(key + "_count") || "1";
+      }
+
+      btn.addEventListener("click", () => {
+        const icon = btn.querySelector("i");
+        if (btn.classList.contains("liked")) {
+          btn.classList.remove("liked");
+          icon.className = "fa-regular fa-heart";
+          countEl.textContent = "0";
+          localStorage.removeItem(key);
+          localStorage.removeItem(key + "_count");
+        } else {
+          btn.classList.add("liked");
+          icon.className = "fa-solid fa-heart";
+          countEl.textContent = "1";
+          localStorage.setItem(key, "1");
+          localStorage.setItem(key + "_count", "1");
+        }
+      });
+    });
+
     setInterval(() => {
       fetch("/atualizar-ativo", { method: "POST", credentials: "include" });
     }, 30000);
 
     function carregarUsuariosOnline() {
       fetch("/online-users", { credentials: "include" })
->>>>>>> 8d12746 (Atualização do projeto)
         .then(res => res.json())
         .then(lista => {
           const ul = document.getElementById("usuariosOnline");
           ul.innerHTML = "";
-<<<<<<< HEAD
-=======
           if (lista.length === 0) {
-            ul.innerHTML = '<li style="color:var(--text-muted);font-size:13px;padding:8px 12px;">Ninguém online</li>';
+            ul.innerHTML = '<li style="color:var(--text-muted);font-size:13px;padding:8px 0;">Nenhuma sugestão no momento</li>';
             return;
           }
->>>>>>> 8d12746 (Atualização do projeto)
-          lista.forEach(usuario => {
+          lista.slice(0, 5).forEach(usuario => {
             const li = document.createElement("li");
-            const a = document.createElement("a");
-            a.href = "/mensagens/" + encodeURIComponent(usuario.username);
-<<<<<<< HEAD
-            a.style.textDecoration = "none";
-            a.style.color = "inherit";
-=======
->>>>>>> 8d12746 (Atualização do projeto)
-            a.innerHTML = `<span class="dot-status ${usuario.status}"></span> ${usuario.username}`;
-            li.appendChild(a);
+            li.innerHTML = `
+              <div class="user-row" style="margin-bottom:12px;">
+                <a href="/mensagens/${encodeURIComponent(usuario.username)}" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;flex:1;">
+                  <img src="/img/default-avatar.svg" alt="" style="width:32px;height:32px;border-radius:50%;" />
+                  <div class="user-info">
+                    <div class="name" style="font-size:14px;">${usuario.username}</div>
+                    <div class="sub"><span class="dot-status ${usuario.status}"></span> ${usuario.status === 'online' ? 'Online' : usuario.status === 'away' ? 'Ausente' : 'Offline'}</div>
+                  </div>
+                </a>
+                <button class="follow-btn">Seguir</button>
+              </div>`;
             ul.appendChild(li);
           });
         });
@@ -239,8 +183,4 @@
     carregarUsuariosOnline();
   </script>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 8d12746 (Atualização do projeto)

@@ -1,16 +1,20 @@
 <div id="modalCriar" class="modal">
   <div class="modal-conteudo estilizado">
-    <span class="fechar" id="fecharModal">&times;</span>
-    <h3>Criar nova publicação</h3>
-    <form id="formPostagem" enctype="multipart/form-data">
-      <label class="upload-area" for="uploadInput">
-        <span class="upload-text"><i class="fa-solid fa-image"></i> Clique para selecionar uma imagem</span>
-        <img id="previewImagem" src="" alt="Preview" class="preview" />
-        <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden required />
-      </label>
-      <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
-      <button type="submit"><i class="fa-solid fa-paper-plane"></i> Compartilhar</button>
-    </form>
+    <div class="modal-header-bar">
+      <h3>Criar nova publicação</h3>
+      <button type="button" class="fechar" id="fecharModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="formPostagem" enctype="multipart/form-data">
+        <label class="upload-area" for="uploadInput">
+          <span class="upload-text"><i class="fa-regular fa-image"></i> Arraste a foto aqui<br><span style="font-size:12px;color:var(--accent);font-weight:600;">Selecionar do computador</span></span>
+          <img id="previewImagem" src="" alt="Preview" class="preview" />
+          <input type="file" name="imagem" id="uploadInput" accept="image/*" hidden required />
+        </label>
+        <textarea name="legenda" placeholder="Escreva uma legenda..." required></textarea>
+        <button type="submit">Compartilhar</button>
+      </form>
+    </div>
   </div>
 </div>
 

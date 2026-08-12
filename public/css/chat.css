@@ -1,18 +1,4 @@
-<<<<<<< HEAD
-/* RESET GERAL */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #000;
-  color: #fff;
-  display: flex;
-=======
-/* ===== CHAT.CSS ===== */
+/* ===== CHAT - Instagram DM Style ===== */
 @import url('theme.css');
 
 body.chat-layout {
@@ -21,97 +7,43 @@ body.chat-layout {
   overflow: hidden;
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .chat-layout .app-content {
   display: flex;
   flex: 1;
   margin-left: var(--sidebar-width);
->>>>>>> 8d12746 (Atualização do projeto)
   height: 100vh;
   overflow: hidden;
 }
 
-<<<<<<< HEAD
-/* ======== LISTA DE CONTATOS ======== */
 .lista-contatos {
-  margin-left: 60px; /* Mesma largura da sidebar */
-  width: 320px;
-  background: #121212;
-  border-right: 1px solid #222;
-  padding: 15px 10px;
-  overflow-y: auto;
-}
-
-.lista-contatos h3 {
-  font-size: 16px;
-  color: #ccc;
-  margin-bottom: 15px;
-}
-
-.lista-contatos ul {
-  list-style: none;
-}
-
-.lista-contatos li {
-  margin-bottom: 12px;
-}
-=======
-.lista-contatos {
-  width: 320px;
+  width: 397px;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border);
-  padding: 20px 12px;
   overflow-y: auto;
   flex-shrink: 0;
 }
 
 .lista-contatos h3 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 16px;
-  padding: 0 8px;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--border);
 }
 
 .lista-contatos ul { list-style: none; }
 
-.lista-contatos li { margin-bottom: 4px; }
->>>>>>> 8d12746 (Atualização do projeto)
+.lista-contatos li { margin-bottom: 0; }
 
 .lista-contatos a {
   display: flex;
   align-items: center;
   text-decoration: none;
-<<<<<<< HEAD
-  color: #fff;
-  padding: 10px;
-  border-radius: 10px;
-  transition: background 0.2s ease;
-}
-
-.lista-contatos a:hover {
-  background: #1a1a1a;
-}
-
-.lista-contatos a img {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  margin-right: 12px;
-  object-fit: cover;
-  background: #333;
-}
-
-.contato-info {
-  display: flex;
-  flex-direction: column;
-}
-=======
   color: var(--text-primary);
-  padding: 12px;
-  border-radius: var(--radius-md);
+  padding: 12px 24px;
   transition: background var(--transition);
 }
 
@@ -121,50 +53,24 @@ body.chat-layout {
 }
 
 .lista-contatos a img {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
   margin-right: 12px;
   object-fit: cover;
-  background: var(--bg-input);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
 }
 
 .contato-info { display: flex; flex-direction: column; }
->>>>>>> 8d12746 (Atualização do projeto)
 
 .contato-info .nome {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .contato-info .preview {
-  font-size: 13px;
-<<<<<<< HEAD
-  color: #888;
-  margin-top: 2px;
-}
-
-/* ======== CONTAINER DO CHAT ======== */
-.mensagem-container {
-  flex: 1;
-  
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background: #000;
-}
-
-/* TOPO DO CHAT */
-.mensagem-topo {
-  background: #121212;
-  padding: 15px 20px;
-  font-weight: 600;
-  font-size: 16px;
-  border-bottom: 1px solid #222;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-=======
+  font-size: 14px;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -173,7 +79,8 @@ body.chat-layout {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
   min-width: 0;
 }
 
@@ -187,50 +94,12 @@ body.chat-layout {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
->>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .mensagem-topo img {
-  width: 36px;
-  height: 36px;
-<<<<<<< HEAD
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  object-fit: cover;
-}
-
-/* ÁREA DE MENSAGENS */
-.chat-box {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  scroll-behavior: smooth;
-}
-
-.msg {
-  max-width: 70%;
-  padding: 10px 15px;
-  border-radius: 18px;
-  font-size: 14px;
-  position: relative;
-  word-wrap: break-word;
-  line-height: 1.4;
-}
-
-.msg.eu {
-  background: #3797f0;
-  color: white;
-  align-self: flex-end;
-}
-
-.msg.outro {
-  background: #2a2a2a;
-  color: #e0e0e0;
-  align-self: flex-start;
-=======
-  border-radius: var(--radius-full);
   object-fit: cover;
 }
 
@@ -253,48 +122,30 @@ body.chat-layout {
 
 .msg {
   max-width: 65%;
-  padding: 10px 16px;
-  border-radius: 18px;
+  padding: 8px 12px;
+  border-radius: 22px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
   word-wrap: break-word;
   position: relative;
 }
 
 .msg.eu {
   background: var(--accent);
-  color: var(--bg-primary);
+  color: #fff;
   align-self: flex-end;
-  border-bottom-right-radius: 4px;
 }
 
 .msg.outro {
   background: var(--bg-elevated);
   color: var(--text-primary);
   align-self: flex-start;
-  border-bottom-left-radius: 4px;
->>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .msg::after {
   content: attr(data-time);
   font-size: 10px;
-<<<<<<< HEAD
-  color: #aaa;
-  position: absolute;
-  bottom: -15px;
-  right: 10px;
-}
-
-/* INPUT DE MENSAGEM */
-.form-mensagem {
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  border-top: 1px solid #222;
-  background: #121212;
-=======
-  opacity: 0.6;
+  opacity: 0.5;
   display: block;
   margin-top: 4px;
   text-align: right;
@@ -308,82 +159,14 @@ body.chat-layout {
   background: var(--bg-secondary);
   gap: 12px;
   flex-shrink: 0;
->>>>>>> 8d12746 (Atualização do projeto)
 }
 
 .form-mensagem input[type="text"] {
   flex: 1;
-<<<<<<< HEAD
-  background: #1f1f1f;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 15px;
-  color: white;
-  font-size: 14px;
-  margin-right: 10px;
-  outline: none;
-}
-
-.form-mensagem button {
-  background: transparent;
-  border: none;
-  color: #3797f0;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.form-mensagem button:hover {
-  opacity: 0.8;
-}
-
-/* ===== SCROLLBAR CUSTOMIZADA ===== */
-.chat-box::-webkit-scrollbar,
-.lista-contatos::-webkit-scrollbar {
-  width: 8px;
-}
-.chat-box::-webkit-scrollbar-thumb,
-.lista-contatos::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-
-/* ===== RESPONSIVO ===== */
-@media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-
-  .lista-contatos {
-    width: 100vw;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid #222;
-  }
-
-  .mensagem-container {
-    width: 100%;
-    max-width: 100%;
-    border-left: none;
-    border-right: none;
-  }
-
-  .form-mensagem input[type="text"] {
-    margin-right: 8px;
-  }
-}
-
-.logo img {
-  height: 30px;
-  display: block;
-  margin: 2 auto;
-}
-=======
-  background: var(--bg-input);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-full);
-  padding: 12px 20px;
+  padding: 10px 16px;
   color: var(--text-primary);
   font-size: 14px;
   font-family: inherit;
@@ -398,12 +181,12 @@ body.chat-layout {
 .form-mensagem button {
   background: var(--accent);
   border: none;
-  color: var(--bg-primary);
+  color: #fff;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  padding: 10px 20px;
-  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
   transition: background var(--transition);
   white-space: nowrap;
 }
@@ -412,11 +195,18 @@ body.chat-layout {
   background: var(--accent-hover);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1264px) {
+  .chat-layout .app-content {
+    margin-left: var(--sidebar-narrow);
+  }
+}
+
+@media (max-width: 768px) {
   .chat-layout .app-content {
     margin-left: 0;
-    margin-bottom: 64px;
-    height: calc(100vh - 64px);
+    margin-bottom: 50px;
+    height: calc(100vh - 50px);
+    flex-direction: column;
   }
 
   .lista-contatos {
@@ -428,4 +218,3 @@ body.chat-layout {
 
   .mensagem-container { min-height: 50vh; }
 }
->>>>>>> 8d12746 (Atualização do projeto)

@@ -1,109 +1,62 @@
-/* ===== MODAL.CSS ===== */
-<<<<<<< HEAD
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.6);
-}
-
-.modal-conteudo.estilizado {
-  background-color: #fff;
-  margin: 5% auto;
-  padding: 20px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 460px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-=======
+/* ===== MODAL - Instagram Style ===== */
 .modal-conteudo.estilizado {
   background: var(--bg-card);
-  padding: 28px;
+  padding: 0;
   border-radius: var(--radius-lg);
   width: 90%;
-  max-width: 480px;
+  max-width: 500px;
   position: relative;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-lg);
->>>>>>> 8d12746 (Atualização do projeto)
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
-.modal-conteudo h3 {
-  margin-bottom: 20px;
+.modal-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.modal-header-bar h3 {
   font-weight: 600;
-  font-size: 20px;
-<<<<<<< HEAD
-=======
+  font-size: 16px;
   color: var(--text-primary);
-  text-align: center;
->>>>>>> 8d12746 (Atualização do projeto)
+  margin: 0;
+}
+
+.modal-body {
+  padding: 20px;
 }
 
 .fechar {
   position: absolute;
-<<<<<<< HEAD
-  top: 10px;
-  right: 20px;
-  font-size: 26px;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  font-size: 20px;
   cursor: pointer;
-  color: #888;
-}
-
-.fechar:hover {
-  color: #000;
-=======
-  top: 16px;
-  right: 20px;
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: color var(--transition);
+  color: var(--text-primary);
   background: none;
   border: none;
   line-height: 1;
 }
 
-.fechar:hover {
-  color: var(--text-primary);
->>>>>>> 8d12746 (Atualização do projeto)
-}
-
 .upload-area {
   width: 100%;
-<<<<<<< HEAD
-  height: 260px;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-=======
-  height: 240px;
+  height: 220px;
   border: 2px dashed var(--border);
   border-radius: var(--radius-md);
->>>>>>> 8d12746 (Atualização do projeto)
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-<<<<<<< HEAD
-  margin-bottom: 15px;
-  position: relative;
-  background-color: #fafafa;
-}
-
-.upload-text {
-  color: #888;
-  font-size: 16px;
-=======
   margin-bottom: 16px;
   position: relative;
-  background: var(--bg-input);
+  background: var(--bg-elevated);
   transition: border-color var(--transition);
 }
 
@@ -113,15 +66,14 @@
 
 .upload-text {
   color: var(--text-muted);
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .upload-text i {
   display: block;
-  font-size: 32px;
-  margin-bottom: 8px;
-  color: var(--accent);
->>>>>>> 8d12746 (Atualização do projeto)
+  font-size: 40px;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
 }
 
 .preview {
@@ -129,55 +81,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-<<<<<<< HEAD
-  border-radius: 10px;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.post-form textarea {
-  width: 100%;
-  height: 80px;
-  resize: none;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 15px;
-}
-
-.post-form button {
-  width: 100%;
-  background-color: #0095f6;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.post-form button:hover {
-  background-color: #007fd1;
-}
-
-.btn-delete {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.btn-delete:hover {
-  background-color: #d90000;
-}
-=======
   border-radius: var(--radius-md);
   position: absolute;
   inset: 0;
@@ -186,36 +89,30 @@
 #formPostagem textarea,
 .post-form textarea {
   width: 100%;
-  height: 90px;
+  height: 80px;
   resize: none;
-  padding: 12px 16px;
+  padding: 12px 0;
   font-size: 14px;
   font-family: inherit;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--bg-input);
+  border: none;
+  border-top: 1px solid var(--border);
+  background: transparent;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  margin-bottom: 0;
   outline: none;
-  transition: border-color var(--transition);
-}
-
-#formPostagem textarea:focus,
-.post-form textarea:focus {
-  border-color: var(--accent);
 }
 
 #formPostagem button,
 .post-form button {
   width: 100%;
   background: var(--accent);
-  color: var(--bg-primary);
+  color: #fff;
   border: none;
   padding: 12px;
   font-weight: 600;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   transition: background var(--transition);
   display: flex;
   align-items: center;
@@ -227,4 +124,8 @@
 .post-form button:hover {
   background: var(--accent-hover);
 }
->>>>>>> 8d12746 (Atualização do projeto)
+
+#formPostagem button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
