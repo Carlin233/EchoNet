@@ -7,6 +7,7 @@ const session = require("express-session");
 const multer = require("multer");
 const fs = require("fs");
 const crypto = require("crypto");
+const os = require("os");
 
 const app = express();
 const PORT = 3000;
@@ -973,8 +974,19 @@ app.post("/resetar-senha", (req, res) => {
 // INICIAR SERVIDOR
 // ===============================
 
-app.listen(PORT, () => {
-    console.log(
-        `EchoNet rodando em http://localhost:${PORT}`
-    );
+app.listen(PORT, "0.0.0.0", () => {
+    const interfaces = os.networkInterfaces();
+    let localIp = "localhost";
+
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === "IPv4" && !iface.internal) {
+                localIp = iface.address;
+                break;
+            }
+        }
+    }
+
+    console.log(`EchoNet rodando em http://localhost:${PORT}`);
+    console.log(`Acesse pelo celular (mesma rede Wi-Fi): http://${localIp}:${PORT}`);
 });

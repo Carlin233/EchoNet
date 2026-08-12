@@ -322,24 +322,3 @@
 @media (max-width: 1264px) {
   .barra-online { display: none; }
 }
-
-@media (max-width: 768px) {
-  .main-feed { padding: 0; }
-
-  .feed { max-width: 100%; }
-
-  .stories-bar {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    margin-bottom: 0;
-  }
-
-  .post-card {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    margin-bottom: 0;
-    border-bottom: none;
-  }
-}

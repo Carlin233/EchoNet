@@ -36,4 +36,7 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 
   --transition: 0.15s ease;
+
+  --mobile-header-height: 44px;
+  --mobile-nav-height: 50px;
 }

@@ -3,23 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <title>Mensagens • EchoNet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="/css/global.css" />
   <link rel="stylesheet" href="/css/sidebar.css" />
   <link rel="stylesheet" href="/css/chat.css" />
   <link rel="stylesheet" href="/css/modal.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
 </head>
-<body class="app-layout chat-layout">
+<body class="app-layout chat-layout <%= destinatario ? 'chat-conversation' : 'chat-list' %>">
   <%- include('partials/sidebar') %>
+
+  <% if (destinatario) { %>
+  <header class="mobile-header mobile-header-chat">
+    <a href="/mensagens" class="mobile-header-back" aria-label="Voltar">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <span class="mobile-header-title"><%= destinatario %></span>
+  </header>
+  <% } else { %>
+  <%- include('partials/mobile-header') %>
+  <% } %>
 
   <div class="app-content">
     <div class="lista-contatos" id="listaContatos">
-      <h3><%= usuarioLogado %></h3>
+      <h3>Mensagens</h3>
       <ul>
         <% if (contatos.length === 0) { %>
-          <li style="color: var(--text-muted); font-size: 14px; padding: 12px 24px;">
-            Nenhuma conversa ainda. Inicie pelo feed!
+          <li class="chat-list-empty">
+            Nenhuma conversa ainda.<br>
+            <span>Visite o feed e converse com alguém online!</span>
           </li>
         <% } else { %>
           <% contatos.forEach(c => {
@@ -31,7 +46,7 @@
               <img src="/img/default-avatar.svg" alt="Avatar">
               <div class="contato-info">
                 <span class="nome"><%= nome %></span>
-                <span class="preview">Mensagem...</span>
+                <span class="preview">Toque para abrir a conversa</span>
               </div>
             </a>
           </li>
@@ -42,7 +57,7 @@
 
     <% if (destinatario) { %>
       <div class="mensagem-container">
-        <div class="mensagem-topo">
+        <div class="mensagem-topo mensagem-topo-desktop">
           <img src="/img/default-avatar.svg" alt="avatar">
           <span><%= destinatario %></span>
         </div>
@@ -63,22 +78,18 @@
         <form id="formMensagem" class="form-mensagem">
           <input type="hidden" name="destinatario" value="<%= destinatario %>">
           <input type="text" name="conteudo" placeholder="Mensagem..." required autocomplete="off">
-          <button type="submit">Enviar</button>
+          <button type="submit" aria-label="Enviar">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
         </form>
       </div>
     <% } else { %>
-      <div class="mensagem-container">
-        <div class="mensagem-topo">
-          <i class="fa-regular fa-paper-plane" style="font-size:20px;"></i>
-          <span>Suas mensagens</span>
-        </div>
+      <div class="mensagem-container mensagem-container-placeholder">
         <div class="chat-box">
           <p class="chat-empty">
-            <i class="fa-regular fa-paper-plane" style="font-size:48px;display:block;margin-bottom:16px;"></i>
+            <i class="fa-regular fa-paper-plane"></i>
             Suas mensagens<br>
-            <span style="font-size:14px;color:var(--text-muted);margin-top:8px;display:block;">
-              Envie fotos e mensagens privadas para um amigo.
-            </span>
+            <span>Envie mensagens privadas para seus amigos.</span>
           </p>
         </div>
       </div>
