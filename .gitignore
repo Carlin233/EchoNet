@@ -6,3 +6,11 @@ database.sqlite-wal
 banco.db
 public/uploads/*
 !public/uploads/.gitkeep
+
+node_modules/
+.env
+.env.*
+*.db
+*.sqlite
+*.sqlite3
+public/uploads/
