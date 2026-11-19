@@ -1,7 +1,7 @@
 <div class="story-modal" id="storyCreateModal" role="dialog" aria-modal="true" aria-label="Criar Story" hidden>
   <div class="story-backdrop" data-story-close></div>
   <div class="story-create-box">
-    <header class="story-create-header"><h2>Novo Story</h2><button type="button" data-story-close aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button></header>
+    <header class="story-create-header"><h2>Novo Story</h2><button type="button" data-story-close aria-label="Fechar"><span aria-hidden="true">&times;</span></button></header>
     <form id="storyCreateForm">
       <label for="storyImage">Imagem (JPG, PNG, WebP ou GIF, até 5 MB)</label>
       <input id="storyImage" name="imagem" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required>
@@ -20,11 +20,11 @@
       <img id="storyViewerAvatar" src="/img/default-avatar.svg" alt="">
       <a href="#" id="storyViewerAuthor"></a><span id="storyViewerCounter"></span>
       <button type="button" id="storyDelete" hidden title="Excluir meu Story" aria-label="Excluir Story"><i class="fa-regular fa-trash-can"></i></button>
-      <button type="button" data-view-close aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+      <button type="button" data-view-close aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
     </header>
     <div class="story-progress"><div id="storyProgressFill"></div></div>
     <div class="story-viewer-image"><img id="storyViewerImage" alt="Story"></div>
     <p class="story-viewer-caption" id="storyViewerCaption"></p>
-    <div class="story-viewer-nav"><button type="button" id="storyPrevious" aria-label="Story anterior"><i class="fa-solid fa-chevron-left"></i></button><button type="button" id="storyNext" aria-label="Próximo Story"><i class="fa-solid fa-chevron-right"></i></button></div>
+    <div class="story-viewer-nav"><button type="button" id="storyPrevious" aria-label="Story anterior"><span aria-hidden="true">&#10094;</span></button><button type="button" id="storyNext" aria-label="Próximo Story"><span aria-hidden="true">&#10095;</span></button></div>
   </div>
 </div>

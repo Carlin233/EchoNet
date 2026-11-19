@@ -1,4 +1,39 @@
-# EchoNet — Stories e notificações em tempo real
+# EchoNet — versão otimizada para celular
+
+Esta versão mantém **Stories, notificações em tempo real, fotos de perfil, publicações, chat, login e SQLite** e melhora a interface responsiva. **Nenhuma tabela do banco de dados foi modificada** nesta atualização.
+
+## Melhorias para celulares
+
+- Fotos no feed exibidas em sua proporção natural, sem corte obrigatório para o quadrado. O limite de altura impede que uma única foto ocupe uma tela excessivamente longa.
+- Grade do perfil com miniaturas quadradas e controles de arquivar/excluir organizados **abaixo** da miniatura; avatar e estatísticas se adaptam às telas pequenas.
+- Ícones SVG incorporados à navegação, aos botões do feed, às abas do perfil, ao chat e aos controles dos Stories; esses botões não desaparecem quando uma biblioteca de ícones de terceiros falha.
+- Barra inferior e cabeçalho com áreas de toque adequadas e respeito à área segura (notch/gestos) dos celulares compatíveis.
+- Chat responsivo, com conversas sem estouro lateral; campo de envio preso à área visível. O ajuste via `visualViewport` ajuda quando o teclado virtual abre.
+- Janelas de criar postagem, editar perfil, Stories e notificações adaptadas à altura disponível, com rolagem interna quando necessário.
+- Campos de login, cadastro e recuperação maiores para evitar zoom automático no iPhone.
+
+### Como testar no celular
+
+Teste em um Android e/ou iPhone real, além de navegadores de computador: entre e saia da conta; abra o feed com fotos verticais e horizontais; publique um Story; abra notificações; edite a foto de perfil; abra e feche uma conversa; digite com o teclado na tela e confira se o botão de enviar fica acessível. Faça também o teste de rotação da tela. Diferentes sistemas/teclados podem se comportar de maneira distinta; uma verificação no aparelho real é recomendada.
+
+### Validação já realizada
+
+- Testes de integração existentes: **todos passaram** (`npm test`).
+- Verificação de layout renderizado para larguras de **320, 360, 390, 430, 768 e 1024 px**, nas telas de feed, perfil, mensagens e login: sem rolagem horizontal encontrada nas condições testadas.
+- Conversa aberta (larguras de 320, 360, 390 e 768 px): formulário visível e separado do cabeçalho, sem sobreposição. Stories e notificações também foram verificados em 320 e 390 px.
+- **Não** houve teste em aparelhos físicos ou no serviço Render do usuário. Após publicar, confira no navegador real.
+
+### Arquivos desta etapa
+
+- `public/css/mobile-optimizations.css`: regras responsivas carregadas depois do tema original.
+- `views/index.ejs`, `views/perfil.ejs`, `views/mensagens.ejs`, `views/login.html`, `views/resetar-senha.ejs`, `views/partials/sidebar.ejs`, `views/partials/stories.ejs`, `views/partials/notifications.ejs`: componentes móveis e ícones.
+- `public/js/feed.js` e `public/js/chat.js`: estados de ícones do feed e ajuste da altura do chat ao teclado virtual.
+
+**Implantação:** siga [ATUALIZAR_GITHUB_RENDER.md](ATUALIZAR_GITHUB_RENDER.md). Preserve suas variáveis `SESSION_SECRET` e `TRUST_PROXY=1` já configuradas no Render. **O projeto continua usando SQLite e uploads locais**: faça backup antes de publicar; o Render gratuito não garante persistência desses arquivos.
+
+---
+
+# Funcionalidades da versão anterior: Stories e notificações em tempo real
 
 **Versão atualizada do EchoNet com fotos de perfil**, agora com Stories de 24 horas e notificações em tempo real no site. Projeto Node.js 20+, Express, EJS e SQLite. O layout, cadastro, login, publicações, comentários, perfil, seguidores e mensagens anteriores foram mantidos.
 

@@ -1,0 +1,287 @@
+/* EchoNet • melhorias de proporção e ergonomia para celular.
+   Este arquivo deve ser carregado DEPOIS dos demais CSS. */
+
+/* Ícones SVG locais garantem botões visíveis mesmo sem CDN de fontes. */
+.ui-icon { width: 18px; height: 18px; flex: 0 0 auto; }
+.post-icon { width: 24px; height: 24px; flex: 0 0 auto; }
+.post-actions .post-icon, .post-header .post-icon { display: block; }
+.post-actions .btn-like.liked .post-icon,
+.post-actions .action-save.saved .post-icon { fill: currentColor; }
+.perfil-tab .ui-icon { width: 16px; height: 16px; }
+.perfil-avatar-camera .ui-icon { width: 15px; height: 15px; }
+.highlight-plus { font-size: 28px; font-weight: 400; line-height: 1; }
+/* Navegação principal não depende do carregamento do pacote de ícones externo. */
+.sidebar-link .nav-icon { display: block; width: 24px; height: 24px; flex: 0 0 auto; }
+.chat-notifications .nav-icon, .form-mensagem .nav-icon { width: 23px; height: 23px; }
+.mobile-header-back .nav-icon { width: 25px; height: 25px; }
+
+/* Evita que nomes, URLs e mídia forcem a tela a ficar mais larga. */
+html { max-width: 100%; -webkit-text-size-adjust: 100%; }
+body { max-width: 100%; }
+.app-content, .feed, .perfil-container, .mensagem-container { min-width: 0; }
+img, video { max-width: 100%; }
+button, input, textarea, select { font-family: inherit; }
+button, a, input, textarea { touch-action: manipulation; }
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--accent, #0095f6);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --mobile-header-height: calc(52px + env(safe-area-inset-top, 0px));
+    --mobile-nav-height: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body.app-layout { min-width: 0; }
+  .app-content { width: 100%; max-width: 100%; min-width: 0; }
+
+  /* Cabeçalho e navegação fixos, sem invadir o conteúdo. */
+  .mobile-header {
+    height: var(--mobile-header-height);
+    min-height: var(--mobile-header-height);
+    padding-top: env(safe-area-inset-top, 0px);
+    flex-shrink: 0;
+  }
+  .sidebar { height: var(--mobile-nav-height); min-width: 0; }
+  .sidebar-nav { height: 56px; min-width: 0; justify-content: space-evenly; }
+  .sidebar-nav > .sidebar-link {
+    flex: 1 1 0; min-width: 0; max-width: none;
+    height: 56px; min-height: 56px;
+    position: relative;
+  }
+  .sidebar-nav .sidebar-link i { font-size: 23px; }
+  .sidebar-profile-avatar { height: 26px; width: 26px; }
+  .notification-nav-button .notification-badge { top: 3px; right: max(2px, calc(50% - 25px)); }
+  .sidebar .logout-form { display: none; }
+
+  /* Feed sem cortes forçados: a foto mantém sua proporção natural. */
+  .main-feed, .feed { width: 100%; min-width: 0; }
+  .post-card { max-width: 100%; }
+  .post-header, .post-footer { min-width: 0; }
+  .post-header .author, .caption, .comment-content { overflow-wrap: anywhere; }
+  .post-avatar { flex: 0 0 34px; height: 34px; width: 34px; }
+  .post-header .post-more { min-height: 44px; min-width: 44px; display: grid; place-items: center; }
+  .post-image {
+    aspect-ratio: auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .post-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 70svh;
+    object-fit: contain;
+  }
+  .post-actions { gap: 2px; justify-content: flex-start; }
+  .post-actions button {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+  }
+  .post-actions .action-save { margin-left: auto; }
+  .post-comments-link { min-height: 40px; text-align: left; }
+  .comment-form { min-width: 0; }
+  .comment-form input { min-width: 0; width: 100%; }
+  .comment-form button { flex-shrink: 0; min-width: 60px; min-height: 44px; }
+
+  /* Stories sempre roláveis horizontalmente, sem estourar a largura. */
+  .stories-bar { width: 100%; max-width: 100%; overflow: hidden; }
+  .stories-scroll {
+    max-width: 100%; gap: 14px; padding: 0 12px;
+    scroll-padding-inline: 12px;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .story-item { min-width: 60px; max-width: 72px; }
+  .story-ring { flex-shrink: 0; }
+  .story-name { max-width: 68px; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Perfil: avatar circular, estatísticas distribuídas e grade regular. */
+  .perfil-page, .perfil-container { width: 100%; max-width: 100%; }
+  .perfil-header { min-width: 0; }
+  .perfil-mobile-top { min-width: 0; gap: clamp(10px, 4vw, 24px); }
+  .perfil-avatar-trigger, .perfil-avatar-ring { flex-shrink: 0; }
+  .perfil-stats-mobile { min-width: 0; gap: 4px; justify-content: space-between; }
+  .perfil-stats-mobile li { min-width: 0; flex: 1 1 0; font-size: 13px; text-align: center; }
+  .perfil-stats-mobile li span { font-size: 11px; overflow-wrap: anywhere; }
+  .perfil-username, .perfil-name, .perfil-bio-text { overflow-wrap: anywhere; }
+  .perfil-username { font-size: clamp(15px, 4.5vw, 20px); }
+  .perfil-actions-mobile { min-width: 0; }
+  .perfil-actions-mobile .perfil-btn { min-width: 0; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .perfil-tabs { min-width: 0; }
+  .perfil-tabs .perfil-tab { min-width: 0; min-height: 48px; }
+  .perfil-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3px;
+  }
+  .perfil-grid .grid-item {
+    min-width: 0;
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .perfil-grid .grid-item > a {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .perfil-grid .grid-item > a > img,
+  .perfil-grid .grid-item > img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .perfil-grid .grid-item > img { aspect-ratio: 1 / 1; height: auto; flex-shrink: 0; }
+  /* Controles não ficam cortados pela proporção quadrada da imagem. */
+  .perfil-grid .grid-item .perfil-post-controls {
+    position: static;
+    inset: auto;
+    flex-direction: row;
+    width: 100%;
+    gap: 2px;
+    padding: 2px 0 0;
+    background: var(--bg-card);
+  }
+  .perfil-grid .perfil-post-controls > button,
+  .perfil-grid .perfil-post-controls > form { min-width: 0; flex: 1 1 0; }
+  .perfil-grid .perfil-post-controls button {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: 4px 2px;
+    font-size: clamp(9px, 2.6vw, 12px);
+    line-height: 1.15;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .perfil-highlights { gap: 16px; }
+
+  /* Teclado, mensagens grandes e formulário de chat. */
+  body.chat-layout {
+    width: 100%;
+    height: var(--chat-visible-height, 100dvh);
+    min-height: 0;
+    overflow: hidden;
+  }
+  .chat-layout .app-content {
+    margin-left: 0 !important;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+  body.chat-list .app-content { margin-bottom: var(--mobile-nav-height); }
+  body.chat-conversation .app-content { margin-bottom: 0; }
+  .chat-layout .lista-contatos,
+  .chat-layout .mensagem-container { min-width: 0; min-height: 0; }
+  .lista-contatos { overscroll-behavior: contain; }
+  .lista-contatos a { gap: 12px; min-width: 0; }
+  .lista-contatos a img { width: 52px; height: 52px; margin-right: 0; flex-shrink: 0; }
+  .contato-info { min-width: 0; }
+  .contato-info .nome, .contato-info .preview { overflow-wrap: anywhere; }
+  .chat-box {
+    min-height: 0;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 16px;
+  }
+  .msg { max-width: min(84%, 460px); white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+  .form-mensagem { min-width: 0; padding-inline: 10px; }
+  .form-mensagem input[type="text"] { min-width: 0; width: 100%; font-size: 16px; }
+  .form-mensagem button { width: 48px; min-width: 48px; min-height: 48px; padding: 8px; }
+  /* Voltar, avatar e título não se sobrepõem em conversas abertas. */
+  .mobile-header.mobile-header-chat {
+    padding-left: 56px;
+    padding-right: 8px;
+    gap: 8px;
+  }
+  .mobile-header-chat .mobile-header-back { left: 6px; width: 44px; }
+  .mobile-header-chat .chat-header-avatar { width: 30px; height: 30px; }
+  .mobile-header-chat .mobile-header-title {
+    min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-align: left; padding-right: 0 !important;
+  }
+  .mobile-header-chat .chat-header-avatar { flex-shrink: 0; }
+  .mobile-header-chat .chat-notifications { flex-shrink: 0; min-width: 44px; min-height: 44px; margin: 0 4px 0 0; }
+
+  /* Janelas utilizáveis com telas pequenas e com o teclado aberto. */
+  .modal-conteudo.estilizado,
+  .profile-edit-dialog,
+  .modal-content {
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .profile-edit-dialog { width: calc(100vw - 20px); max-width: 440px; padding: 20px 16px; }
+  .profile-edit-dialog input,
+  .profile-edit-dialog textarea,
+  #formPostagem textarea { font-size: 16px; }
+  .edit-avatar-section { min-width: 0; }
+  .edit-avatar-fields { min-width: 0; }
+  #avatarUploadForm { min-width: 0; }
+  .upload-area .preview { object-fit: contain; }
+  .notifications-panel { max-width: 100%; }
+  .notifications-header { padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
+  .notification-row { min-width: 0; }
+  .story-modal { max-width: 100%; }
+  .story-viewer { height: 100dvh; width: 100vw; max-width: 100%; }
+  .story-viewer-header { padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
+  .story-viewer-header a { min-width: 0; overflow-wrap: anywhere; }
+  .story-viewer-header button,
+  .story-create-header button { min-width: 44px; min-height: 44px; }
+  .story-viewer-nav button { min-width: 44px; min-height: 44px; }
+  .story-viewer-caption { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .story-create-box { max-height: calc(100dvh - env(safe-area-inset-top, 0px)); padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+
+  /* Login, cadastro e recuperação: sem zoom forçado no iOS. */
+  .login-page, .reset-page { min-height: 100dvh; max-width: 100%; }
+  .login-wrapper, .login-forms, .form-box, .signup-box, .reset-box { min-width: 0; }
+  .login-form input,
+  .form-box input[type="email"],
+  .form-box input[type="password"],
+  .form-box input[type="text"],
+  .modal-content input,
+  .reset-box input { font-size: 16px; min-height: 44px; }
+  .login-form button[type="submit"],
+  .modal-content button[type="submit"],
+  .reset-box button { min-height: 44px; }
+  .modal-content { width: min(100%, 400px); }
+}
+
+@media (max-width: 450px) {
+  .login-page { padding: max(16px, env(safe-area-inset-top, 0px)) 0 max(16px, env(safe-area-inset-bottom, 0px)); align-items: center; }
+  .form-box { padding: 26px 22px 18px; }
+  .signup-box { padding: 16px; }
+  .reset-page { padding-inline: 12px; }
+  .reset-box { padding: 28px 22px; }
+  .modal-content { padding: 24px 18px; }
+  .perfil-header { padding: 14px 12px; }
+  .perfil-mobile-top { gap: 8px; }
+  .perfil-stats-mobile li span { font-size: 10px; }
+}
+
+@media (max-width: 350px) {
+  .perfil-avatar-ring { width: 66px; height: 66px; }
+  .perfil-avatar { width: 60px; height: 60px; }
+  .perfil-stats-mobile li { font-size: 12px; }
+  .perfil-stats-mobile li span { font-size: 10px; }
+  .perfil-header { padding-inline: 8px; }
+  .story-ring { width: 52px; height: 52px; }
+  .story-ring img { width: 46px; height: 46px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-box { scroll-behavior: auto; }
+}

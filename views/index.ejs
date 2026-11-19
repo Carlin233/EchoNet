@@ -6,6 +6,7 @@
   <title>Feed • EchoNet</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="/css/stories-notifications.css" /><link rel="stylesheet" href="/css/global.css" /><link rel="stylesheet" href="/css/sidebar.css" /><link rel="stylesheet" href="/css/feed.css" /><link rel="stylesheet" href="/css/modal.css" /><link rel="stylesheet" href="/css/responsive.css" /><link rel="stylesheet" href="/css/functions.css" />
+  <link rel="stylesheet" href="/css/mobile-optimizations.css" />
 </head>
 <body class="app-layout">
   <%- include('partials/sidebar') %>
@@ -19,14 +20,14 @@
       <% if (!posts.length) { %><div class="feed-empty"><i class="fa-regular fa-images"></i><p>Nenhuma publicação ainda.</p><p>Crie a primeira foto para começar!</p></div><% } %>
       <% posts.forEach(post => { %>
       <article class="post-card" id="post-<%= post.id %>" data-post-id="<%= post.id %>">
-        <div class="post-header"><img src="<%= post.author_avatar || '/img/default-avatar.svg' %>" alt="" class="post-avatar" /><a class="author" href="/perfil/<%= encodeURIComponent(post.usuario) %>"><%= post.usuario %></a><button type="button" class="post-more" title="Copiar link da publicação" aria-label="Copiar link"><i class="fa-solid fa-ellipsis"></i></button></div>
+        <div class="post-header"><img src="<%= post.author_avatar || '/img/default-avatar.svg' %>" alt="" class="post-avatar" /><a class="author" href="/perfil/<%= encodeURIComponent(post.usuario) %>"><%= post.usuario %></a><button type="button" class="post-more" title="Copiar link da publicação" aria-label="Copiar link"><svg class="post-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="19" cy="12" r="1" fill="currentColor"/></svg></button></div>
         <div class="post-image"><img src="<%= post.imagem %>" alt="Publicação de <%= post.usuario %>" loading="lazy" /></div>
         <div class="post-footer">
           <div class="post-actions">
-            <button type="button" class="btn-like <%= post.liked ? 'liked' : '' %>" aria-label="Curtir" aria-pressed="<%= Boolean(post.liked) %>"><i class="<%= post.liked ? 'fa-solid' : 'fa-regular' %> fa-heart"></i></button>
-            <button type="button" class="btn-comment" aria-label="Comentar"><i class="fa-regular fa-comment"></i></button>
-            <button type="button" class="btn-share" aria-label="Compartilhar"><i class="fa-regular fa-paper-plane"></i></button>
-            <button type="button" class="action-save <%= post.saved ? 'saved' : '' %>" aria-label="Salvar publicação" aria-pressed="<%= Boolean(post.saved) %>" title="<%= post.saved ? 'Remover dos salvos' : 'Salvar' %>"><i class="<%= post.saved ? 'fa-solid' : 'fa-regular' %> fa-bookmark"></i></button>
+            <button type="button" class="btn-like <%= post.liked ? 'liked' : '' %>" aria-label="Curtir" aria-pressed="<%= Boolean(post.liked) %>"><svg class="post-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
+            <button type="button" class="btn-comment" aria-label="Comentar"><svg class="post-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4.1-1L3 21l1.7-5A8.5 8.5 0 1 1 21 11.5Z"/></svg></button>
+            <button type="button" class="btn-share" aria-label="Compartilhar"><svg class="post-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7.5 20-4.5-8-8-4.5L22 2Z"/><path d="M22 2 10 14"/></svg></button>
+            <button type="button" class="action-save <%= post.saved ? 'saved' : '' %>" aria-label="Salvar publicação" aria-pressed="<%= Boolean(post.saved) %>" title="<%= post.saved ? 'Remover dos salvos' : 'Salvar' %>"><svg class="post-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4V3Z"/></svg></button>
           </div>
           <div class="post-likes"><span class="like-count"><%= post.like_count %></span> curtidas</div>
           <div class="caption"><a href="/perfil/<%= encodeURIComponent(post.usuario) %>" class="author-name"><%= post.usuario %></a> <%= post.legenda %></div>
@@ -42,6 +43,6 @@
   <%- include('partials/modal-post') %>
   <%- include('partials/notifications') %>
   <%- include('partials/stories') %>
-  <script src="/js/common.js" defer></script><script src="/js/notifications.js" defer></script><script src="/js/stories.js" defer></script><script src="/js/feed.js" defer></script>
+  <script src="/js/common.js" defer></script><script src="/js/notifications.js" defer></script><script src="/js/stories.js" defer></script><script src="/js/feed.js?v=mobile-202611" defer></script>
 </body>
 </html>

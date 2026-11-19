@@ -51,7 +51,8 @@
     function setIcon(button, active, iconName, activeClass) {
       button.classList.toggle(activeClass, active);
       button.setAttribute('aria-pressed', String(active));
-      button.querySelector('i').className = `${active ? 'fa-solid' : 'fa-regular'} fa-${iconName}`;
+      // O SVG mantém sua forma; o estado é indicado por preenchimento via CSS.
+      button.dataset.icon = iconName;
     }
     like?.addEventListener('click', async () => {
       like.disabled = true;

@@ -3,6 +3,25 @@
   const chatBox = document.getElementById('chatBox');
   const form = document.getElementById('formMensagem');
   if (!chatBox || !form) return;
+  // Em navegadores móveis, o teclado pode reduzir a área visível sem
+  // atualizar 100vh. Ajusta a altura do chat ao VisualViewport real.
+  if (window.visualViewport) {
+    let raf = 0;
+    const syncChatViewport = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        if (!window.matchMedia('(max-width: 768px)').matches) {
+          document.body.style.removeProperty('--chat-visible-height');
+          return;
+        }
+        const viewport = window.visualViewport;
+        document.body.style.setProperty('--chat-visible-height', `${Math.round(viewport.height)}px`);
+      });
+    };
+    window.visualViewport.addEventListener('resize', syncChatViewport, { passive: true });
+    window.addEventListener('resize', syncChatViewport, { passive: true });
+    syncChatViewport();
+  }
   const other = form.elements.destinatario.value;
   let lastMessage = 0;
   let fetching = false;
