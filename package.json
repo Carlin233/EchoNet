@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "Rede social EchoNet: feed, perfil, mensagens e interações com SQLite",
+  "description": "Rede social EchoNet: banco SQLite local ou Turso e imagens Cloudinary para deploy durável",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
@@ -19,7 +19,9 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "multer": "^2.0.1",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "@libsql/client": "^0.18.0",
+    "cloudinary": "^2.5.0"
   },
   "engines": {
     "node": ">=20"

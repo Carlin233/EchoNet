@@ -6,7 +6,7 @@ const os = require('os');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = process.env.TURSO_DATABASE_URL ? null : require('sqlite3').verbose();
 const multer = require('multer');
 
 const app = express();
@@ -17,22 +17,84 @@ const SESSION_SECRET = process.env.SESSION_SECRET || (IN_PRODUCTION ? '' : 'DEV_
 if (!SESSION_SECRET || (IN_PRODUCTION && SESSION_SECRET.length < 32)) {
   throw new Error('Configure SESSION_SECRET com pelo menos 32 caracteres para produção.');
 }
-const DB_PATH = process.env.DB_PATH || path.join(ROOT, 'database.sqlite');
-const UPLOAD_DIR = path.resolve(process.env.UPLOAD_DIR || path.join(ROOT, 'public', 'uploads'));
+// O EchoNet pode usar SQLite em disco persistente ou Turso remoto (libSQL).
+// IMPORTANTE: somente definir DB_PATH/UPLOAD_DIR não cria um disco persistente no Render.
+const DATA_DIR = process.env.PERSISTENT_DATA_DIR ? path.resolve(process.env.PERSISTENT_DATA_DIR) : '';
+const DB_PATH = process.env.DB_PATH || (DATA_DIR ? path.join(DATA_DIR, 'database.sqlite') : path.join(ROOT, 'database.sqlite'));
+const UPLOAD_DIR = path.resolve(process.env.UPLOAD_DIR || (DATA_DIR ? path.join(DATA_DIR, 'uploads') : path.join(ROOT, 'public', 'uploads')));
 const AVATAR_DIR = path.join(UPLOAD_DIR, 'avatars');
 const STORY_DIR = path.join(UPLOAD_DIR, 'stories');
+const REMOTE_DATABASE = Boolean(process.env.TURSO_DATABASE_URL);
+const CLOUD_IMAGES = Boolean(process.env.CLOUDINARY_URL);
+if (REMOTE_DATABASE && !process.env.TURSO_AUTH_TOKEN) throw new Error('Falta TURSO_AUTH_TOKEN.');
+if (REMOTE_DATABASE && !CLOUD_IMAGES && IN_PRODUCTION) throw new Error('Configure CLOUDINARY_URL para manter fotos e Stories após deploy.');
+if (IN_PRODUCTION && process.env.REQUIRE_PERSISTENCE === '1' && !REMOTE_DATABASE && !DATA_DIR && !(process.env.DB_PATH && process.env.UPLOAD_DIR)) {
+  throw new Error('Sem armazenamento durável: configure Turso + Cloudinary ou disco persistente do Render.');
+}
+if (IN_PRODUCTION && !REMOTE_DATABASE && !DATA_DIR && !(process.env.DB_PATH && process.env.UPLOAD_DIR)) {
+  console.warn('[AVISO] SQLite e uploads no disco temporário: contas, posts e fotos podem sumir após redeploy.');
+}
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 fs.mkdirSync(AVATAR_DIR, { recursive: true });
 fs.mkdirSync(STORY_DIR, { recursive: true });
-const db = new sqlite3.Database(DB_PATH);
-db.configure('busyTimeout', 5000);
-const run = (sql, params = []) => new Promise((resolve, reject) => db.run(sql, params, function (err) { err ? reject(err) : resolve({ changes: this.changes, lastID: this.lastID }); }));
-const get = (sql, params = []) => new Promise((resolve, reject) => db.get(sql, params, (err, row) => err ? reject(err) : resolve(row)));
-const all = (sql, params = []) => new Promise((resolve, reject) => db.all(sql, params, (err, rows) => err ? reject(err) : resolve(rows)));
+if (!REMOTE_DATABASE) fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+const db = REMOTE_DATABASE
+  ? require('@libsql/client').createClient({ url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN })
+  : new sqlite3.Database(DB_PATH);
+if (!REMOTE_DATABASE) db.configure('busyTimeout', 5000);
+const cloudinary = CLOUD_IMAGES ? require('cloudinary').v2 : null;
+if (cloudinary) cloudinary.config({ secure: true });
+const run = (sql, params = []) => REMOTE_DATABASE
+  ? db.execute({ sql, args: params }).then(r => ({ changes: r.rowsAffected, lastID: r.lastInsertRowid ? Number(r.lastInsertRowid) : undefined }))
+  : new Promise((resolve, reject) => db.run(sql, params, function (err) { err ? reject(err) : resolve({ changes: this.changes, lastID: this.lastID }); }));
+const get = (sql, params = []) => REMOTE_DATABASE
+  ? db.execute({ sql, args: params }).then(r => r.rows[0] ? { ...r.rows[0] } : undefined)
+  : new Promise((resolve, reject) => db.get(sql, params, (err, row) => err ? reject(err) : resolve(row)));
+const all = (sql, params = []) => REMOTE_DATABASE
+  ? db.execute({ sql, args: params }).then(r => r.rows.map(row => ({ ...row })))
+  : new Promise((resolve, reject) => db.all(sql, params, (err, rows) => err ? reject(err) : resolve(rows)));
+
+// Arquivos de usuários são armazenados no Cloudinary quando configurado.
+async function saveMedia(file, folder) {
+  if (!cloudinary) return `/uploads/${folder === 'posts' ? '' : `${folder}/`}${file.filename}`;
+  try {
+    const uploaded = await cloudinary.uploader.upload(file.path, {
+      folder: `echonet/${folder}`, resource_type: 'image', use_filename: false, unique_filename: true, overwrite: false
+    });
+    if (!uploaded.secure_url || !uploaded.secure_url.startsWith('https://res.cloudinary.com/')) throw new Error('Upload externo sem URL HTTPS válida.');
+    return uploaded.secure_url;
+  } finally {
+    await fs.promises.unlink(file.path).catch(() => {});
+  }
+}
+async function removeMedia(imagePath, folder) {
+  if (typeof imagePath !== 'string' || !['posts', 'avatars', 'stories'].includes(folder)) return;
+  if (cloudinary && imagePath.startsWith('https://res.cloudinary.com/')) {
+    const expectedCloud = cloudinary.config().cloud_name;
+    try {
+      const url = new URL(imagePath);
+      if (url.hostname !== 'res.cloudinary.com') return;
+      const prefix = `/${expectedCloud}/image/upload/`;
+      if (!url.pathname.startsWith(prefix)) return;
+      const remainder = url.pathname.slice(prefix.length).replace(/^v\d+\//, '');
+      if (!new RegExp(`^echonet/${folder}/[a-zA-Z0-9_/-]+\.(jpg|jpeg|png|webp|gif)$`).test(remainder)) return;
+      const publicId = remainder.replace(/\.[^.]+$/, '');
+      await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+    } catch (err) { console.error('Falha ao limpar imagem externa:', err.message); }
+    return;
+  }
+  const prefix = folder === 'posts' ? '/uploads/' : `/uploads/${folder}/`;
+  if (imagePath.startsWith(prefix) && /^[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp|gif)$/.test(imagePath.slice(prefix.length))) {
+    const target = folder === 'posts' ? UPLOAD_DIR : folder === 'avatars' ? AVATAR_DIR : STORY_DIR;
+    await fs.promises.unlink(path.join(target, path.basename(imagePath))).catch(() => {});
+  }
+}
 
 async function initialize() {
-  await run('PRAGMA journal_mode = WAL');
-  await run('PRAGMA foreign_keys = ON');
+  if (!REMOTE_DATABASE) {
+    await run('PRAGMA journal_mode = WAL');
+    await run('PRAGMA foreign_keys = ON');
+  }
   await run(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL, ultimo_ativo DATETIME)`);
   await run(`CREATE TABLE IF NOT EXISTS posts (id INTEGER PRIMARY KEY AUTOINCREMENT, imagem TEXT NOT NULL, legenda TEXT NOT NULL, usuario TEXT NOT NULL, criado_em DATETIME DEFAULT CURRENT_TIMESTAMP)`);
   await run(`CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, remetente TEXT NOT NULL, destinatario TEXT NOT NULL, conteudo TEXT NOT NULL, enviado_em DATETIME DEFAULT CURRENT_TIMESTAMP)`);
@@ -171,9 +233,7 @@ async function purgeExpiredStories() {
   const expired = await all("SELECT image_path FROM stories WHERE expires_at <= datetime('now')");
   await run("DELETE FROM stories WHERE expires_at <= datetime('now')");
   for (const { image_path: pathName } of expired) {
-    if (typeof pathName === 'string' && /^\/uploads\/stories\/[a-zA-Z0-9_-]+\.(jpg|png|webp|gif)$/.test(pathName)) {
-      await fs.promises.unlink(path.join(STORY_DIR, path.basename(pathName))).catch(() => {});
-    }
+    await removeMedia(pathName, 'stories');
   }
 }
 
@@ -289,11 +349,7 @@ const avatarStorage = multer.diskStorage({
   filename: (req, file, cb) => cb(null, `${Date.now()}_${crypto.randomBytes(12).toString('hex')}${({ 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif' })[file.mimetype] || ''}`)
 });
 const uploadAvatar = multer({ storage: avatarStorage, limits: { fileSize: 3 * 1024 * 1024, files: 1 }, fileFilter: (req, file, cb) => ({ 'image/jpeg': 1, 'image/png': 1, 'image/webp': 1, 'image/gif': 1 })[file.mimetype] ? cb(null, true) : cb(new Error('Envie apenas JPG, PNG, WebP ou GIF.')) });
-const safeDeleteAvatar = avatar => {
-  // Nunca remove arquivos de publicações, caminhos arbitrários ou avatar padrão.
-  if (typeof avatar !== 'string' || !/^\/uploads\/avatars\/[a-zA-Z0-9_-]+\.(jpg|png|webp|gif)$/.test(avatar)) return Promise.resolve();
-  return fs.promises.unlink(path.join(AVATAR_DIR, path.basename(avatar))).catch(() => {});
-};
+const safeDeleteAvatar = avatar => removeMedia(avatar, 'avatars');
 function isRealImage(filepath, type) {
   const b = Buffer.alloc(16); const fd = fs.openSync(filepath, 'r');
   try { fs.readSync(fd, b, 0, 16, 0); } finally { fs.closeSync(fd); }
@@ -338,9 +394,12 @@ app.post('/api/stories', requireLogin,
     const count = await get("SELECT COUNT(*) AS count FROM stories WHERE user_id=? AND expires_at>datetime('now')", [req.session.user.id]);
     if (count.count >= 20) return fail(429,'Limite de 20 Stories ativos por usuário.');
     try {
-      const result = await run("INSERT INTO stories(user_id,image_path,caption,expires_at) VALUES(?,?,?,datetime('now','+24 hours'))",
-        [req.session.user.id,`/uploads/stories/${file.filename}`,caption]);
-      res.status(201).json({ success: true, id: result.lastID, message: 'Story publicado por 24 horas!' });
+      const imagePath = await saveMedia(file, 'stories');
+      try {
+        const result = await run("INSERT INTO stories(user_id,image_path,caption,expires_at) VALUES(?,?,?,datetime('now','+24 hours'))",
+          [req.session.user.id,imagePath,caption]);
+        res.status(201).json({ success: true, id: result.lastID, message: 'Story publicado por 24 horas!' });
+      } catch (dbError) { await removeMedia(imagePath, 'stories'); throw dbError; }
     } catch (error) { await fs.promises.unlink(file.path).catch(() => {}); throw error; }
   }));
 app.post('/api/stories/:id/view', requireLogin, withErrors(async (req,res) => {
@@ -355,8 +414,7 @@ app.delete('/api/stories/:id', requireLogin, withErrors(async (req,res) => {
   const story = await get('SELECT image_path FROM stories WHERE id=? AND user_id=?',[req.params.id,req.session.user.id]);
   if (!story) return res.sendStatus(404);
   await run('DELETE FROM stories WHERE id=?',[req.params.id]);
-  if (/^\/uploads\/stories\/[a-zA-Z0-9_-]+\.(jpg|png|webp|gif)$/.test(story.image_path))
-    await fs.promises.unlink(path.join(STORY_DIR,path.basename(story.image_path))).catch(() => {});
+  await removeMedia(story.image_path, 'stories');
   res.json({ success: true });
 }));
 
@@ -364,14 +422,15 @@ app.post('/api/perfil/avatar', requireLogin,
   (req, res, next) => uploadAvatar.single('avatar')(req, res, err => err ? next(err) : next()),
   withErrors(async (req, res) => {
     if (!req.file) return res.status(400).json({ success: false, message: 'Escolha uma foto de perfil.' });
-    const newImage = `/uploads/avatars/${req.file.filename}`;
     if (!isRealImage(req.file.path, req.file.mimetype)) {
       await fs.promises.unlink(req.file.path).catch(() => {});
       return res.status(400).json({ success: false, message: 'O arquivo não é uma imagem válida.' });
     }
     try {
       const old = await get('SELECT avatar FROM users WHERE id=?', [req.session.user.id]);
-      await run('UPDATE users SET avatar=? WHERE id=?', [newImage, req.session.user.id]);
+      const newImage = await saveMedia(req.file, 'avatars');
+      try { await run('UPDATE users SET avatar=? WHERE id=?', [newImage, req.session.user.id]); }
+      catch (dbError) { await removeMedia(newImage, 'avatars'); throw dbError; }
       await safeDeleteAvatar(old?.avatar);
       res.json({ success: true, avatar: newImage, message: 'Foto de perfil atualizada!' });
     } catch (e) { await fs.promises.unlink(req.file.path).catch(() => {}); throw e; }
@@ -391,7 +450,9 @@ app.post('/postar', requireLogin, (req, res, next) => upload.single('imagem')(re
   if (!req.file || !legenda || legenda.length > 2000) return fail(400, 'Selecione uma imagem e uma legenda (até 2.000 caracteres).');
   if (!isRealImage(pathname, req.file.mimetype)) return fail(400, 'O arquivo não é uma imagem válida.');
   try {
-    await run('INSERT INTO posts(imagem,legenda,usuario) VALUES(?,?,?)', [`/uploads/${req.file.filename}`, legenda, req.session.user.username]);
+    const imagePath = await saveMedia(req.file, 'posts');
+    try { await run('INSERT INTO posts(imagem,legenda,usuario) VALUES(?,?,?)', [imagePath, legenda, req.session.user.username]); }
+    catch (dbError) { await removeMedia(imagePath, 'posts'); throw dbError; }
   } catch (e) { await fs.promises.unlink(pathname).catch(() => {}); throw e; }
   res.json({ success: true, message: 'Publicação criada.' });
 }));
@@ -399,8 +460,7 @@ app.post('/deletar-post/:id', requireLogin, withErrors(async (req, res) => {
   const post = validId(req.params.id) && await get('SELECT * FROM posts WHERE id=? AND usuario=?', [req.params.id, req.session.user.username]);
   if (!post) return res.status(404).send('Publicação não encontrada ou não autorizada.');
   await run('DELETE FROM posts WHERE id=?', [post.id]);
-  const filename = path.basename(post.imagem || '');
-  if (filename && post.imagem.startsWith('/uploads/')) await fs.promises.unlink(path.join(UPLOAD_DIR, filename)).catch(() => {});
+  await removeMedia(post.imagem, 'posts');
   res.redirect('/perfil');
 }));
 app.post('/api/posts/:id/archive', requireLogin, withErrors(async (req, res) => {
