@@ -101,5 +101,5 @@
   };
   loadOnline();
   if (list) setInterval(() => { if (!document.hidden) loadOnline(); }, 30000);
-  document.getElementById('abrirModalStory')?.addEventListener('click', e => { e.preventDefault(); document.getElementById('abrirModal')?.click(); });
+
 })();

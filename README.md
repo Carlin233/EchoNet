@@ -1,79 +1,80 @@
-# EchoNet — versão otimizada com foto de perfil
+# EchoNet — Stories e notificações em tempo real
 
-Projeto Node.js + Express 5 + EJS + SQLite. Mantém o estilo visual original e transforma interações anteriormente simuladas em funcionalidades persistidas no banco de dados.
+**Versão atualizada do EchoNet com fotos de perfil**, agora com Stories de 24 horas e notificações em tempo real no site. Projeto Node.js 20+, Express, EJS e SQLite. O layout, cadastro, login, publicações, comentários, perfil, seguidores e mensagens anteriores foram mantidos.
 
-## Executar localmente
+## Novidades
 
-1. Instale **Node.js 20 ou superior**.
-2. Extraia este ZIP, abra um terminal na pasta do projeto e rode `npm ci` (ou `npm install`). **Não copie a pasta `node_modules` do RAR anterior**: ela contém binários compilados para Windows e pode falhar em outro sistema.
-3. Configure a variável `SESSION_SECRET` com uma chave aleatória grande se o sistema for acessado por outras pessoas. Em modo de desenvolvimento local, uma chave temporária é usada apenas para facilitar testes.
-4. Execute `npm start` e abra `http://localhost:3000`.
-5. Execute `npm test` para testar cadastro, login, CSRF, upload de imagens e avatares, curtidas, comentários, salvar, seguir, mensagens, perfil, arquivo e autorização. Os testes criam seu próprio banco SQLite temporário, sem alterar suas contas reais.
+### Stories
 
-### Windows (PowerShell)
+- Criar Story de imagem JPG, PNG, WebP ou GIF com até **5 MB** e legenda opcional de até **200 caracteres**.
+- Stories expiram automaticamente **24 horas** após a publicação. O servidor remove periodicamente os registros e arquivos expirados.
+- Círculos na parte superior do feed: clicar para assistir; usar setas para avançar e voltar; fechar com Esc; avanço automático a cada 6 segundos.
+- O autor pode excluir seus Stories e consultar o número de visualizações. Cada espectador conta apenas uma vez, e o próprio autor não conta.
+- Máximo de 20 Stories ativos por usuário para limitar abuso.
+- As imagens ficam em `public/uploads/stories/` por padrão. O banco guarda seus metadados; os arquivos **não** são incluídos no repositório Git.
 
-```powershell
-npm ci
-$env:SESSION_SECRET="substitua-por-uma-chave-com-mais-de-32-caracteres"
-npm start
-```
+### Notificações em tempo real
 
-### Linux/macOS
+- Sineta com contador de avisos não lidos no menu (desktop e celular).
+- Avisos de **curtida, comentário, novo seguidor e mensagem recebida**.
+- Os avisos são privados, persistidos no SQLite, abrem a página relacionada e podem ser marcados como lidos individualmente ou todos de uma vez.
+- Atualização automática via **Server-Sent Events (SSE)** com reconexão do navegador; consulta de segurança a cada 45 segundos quando a página está visível.
+- **Atenção:** são notificações **dentro do EchoNet com a página aberta**. Não são notificações push do celular com o navegador fechado. A conexão SSE da versão atual foi projetada para **uma instância do servidor**. Para múltiplas instâncias, o sinal em tempo real deve usar Redis/pub-sub ou infraestrutura compartilhada.
+
+## Iniciar no computador
 
 ```bash
 npm ci
-export SESSION_SECRET="substitua-por-uma-chave-com-mais-de-32-caracteres"
 npm start
 ```
 
-## Usar suas contas e publicações antigas
+Acesse `http://localhost:3000`. Para testes: `npm test`.
 
-**Faça um backup do projeto original primeiro.** Com o servidor desligado:
+**Recomendado:** Node.js 22 LTS. Se o `sqlite3` não tiver binário pré-compilado para o seu sistema, a instalação pode precisar compilar componentes nativos.
 
-1. Copie seu arquivo `database.sqlite` do projeto original para a pasta desta versão, substituindo o banco criado automaticamente, se houver.
-2. Se os arquivos de `public/uploads/` não tiverem sido copiados, transfira essa pasta do projeto anterior para preservar fotos das publicações.
-3. Execute `npm start`. O sistema adicionará automaticamente a coluna `avatar` e demais atualizações sem apagar contas, posts e conversas existentes.
-4. Caso já tenha usado fotos de perfil nesta versão, preserve também `public/uploads/avatars/` ao migrar de computador.
+O servidor cria as tabelas `stories`, `story_views` e `notifications` automaticamente, **sem apagar suas tabelas antigas**. Faça backup do `database.sqlite` e das imagens antes de implantar.
 
-**ATENÇÃO:** os dados originais (contas, senhas em hash, conversas e tokens) foram intencionalmente **excluídos** deste ZIP para não redistribuir informações pessoais. A pasta de fotos originalmente anexada foi mantida no projeto, mas deve ser armazenada de maneira privada. Links de redefinição de senha antigos deixam de funcionar após a migração, por segurança.
+## Atualizar GitHub e Render
 
-## Funcionalidades implementadas
+Siga o arquivo [ATUALIZAR_GITHUB_RENDER.md](ATUALIZAR_GITHUB_RENDER.md). Use um clone atualizado do seu repositório em vez de `git init` ou `git push --force`.
 
-- Cadastro e login com validação, hash de senha, sessão regenerada e proteção CSRF.
-- Feed de fotos com limite de tamanho de upload de 5 MB e validação de tipo.
-- Curtir/descurtir, comentar, salvar/remover, compartilhar links (navegador/área de transferência).
-- Seguir/deixar de seguir e contadores de seguidores/seguindo.
-- Visualizar perfis, editar nome de exibição e biografia.
-- **Fotos de perfil:** enviar, substituir e remover imagens JPG, PNG, WebP ou GIF com até **3 MB**. A imagem fica salva no SQLite como um caminho de arquivo e no disco em `public/uploads/avatars/`. Quem não tem foto usa a imagem padrão.
-- A foto aparece no perfil (desktop e mobile), no feed, na barra de usuários, nos comentários, nas sugestões e na lista/cabeçalho do chat. As pessoas só podem alterar a própria foto.
-- Publicar, arquivar/restaurar e excluir apenas posts próprios.
-- Perfil com abas de publicações, salvos e arquivo.
-- Mensagens privadas com envio via API, atualização a cada 5 segundos e consulta limitada às conversas do usuário.
-- Indicação aproximada de quem está online, com atualização periódica.
-- Proteção básica contra excesso de tentativas de login, cadastro e recuperação.
+### Variáveis de ambiente
 
-## Como trocar a foto de perfil
+| Variável | Uso |
+|---|---|
+| `SESSION_SECRET` | Obrigatória em produção. Chave aleatória com pelo menos 32 caracteres. Nunca publicar. |
+| `NODE_ENV` | `production` em produção. |
+| `TRUST_PROXY` | `1` atrás do proxy HTTPS confiável do Render. |
+| `DB_PATH` | Opcional. Local do banco SQLite; padrão: `./database.sqlite`. |
+| `UPLOAD_DIR` | Opcional. Pasta de uploads; padrão: `./public/uploads`. |
+| `PORT` | Definida automaticamente pelo Render. |
 
-1. Entre com sua conta e abra **Perfil**.
-2. Clique/toque na foto circular (ícone da câmera) ou em **Editar perfil**.
-3. Clique em **Escolher foto**, selecione uma imagem de até 3 MB e confira a prévia.
-4. Clique em **Salvar foto**. A página atualiza com sua nova imagem.
-5. Para voltar à foto padrão, abra o mesmo menu e clique em **Remover foto atual**.
+### Muito importante: dados persistentes no Render
 
-**Atenção:** não use o formulário de "Nova foto"/"Criar publicação" para atualizar o avatar; aquele é para os posts. Faça backup do banco SQLite **e** da pasta `public/uploads/` para preservar todas as imagens na migração. Não envie arquivos desconhecidos.
+**Este EchoNet ainda usa SQLite e imagens salvas no disco.** O armazenamento de arquivos do Render é temporário por padrão. No plano grátis, banco SQLite, usuários, mensagens, Stories e imagens enviados após o deploy podem desaparecer em reinicializações, suspensão ou novos deploys. Um serviço pago com disco persistente ou a migração para banco e armazenamento externos é necessária para manter tudo com segurança.
 
-## Limitações e etapas de produção
+Se o serviço tiver um **disco persistente pago** montado em `/var/data`, configure:
 
-- **Recuperação de senha:** no desenvolvimento, o link é exibido **no terminal do servidor** se o endereço pertencer a uma conta. Em produção ela fica desativada com aviso explícito, pois um provedor de envio de e-mail ainda precisa ser integrado. A aplicação **não diz que enviou um e-mail quando não enviou**.
-- **Sessões:** o armazenamento padrão em memória é apropriado para demonstração/testes, não para produção com vários processos ou reinicializações. Configure armazenamento persistente de sessão antes de implantar publicamente.
-- **Hospedagem:** exige HTTPS, segredo forte, backups e regras adequadas de acesso aos arquivos de upload. O sistema não foi auditado independentemente para produção.
-- **Stories e Reels:** o código original só mostrava elementos visuais, sem tabelas ou fluxo de vídeos/stories. O círculo principal agora abre a publicação de fotos e os demais levam a perfis. Para Stories/Reels reais seria necessário desenvolver upload, expiração, player e moderação específicos.
-- Curtidas e salvos antigos guardados somente em `localStorage` do navegador não são migrados automaticamente para o banco, pois não estavam no servidor.
+```
+DB_PATH=/var/data/database.sqlite
+UPLOAD_DIR=/var/data/uploads
+```
 
-## Estrutura
+**Não mude essas variáveis se já existem contas ou fotos no ambiente sem migrar antes o banco e os uploads para o disco.** O disco não faz cópia automática dos dados existentes. O `UPLOAD_DIR` fora da pasta de código é servido pela aplicação em `/uploads`. Se o aplicativo estiver no plano gratuito, não configure caminhos persistentes inexistentes e não considere o armazenamento local durável.
 
-- `server.js`: inicialização/migração do banco, rotas e validações.
-- `views/`: páginas EJS e modais.
-- `public/css/`: visual original e ajustes funcionais em `functions.css`.
-- `public/js/`: `common.js`, `feed.js`, `chat.js`, `profile.js`.
-- `test/integration.js`: bateria de testes HTTP com SQLite temporário.
+As sessões ainda usam `express-session` com armazenamento em memória; em um ambiente de produção com continuidade de sessão, substitua por um store persistente. Em novas implantações, usuários podem precisar realizar login novamente.
+
+## Segurança e limitações
+
+- Uploads verificam extensão/tipo e assinatura básica do arquivo, com nomes aleatórios. **Não é uma auditoria de segurança completa**; moderação de conteúdo, antivírus/decodificação de imagens e prevenção de abuso precisam ser avaliados antes de um serviço público grande.
+- CSRF e autenticação são exigidos nas ações de escrita, inclusive visualizações, exclusões e marcação de notificações.
+- O projeto não inclui bancos de dados reais, segredos, imagens de usuários nem `node_modules`.
+- Recuperação de senha por e-mail continua exigindo um provedor externo para produção.
+- Reels e Stories em vídeo ainda **não** foram implementados nesta versão.
+
+## Principais arquivos modificados
+
+- `server.js`: tabelas, Stories, SSE, notificações e caminho de uploads configurável.
+- `views/index.ejs`, `views/partials/stories.ejs`, `views/partials/notifications.ejs`, `views/partials/sidebar.ejs`.
+- `public/js/stories.js`, `public/js/notifications.js`, `public/css/stories-notifications.css`.
+- `test/integration.js`: testes de visualizações, expiração, upload, autorização, notificações e SSE.

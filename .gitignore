@@ -1,16 +1,35 @@
+# Dependencies and generated files
 node_modules/
-.env
-database.sqlite
-database.sqlite-shm
-database.sqlite-wal
-banco.db
-public/uploads/*
-!public/uploads/.gitkeep
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+.nyc_output/
 
-node_modules/
+# Secrets and local settings
 .env
 .env.*
-*.db
+!.env.example
+*.pem
+*.key
+
+# Private accounts, sessions and application databases
 *.sqlite
+*.sqlite-*
+*.db
+*.db-*
 *.sqlite3
-public/uploads/
+
+# Uploaded photos/posts/avatars (do not publish users' images)
+public/uploads/**
+!public/uploads/.gitkeep
+!public/uploads/avatars/
+!public/uploads/avatars/.gitkeep
+!public/uploads/stories/
+!public/uploads/stories/.gitkeep
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

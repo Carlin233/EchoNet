@@ -5,7 +5,7 @@
   <meta name="csrf-token" content="<%= csrfToken %>">
   <title><%= username %> • EchoNet</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="/css/global.css"><link rel="stylesheet" href="/css/sidebar.css"><link rel="stylesheet" href="/css/perfil.css"><link rel="stylesheet" href="/css/modal.css"><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/functions.css">
+  <link rel="stylesheet" href="/css/stories-notifications.css"><link rel="stylesheet" href="/css/global.css"><link rel="stylesheet" href="/css/sidebar.css"><link rel="stylesheet" href="/css/perfil.css"><link rel="stylesheet" href="/css/modal.css"><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/functions.css">
 </head>
 <body class="app-layout">
   <%- include('partials/sidebar') %>
@@ -50,6 +50,7 @@
     <div class="edit-profile-divider"></div>
     <form id="editProfileForm"><label>Nome de exibição<input name="display_name" maxlength="60" value="<%= owner.display_name || '' %>"></label><label>Biografia<textarea name="bio" maxlength="300" rows="5"><%= owner.bio || '' %></textarea></label><p class="profile-notice" id="editStatus"></p><button type="submit">Salvar alterações</button></form></div></div><% } %>
   <%- include('partials/modal-post') %>
-  <script src="/js/common.js" defer></script><script src="/js/profile.js" defer></script>
+  <%- include('partials/notifications') %>
+  <script src="/js/common.js" defer></script><script src="/js/notifications.js" defer></script><script src="/js/profile.js" defer></script>
 </body>
 </html>

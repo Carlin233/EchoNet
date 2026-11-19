@@ -5,17 +5,16 @@
   <meta name="csrf-token" content="<%= csrfToken %>">
   <title>Feed • EchoNet</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="/css/global.css" /><link rel="stylesheet" href="/css/sidebar.css" /><link rel="stylesheet" href="/css/feed.css" /><link rel="stylesheet" href="/css/modal.css" /><link rel="stylesheet" href="/css/responsive.css" /><link rel="stylesheet" href="/css/functions.css" />
+  <link rel="stylesheet" href="/css/stories-notifications.css" /><link rel="stylesheet" href="/css/global.css" /><link rel="stylesheet" href="/css/sidebar.css" /><link rel="stylesheet" href="/css/feed.css" /><link rel="stylesheet" href="/css/modal.css" /><link rel="stylesheet" href="/css/responsive.css" /><link rel="stylesheet" href="/css/functions.css" />
 </head>
 <body class="app-layout">
   <%- include('partials/sidebar') %>
   <div class="app-content">
     <%- include('partials/mobile-header') %>
     <main class="main-feed"><div class="feed">
-      <div class="stories-bar"><div class="stories-scroll">
-        <a href="#" class="story-item story-add" id="abrirModalStory" aria-label="Criar publicação"><div class="story-ring"><img src="<%= myAvatar %>" alt="" /></div><span class="story-name">Publicar foto</span></a>
-        <% const authors = Array.from(new Map(posts.filter(p => p.usuario !== username).map(p => [p.usuario, { username: p.usuario, avatar: p.author_avatar }])).values()).slice(0, 8); %>
-        <% authors.forEach(author => { %><a href="/perfil/<%= encodeURIComponent(author.username) %>" class="story-item"><div class="story-ring"><img src="<%= author.avatar || '/img/default-avatar.svg' %>" alt="" /></div><span class="story-name"><%= author.username %></span></a><% }) %>
+      <div class="stories-bar" data-current-user="<%= username %>"><div class="stories-scroll" id="storiesList">
+        <button type="button" class="story-item story-add" id="abrirModalStory" aria-label="Criar Story"><span class="story-ring"><img src="<%= myAvatar %>" alt="" /></span><span class="story-name">Seu Story +</span></button>
+        <span class="stories-loading" id="storiesLoading">Carregando Stories...</span>
       </div></div>
       <% if (!posts.length) { %><div class="feed-empty"><i class="fa-regular fa-images"></i><p>Nenhuma publicação ainda.</p><p>Crie a primeira foto para começar!</p></div><% } %>
       <% posts.forEach(post => { %>
@@ -41,6 +40,8 @@
     <aside class="barra-online"><div class="suggestions-card"><div class="account-header"><strong><%= username %></strong><form action="/logout" method="POST"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit" class="text-link">Sair</button></form></div><div class="user-row"><img src="<%= myAvatar %>" alt=""><div class="user-info"><div class="name"><%= username %></div><div class="sub">Sua conta</div></div></div></div><h3>Pessoas para conhecer</h3><ul id="usuariosOnline"></ul></aside>
   </div>
   <%- include('partials/modal-post') %>
-  <script src="/js/common.js" defer></script><script src="/js/feed.js" defer></script>
+  <%- include('partials/notifications') %>
+  <%- include('partials/stories') %>
+  <script src="/js/common.js" defer></script><script src="/js/notifications.js" defer></script><script src="/js/stories.js" defer></script><script src="/js/feed.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+<div class="story-modal" id="storyCreateModal" role="dialog" aria-modal="true" aria-label="Criar Story" hidden>
+  <div class="story-backdrop" data-story-close></div>
+  <div class="story-create-box">
+    <header class="story-create-header"><h2>Novo Story</h2><button type="button" data-story-close aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button></header>
+    <form id="storyCreateForm">
+      <label for="storyImage">Imagem (JPG, PNG, WebP ou GIF, até 5 MB)</label>
+      <input id="storyImage" name="imagem" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required>
+      <img id="storyPreview" alt="Prévia do Story" hidden>
+      <label for="storyCaption">Legenda (opcional, até 200 caracteres)</label>
+      <textarea id="storyCaption" name="legenda" maxlength="200" rows="2" placeholder="Escreva uma legenda..."></textarea>
+      <p id="storyCreateStatus" role="status" aria-live="polite">Seu Story ficará visível por 24 horas.</p>
+      <button type="submit" class="story-primary">Publicar Story</button>
+    </form>
+  </div>
+</div>
+<div class="story-modal" id="storyViewerModal" role="dialog" aria-modal="true" aria-label="Visualizar Story" hidden>
+  <div class="story-backdrop" data-view-close></div>
+  <div class="story-viewer">
+    <header class="story-viewer-header">
+      <img id="storyViewerAvatar" src="/img/default-avatar.svg" alt="">
+      <a href="#" id="storyViewerAuthor"></a><span id="storyViewerCounter"></span>
+      <button type="button" id="storyDelete" hidden title="Excluir meu Story" aria-label="Excluir Story"><i class="fa-regular fa-trash-can"></i></button>
+      <button type="button" data-view-close aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div class="story-progress"><div id="storyProgressFill"></div></div>
+    <div class="story-viewer-image"><img id="storyViewerImage" alt="Story"></div>
+    <p class="story-viewer-caption" id="storyViewerCaption"></p>
+    <div class="story-viewer-nav"><button type="button" id="storyPrevious" aria-label="Story anterior"><i class="fa-solid fa-chevron-left"></i></button><button type="button" id="storyNext" aria-label="Próximo Story"><i class="fa-solid fa-chevron-right"></i></button></div>
+  </div>
+</div>

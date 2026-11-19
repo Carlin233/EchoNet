@@ -18,10 +18,12 @@ if (!SESSION_SECRET || (IN_PRODUCTION && SESSION_SECRET.length < 32)) {
   throw new Error('Configure SESSION_SECRET com pelo menos 32 caracteres para produção.');
 }
 const DB_PATH = process.env.DB_PATH || path.join(ROOT, 'database.sqlite');
-const UPLOAD_DIR = path.join(ROOT, 'public', 'uploads');
+const UPLOAD_DIR = path.resolve(process.env.UPLOAD_DIR || path.join(ROOT, 'public', 'uploads'));
 const AVATAR_DIR = path.join(UPLOAD_DIR, 'avatars');
+const STORY_DIR = path.join(UPLOAD_DIR, 'stories');
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 fs.mkdirSync(AVATAR_DIR, { recursive: true });
+fs.mkdirSync(STORY_DIR, { recursive: true });
 const db = new sqlite3.Database(DB_PATH);
 db.configure('busyTimeout', 5000);
 const run = (sql, params = []) => new Promise((resolve, reject) => db.run(sql, params, function (err) { err ? reject(err) : resolve({ changes: this.changes, lastID: this.lastID }); }));
@@ -59,6 +61,38 @@ async function initialize() {
   await run('CREATE INDEX IF NOT EXISTS idx_follows_following ON follows(following_id)');
   // Tokens antigos eram armazenados em texto puro. Os novos usam SHA-256.
   await run('CREATE INDEX IF NOT EXISTS idx_password_resets_token ON password_resets(token)');
+  await run(`CREATE TABLE IF NOT EXISTS stories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    image_path TEXT NOT NULL,
+    caption TEXT NOT NULL DEFAULT '',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at DATETIME NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+  )`);
+  await run('CREATE INDEX IF NOT EXISTS idx_stories_active ON stories(expires_at, id)');
+  await run(`CREATE TABLE IF NOT EXISTS story_views (
+    story_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    viewed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(story_id,user_id),
+    FOREIGN KEY(story_id) REFERENCES stories(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+  )`);
+  await run(`CREATE TABLE IF NOT EXISTS notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    recipient_id INTEGER NOT NULL,
+    actor_id INTEGER NOT NULL,
+    kind TEXT NOT NULL,
+    message TEXT NOT NULL,
+    target_url TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    read_at DATETIME,
+    FOREIGN KEY(recipient_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(actor_id) REFERENCES users(id) ON DELETE CASCADE
+  )`);
+  await run('CREATE INDEX IF NOT EXISTS idx_notifications_inbox ON notifications(recipient_id, id DESC)');
+  await purgeExpiredStories();
 }
 
 app.disable('x-powered-by');
@@ -73,6 +107,8 @@ app.use((req, res, next) => {
 });
 app.use(express.urlencoded({ extended: false, limit: '30kb' }));
 app.use(express.json({ limit: '30kb' }));
+// Permite colocar uploads fora do código, em um disco persistente do Render.
+app.use('/uploads', express.static(UPLOAD_DIR, { index: false, maxAge: IN_PRODUCTION ? '1h' : 0 }));
 app.use(express.static(path.join(ROOT, 'public'), { index: false, maxAge: IN_PRODUCTION ? '1h' : 0 }));
 app.use(session({
   name: 'echonet.sid', secret: SESSION_SECRET, resave: false, saveUninitialized: false,
@@ -115,6 +151,72 @@ function limitAttempts(kind, max, windowMs = 15 * 60 * 1000) {
 const POST_SELECT = `SELECT p.*, u.avatar AS author_avatar, (SELECT COUNT(*) FROM post_likes l WHERE l.post_id=p.id) AS like_count, (SELECT COUNT(*) FROM comments c WHERE c.post_id=p.id) AS comment_count, EXISTS(SELECT 1 FROM post_likes l WHERE l.post_id=p.id AND l.user_id=?) AS liked, EXISTS(SELECT 1 FROM saved_posts s WHERE s.post_id=p.id AND s.user_id=?) AS saved FROM posts p LEFT JOIN users u ON u.username=p.usuario COLLATE NOCASE`;
 const listPosts = (viewerId, extra = '', params = []) => all(`${POST_SELECT} ${extra}`, [viewerId, viewerId, ...params]);
 const userAvatar = async userId => (await get('SELECT avatar FROM users WHERE id=?', [userId]))?.avatar || '/img/default-avatar.svg';
+
+// Uma conexão SSE por aba: atualiza a sineta sem serviços adicionais no Render.
+// SSE envia apenas um aviso para recarregar; os dados privados são lidos via API autenticada.
+const notificationStreams = new Map();
+function emitNotification(recipientId) {
+  for (const stream of notificationStreams.get(Number(recipientId)) || []) {
+    try { stream.write('event: notifications\ndata: {}\n\n'); }
+    catch { stream.end(); }
+  }
+}
+async function notify(recipientId, actor, kind, message, targetUrl) {
+  if (!recipientId || Number(recipientId) === Number(actor.id)) return;
+  await run('INSERT INTO notifications(recipient_id,actor_id,kind,message,target_url) VALUES(?,?,?,?,?)',
+    [recipientId,actor.id,kind,`${actor.username} ${message}`,targetUrl]);
+  emitNotification(recipientId);
+}
+async function purgeExpiredStories() {
+  const expired = await all("SELECT image_path FROM stories WHERE expires_at <= datetime('now')");
+  await run("DELETE FROM stories WHERE expires_at <= datetime('now')");
+  for (const { image_path: pathName } of expired) {
+    if (typeof pathName === 'string' && /^\/uploads\/stories\/[a-zA-Z0-9_-]+\.(jpg|png|webp|gif)$/.test(pathName)) {
+      await fs.promises.unlink(path.join(STORY_DIR, path.basename(pathName))).catch(() => {});
+    }
+  }
+}
+
+// Listagem e notificações são privadas: apenas o destinatário pode ler e marcar.
+app.get('/api/notifications', requireLogin, withErrors(async (req, res) => {
+  res.setHeader('Cache-Control','no-store');
+  const [notifications, counts] = await Promise.all([
+    all(`SELECT n.id,n.kind,n.message,n.target_url,n.created_at,n.read_at,u.avatar AS actor_avatar
+         FROM notifications n JOIN users u ON u.id=n.actor_id
+         WHERE n.recipient_id=? ORDER BY n.id DESC LIMIT 30`, [req.session.user.id]),
+    get('SELECT COUNT(*) AS unread FROM notifications WHERE recipient_id=? AND read_at IS NULL', [req.session.user.id])
+  ]);
+  res.json({ success: true, notifications, unread: counts.unread });
+}));
+app.post('/api/notifications/read-all', requireLogin, withErrors(async (req, res) => {
+  await run("UPDATE notifications SET read_at=datetime('now') WHERE recipient_id=? AND read_at IS NULL", [req.session.user.id]);
+  emitNotification(req.session.user.id);
+  res.json({ success: true, unread: 0 });
+}));
+app.post('/api/notifications/:id/read', requireLogin, withErrors(async (req, res) => {
+  if (!validId(req.params.id)) return res.sendStatus(404);
+  const updated = await run("UPDATE notifications SET read_at=coalesce(read_at, datetime('now')) WHERE id=? AND recipient_id=?", [req.params.id,req.session.user.id]);
+  if (!updated.changes) return res.sendStatus(404);
+  emitNotification(req.session.user.id);
+  res.json({ success: true });
+}));
+app.get('/api/notifications/stream', requireLogin, (req, res) => {
+  res.status(200).set({ 'Content-Type':'text/event-stream; charset=utf-8',
+    'Cache-Control':'no-cache, no-transform', 'Connection':'keep-alive',
+    'X-Accel-Buffering':'no' });
+  res.flushHeaders();
+  res.write('retry: 5000\n\n');
+  const id = req.session.user.id;
+  if (!notificationStreams.has(id)) notificationStreams.set(id, new Set());
+  notificationStreams.get(id).add(res);
+  const ping = setInterval(() => { if (!res.destroyed) res.write(': keep-alive\n\n'); }, 25000);
+  res.on('close', () => {
+    clearInterval(ping);
+    const streams = notificationStreams.get(id);
+    if (streams) { streams.delete(res); if (!streams.size) notificationStreams.delete(id); }
+  });
+});
+
 
 app.get('/login.html', (req, res) => req.session.user ? res.redirect('/') : res.type('html').send(fs.readFileSync(path.join(ROOT, 'views', 'login.html'), 'utf8').replaceAll('__CSRF_TOKEN__', req.session.csrfToken)));
 app.get('/api/csrf', (req, res) => res.json({ token: req.session.csrfToken }));
@@ -201,6 +303,63 @@ function isRealImage(filepath, type) {
   if (type === 'image/webp') return b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP';
   return false;
 }
+// Stories: fotos por 24 horas. Arquivos gerados pelo servidor, sem nome enviado pelo usuário.
+const storyStorage = multer.diskStorage({
+  destination: STORY_DIR,
+  filename: (req, file, cb) => cb(null, `${Date.now()}_${crypto.randomBytes(12).toString('hex')}${({ 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif' })[file.mimetype] || ''}`)
+});
+const uploadStory = multer({ storage: storyStorage, limits: { fileSize: 5*1024*1024, files: 1, fields: 2 },
+  fileFilter: (req, file, cb) => ({ 'image/jpeg': 1, 'image/png': 1, 'image/webp': 1, 'image/gif': 1 })[file.mimetype]
+    ? cb(null, true) : cb(new Error('Envie apenas JPG, PNG, WebP ou GIF.')) });
+app.get('/api/stories', requireLogin, withErrors(async (req, res) => {
+  await purgeExpiredStories();
+  res.setHeader('Cache-Control','no-store');
+  const stories = await all(`SELECT s.id,s.image_path,s.caption,s.created_at,s.expires_at,
+    u.username,u.avatar,s.user_id,
+    EXISTS(SELECT 1 FROM story_views v WHERE v.story_id=s.id AND v.user_id=?) AS seen,
+    (SELECT COUNT(*) FROM story_views v WHERE v.story_id=s.id) AS views
+    FROM stories s JOIN users u ON u.id=s.user_id
+    WHERE s.expires_at>datetime('now')
+    ORDER BY s.id DESC LIMIT 150`, [req.session.user.id]);
+  res.json({ success: true, stories: stories.map(s => ({ ...s, own: s.user_id === req.session.user.id, views: s.user_id === req.session.user.id ? s.views : undefined })) });
+}));
+app.post('/api/stories', requireLogin,
+  (req, res, next) => uploadStory.single('imagem')(req,res,err => err ? next(err) : next()),
+  withErrors(async (req, res) => {
+    const caption = clean(req.body.legenda);
+    const file = req.file;
+    const fail = async (status, message) => {
+      if (file) await fs.promises.unlink(file.path).catch(() => {});
+      return res.status(status).json({ success: false, message });
+    };
+    if (!file) return fail(400, 'Escolha uma foto para seu Story.');
+    if (caption.length > 200) return fail(400, 'Legenda deve ter até 200 caracteres.');
+    if (!isRealImage(file.path,file.mimetype)) return fail(400,'Imagem inválida.');
+    const count = await get("SELECT COUNT(*) AS count FROM stories WHERE user_id=? AND expires_at>datetime('now')", [req.session.user.id]);
+    if (count.count >= 20) return fail(429,'Limite de 20 Stories ativos por usuário.');
+    try {
+      const result = await run("INSERT INTO stories(user_id,image_path,caption,expires_at) VALUES(?,?,?,datetime('now','+24 hours'))",
+        [req.session.user.id,`/uploads/stories/${file.filename}`,caption]);
+      res.status(201).json({ success: true, id: result.lastID, message: 'Story publicado por 24 horas!' });
+    } catch (error) { await fs.promises.unlink(file.path).catch(() => {}); throw error; }
+  }));
+app.post('/api/stories/:id/view', requireLogin, withErrors(async (req,res) => {
+  if (!validId(req.params.id)) return res.sendStatus(404);
+  const story = await get("SELECT id,user_id FROM stories WHERE id=? AND expires_at>datetime('now')", [req.params.id]);
+  if (!story) return res.sendStatus(404);
+  if (story.user_id !== req.session.user.id) await run('INSERT OR IGNORE INTO story_views(story_id,user_id) VALUES(?,?)',[story.id,req.session.user.id]);
+  res.json({ success: true });
+}));
+app.delete('/api/stories/:id', requireLogin, withErrors(async (req,res) => {
+  if (!validId(req.params.id)) return res.sendStatus(404);
+  const story = await get('SELECT image_path FROM stories WHERE id=? AND user_id=?',[req.params.id,req.session.user.id]);
+  if (!story) return res.sendStatus(404);
+  await run('DELETE FROM stories WHERE id=?',[req.params.id]);
+  if (/^\/uploads\/stories\/[a-zA-Z0-9_-]+\.(jpg|png|webp|gif)$/.test(story.image_path))
+    await fs.promises.unlink(path.join(STORY_DIR,path.basename(story.image_path))).catch(() => {});
+  res.json({ success: true });
+}));
+
 app.post('/api/perfil/avatar', requireLogin,
   (req, res, next) => uploadAvatar.single('avatar')(req, res, err => err ? next(err) : next()),
   withErrors(async (req, res) => {
@@ -258,6 +417,10 @@ app.post('/api/posts/:id/like', requireLogin, withErrors(async (req, res) => {
   const previous = await get('SELECT 1 FROM post_likes WHERE user_id=? AND post_id=?', params);
   if (previous) await run('DELETE FROM post_likes WHERE user_id=? AND post_id=?', params);
   else await run('INSERT INTO post_likes(user_id,post_id) VALUES(?,?)', params);
+  if (!previous) {
+    const post = await get('SELECT u.id FROM posts p JOIN users u ON u.username=p.usuario COLLATE NOCASE WHERE p.id=?',[req.params.id]);
+    await notify(post?.id,req.session.user,'like','curtiu sua publicação.',`/post/${req.params.id}`);
+  }
   const count = await get('SELECT COUNT(*) AS count FROM post_likes WHERE post_id=?', [req.params.id]);
   res.json({ success: true, liked: !previous, count: count.count });
 }));
@@ -279,6 +442,8 @@ app.post('/api/posts/:id/comments', requireLogin, withErrors(async (req, res) =>
   if (!content || content.length > 1000) return res.status(400).json({ success: false, message: 'Comentário: 1 a 1.000 caracteres.' });
   if (!validId(req.params.id) || !await get('SELECT 1 FROM posts WHERE id=? AND archived=0', [req.params.id])) return res.sendStatus(404);
   await run('INSERT INTO comments(post_id,user_id,conteudo) VALUES(?,?,?)', [req.params.id, req.session.user.id, content]);
+  const post = await get('SELECT u.id FROM posts p JOIN users u ON u.username=p.usuario COLLATE NOCASE WHERE p.id=?',[req.params.id]);
+  await notify(post?.id,req.session.user,'comment','comentou sua publicação.',`/post/${req.params.id}`);
   const count = await get('SELECT COUNT(*) AS count FROM comments WHERE post_id=?', [req.params.id]);
   res.status(201).json({ success: true, count: count.count });
 }));
@@ -289,6 +454,7 @@ app.post('/api/follow/:username', requireLogin, withErrors(async (req, res) => {
   const previous = await get('SELECT 1 FROM follows WHERE follower_id=? AND following_id=?', ids);
   if (previous) await run('DELETE FROM follows WHERE follower_id=? AND following_id=?', ids);
   else await run('INSERT INTO follows(follower_id, following_id) VALUES(?,?)', ids);
+  if (!previous) await notify(other.id,req.session.user,'follow','começou a seguir você.',`/perfil/${encodeURIComponent(req.session.user.username)}`);
   const count = await get('SELECT COUNT(*) AS count FROM follows WHERE following_id=?', [other.id]);
   res.json({ success: true, following: !previous, followers: count.count });
 }));
@@ -314,9 +480,10 @@ app.get('/api/mensagens/:destinatario', requireLogin, withErrors(async (req, res
 app.post('/mensagens', requireLogin, withErrors(async (req, res) => {
   const name = clean(req.body.destinatario), content = clean(req.body.conteudo);
   if (!content || content.length > 2000) return res.status(400).json({ success: false, message: 'Mensagem deve ter de 1 a 2.000 caracteres.' });
-  const user = await get('SELECT username FROM users WHERE username=? COLLATE NOCASE', [name]);
+  const user = await get('SELECT id,username FROM users WHERE username=? COLLATE NOCASE', [name]);
   if (!user || user.username.toLowerCase() === req.session.user.username.toLowerCase()) return res.status(400).json({ success: false, message: 'Destinatário inválido.' });
   await run('INSERT INTO messages(remetente,destinatario,conteudo) VALUES(?,?,?)', [req.session.user.username,user.username,content]);
+  await notify(user.id,req.session.user,'message','enviou uma mensagem.',`/mensagens/${encodeURIComponent(req.session.user.username)}`);
   if (isJsonRequest(req)) return res.status(201).json({ success: true });
   res.redirect('/mensagens/' + encodeURIComponent(user.username));
 }));
@@ -362,7 +529,7 @@ app.post('/resetar-senha', withErrors(async (req, res) => {
 }));
 
 app.use((err, req, res, next) => {
-  console.error('Erro EchoNet:', err);
+  if (!(err instanceof multer.MulterError) && !err.message?.startsWith('Envie apenas')) console.error('Erro EchoNet:', err);
   if (err instanceof multer.MulterError || (err.message && err.message.startsWith('Envie apenas'))) return res.status(400).json({ success: false, message: err.code === 'LIMIT_FILE_SIZE' ? (req.path === '/api/perfil/avatar' ? 'Foto de perfil deve ter no máximo 3 MB.' : 'Imagem deve ter no máximo 5 MB.') : (err.message || 'Erro ao enviar imagem.') });
   if (err.type === 'entity.too.large') return res.status(413).json({ success: false, message: 'Dados muito grandes.' });
   res.status(500).json({ success: false, message: 'Erro interno no servidor.' });
@@ -371,6 +538,8 @@ app.use((err, req, res, next) => {
 if (require.main === module) initialize().then(() => {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`EchoNet em http://localhost:${PORT}`);
+    const storyCleanupTimer = setInterval(() => purgeExpiredStories().catch(e => console.error('Erro ao limpar Stories:',e)), 60*60*1000);
+    storyCleanupTimer.unref();
     for (const list of Object.values(os.networkInterfaces())) for (const iface of list || []) if (iface.family === 'IPv4' && !iface.internal) console.log(`Rede local: http://${iface.address}:${PORT}`);
     if (!IN_PRODUCTION) console.log('Modo desenvolvimento. Configure SESSION_SECRET antes de publicar.');
   });

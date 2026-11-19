@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/stories-notifications.css"><link rel="stylesheet" href="/css/global.css" />
   <link rel="stylesheet" href="/css/sidebar.css" />
   <link rel="stylesheet" href="/css/chat.css" />
   <link rel="stylesheet" href="/css/modal.css" />
@@ -23,7 +23,7 @@
     <a href="/mensagens" class="mobile-header-back" aria-label="Voltar">
       <i class="fa-solid fa-arrow-left"></i>
     </a>
-    <img src="<%= destinatarioAvatar %>" alt="" class="chat-header-avatar"><span class="mobile-header-title"><%= destinatario %></span>
+    <img src="<%= destinatarioAvatar %>" alt="" class="chat-header-avatar"><span class="mobile-header-title"><%= destinatario %></span><button type="button" class="chat-notifications notification-trigger" aria-label="Abrir notificações" aria-haspopup="dialog" aria-expanded="false"><i class="fa-regular fa-bell"></i><span class="notification-badge" hidden>0</span></button>
   </header>
   <% } else { %>
   <%- include('partials/mobile-header') %>
@@ -99,8 +99,9 @@
   </div>
 
   <%- include('partials/modal-post') %>
+  <%- include('partials/notifications') %>
 
-  <script src="/js/common.js" defer></script>
+  <script src="/js/common.js" defer></script><script src="/js/notifications.js" defer></script>
   <script src="/js/chat.js" defer></script>
 </body>
 </html>
