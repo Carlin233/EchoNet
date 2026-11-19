@@ -1,0 +1,228 @@
+/* ===== CHAT - Instagram DM Style ===== */
+@import url('theme.css');
+
+body.chat-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.chat-layout .app-content {
+  display: flex;
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.lista-contatos {
+  width: 397px;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.lista-contatos h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lista-contatos ul { list-style: none; }
+
+.lista-contatos li { margin-bottom: 0; }
+
+.lista-contatos a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-primary);
+  padding: 12px 24px;
+  transition: background var(--transition);
+}
+
+.lista-contatos a:hover,
+.lista-contatos a.active {
+  background: var(--bg-elevated);
+}
+
+.lista-contatos a img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+}
+
+.contato-info { display: flex; flex-direction: column; }
+
+.contato-info .nome {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.contato-info .preview {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.mensagem-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  min-width: 0;
+}
+
+.mensagem-topo {
+  background: var(--bg-secondary);
+  padding: 16px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.mensagem-topo img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scroll-behavior: smooth;
+}
+
+.chat-empty {
+  margin: auto;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.msg {
+  max-width: 65%;
+  padding: 8px 12px;
+  border-radius: 22px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  position: relative;
+}
+
+.msg.eu {
+  background: var(--accent);
+  color: #fff;
+  align-self: flex-end;
+}
+
+.msg.outro {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  align-self: flex-start;
+}
+
+.msg::after {
+  content: attr(data-time);
+  font-size: 10px;
+  opacity: 0.5;
+  display: block;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.form-mensagem {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.form-mensagem input[type="text"] {
+  flex: 1;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 10px 16px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.form-mensagem input[type="text"]:focus {
+  border-color: var(--accent);
+}
+
+.form-mensagem button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  transition: background var(--transition);
+  white-space: nowrap;
+}
+
+.chat-list-empty {
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 24px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.chat-list-empty span {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.mensagem-container-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mensagem-container-placeholder .chat-empty i {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+}
+
+.form-mensagem button i {
+  font-size: 16px;
+}
+
+@media (max-width: 1264px) {
+  .chat-layout .app-content {
+    margin-left: var(--sidebar-narrow);
+  }
+}

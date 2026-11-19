@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Entrar • EchoNet</title>
+  <meta name="csrf-token" content="__CSRF_TOKEN__">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-wrapper">
+      <!-- Lado esquerdo: mockup visual (só desktop) -->
+      <div class="login-showcase" aria-hidden="true">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-header">
+              <img src="/img/echonet-logo.svg" alt="" class="phone-logo" />
+            </div>
+            <div class="phone-feed">
+              <div class="phone-story-row">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="phone-post"></div>
+              <div class="phone-post short"></div>
+            </div>
+          </div>
+        </div>
+        <p class="login-tagline">Veja momentos do dia a dia dos seus amigos.</p>
+      </div>
+
+      <!-- Lado direito: formulários -->
+      <div class="login-forms">
+        <div class="form-box">
+          <div class="form-logo">
+            <span class="echo">Echo</span><span class="net">Net</span>
+          </div>
+          <form action="/login" method="POST" class="login-form">
+            <input type="hidden" name="_csrf" value="__CSRF_TOKEN__">
+            <p id="loginError" class="error-message" style="display:none"></p>
+            <input type="email" name="email" placeholder="E-mail" required autocomplete="username" />
+            <input type="password" name="password" placeholder="Senha" minlength="8" required autocomplete="current-password" />
+            <button type="submit">Entrar</button>
+          </form>
+          <p class="forgot-link">
+            <a id="openRecoveryBtn">Esqueceu a senha?</a>
+          </p>
+        </div>
+
+        <div class="signup-box">
+          Não tem uma conta? <a id="openModalBtn">Cadastre-se</a>
+        </div>
+
+        <p class="login-footer">EchoNet © 2026</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalCadastro">
+    <div class="modal-content">
+      <button type="button" class="close-btn" id="closeModalCadastro" aria-label="Fechar">&times;</button>
+      <h2>Criar sua conta</h2>
+      <div id="registerError" class="error-message"></div>
+      <form id="registerForm">
+        <input type="text" name="username" placeholder="Nome de usuário" required />
+        <input type="email" name="email" placeholder="E-mail" required />
+        <input type="password" name="password" placeholder="Senha" minlength="8" required />
+        <input type="password" name="confirmPassword" placeholder="Confirmar senha" minlength="8" required />
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="modalRecuperacao">
+    <div class="modal-content">
+      <button type="button" class="close-btn" id="closeModalRecuperacao" aria-label="Fechar">&times;</button>
+      <h2>Recuperar senha</h2>
+      <div id="recoveryError" class="error-message"></div>
+      <div id="recoverySuccess" class="success-message" style="display:none;"></div>
+      <form id="recoveryForm">
+        <input type="email" name="email" placeholder="Digite seu e-mail" required />
+        <button type="submit">Enviar link de recuperação</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    if (new URLSearchParams(location.search).get('erro') === 'credenciais') {
+      const aviso = document.getElementById('loginError');
+      aviso.textContent = 'E-mail ou senha incorretos.';
+      aviso.style.display = 'block';
+    }
+    const csrf = document.querySelector('meta[name="csrf-token"]').content;
+    const modalCadastro = document.getElementById("modalCadastro");
+    const modalRecuperacao = document.getElementById("modalRecuperacao");
+    const registerError = document.getElementById("registerError");
+    const recoveryError = document.getElementById("recoveryError");
+    const recoverySuccess = document.getElementById("recoverySuccess");
+
+    document.getElementById("openModalBtn").onclick = () => {
+      registerError.style.display = "none";
+      document.getElementById("registerForm").reset();
+      modalCadastro.style.display = "flex";
+    };
+
+    document.getElementById("openRecoveryBtn").onclick = () => {
+      recoveryError.style.display = "none";
+      recoverySuccess.style.display = "none";
+      document.getElementById("recoveryForm").reset();
+      modalRecuperacao.style.display = "flex";
+    };
+
+    document.getElementById("closeModalCadastro").onclick = () => modalCadastro.style.display = "none";
+    document.getElementById("closeModalRecuperacao").onclick = () => modalRecuperacao.style.display = "none";
+
+    [modalCadastro, modalRecuperacao].forEach(modal => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.style.display = "none";
+      });
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      registerError.style.display = "none";
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
+          body: JSON.stringify(data),
+        });
+        const result = await res.json();
+        if (result.success) {
+          modalCadastro.style.display = "none";
+          alert("Conta criada com sucesso! Faça login para continuar.");
+          e.target.reset();
+        } else {
+          registerError.textContent = result.message || "Erro ao cadastrar.";
+          registerError.style.display = "block";
+        }
+      } catch {
+        registerError.textContent = "Erro na comunicação com o servidor.";
+        registerError.style.display = "block";
+      }
+    });
+
+    document.getElementById("recoveryForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      recoveryError.style.display = "none";
+      recoverySuccess.style.display = "none";
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const res = await fetch("/recuperar-senha", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
+          body: JSON.stringify(data),
+        });
+        const result = await res.json();
+        if (result.success) {
+          recoverySuccess.textContent = result.message || "E-mail enviado com sucesso!";
+          recoverySuccess.style.display = "block";
+        } else {
+          recoveryError.textContent = result.message || "Erro na recuperação.";
+          recoveryError.style.display = "block";
+        }
+      } catch {
+        recoveryError.textContent = "Erro na comunicação com o servidor.";
+        recoveryError.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

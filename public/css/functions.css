@@ -1,0 +1,48 @@
+/* Componentes funcionais adicionados sem substituir o tema original */
+[hidden] { display: none !important; }
+.logout-form { margin: 0; }
+.logout-form button { width: 100%; text-align: left; font: inherit; cursor: pointer; }
+.author, .author-name, .comment-author { color: inherit; text-decoration: none; }
+.author:hover, .comment-author:hover { text-decoration: underline; }
+.action-save.saved { color: var(--text-primary); }
+.post-comments-link { border: 0; background: none; padding: 0; font: inherit; color: var(--text-muted); cursor: pointer; margin-top: 8px; text-align: left; }
+.comments-panel { margin: 12px 0; border-top: 1px solid var(--border); padding-top: 10px; }
+.comment-item { font-size: 13px; margin: 8px 0; overflow-wrap: anywhere; }
+.comment-author { font-weight: 700; }
+.comments-loading, .empty-suggestion { color: var(--text-muted); font-size: 13px; }
+.comment-form { display: flex; margin-top: 12px; gap: 8px; align-items: center; }
+.comment-form input { flex: 1; min-width: 0; border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text-primary); padding: 10px; border-radius: 6px; }
+.comment-form button, .text-link { cursor: pointer; background: none; border: 0; color: var(--accent); font-weight: 700; }
+.account-header { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px; }
+.barra-online .user-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.barra-online .suggestion-user { display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; flex: 1; min-width: 0; }
+.barra-online .suggestion-user img { width: 34px; height: 34px; border-radius: 50%; }
+.barra-online .suggestion-user .user-info { min-width: 0; }
+.barra-online .suggestion-user .name { font-weight: 600; overflow-wrap: anywhere; }
+.barra-online .suggestion-user .sub { display: block; color: var(--text-muted); font-size: 12px; }
+.barra-online .follow-btn:disabled { opacity: .5; }
+.perfil-tabs [aria-selected="true"] { border-bottom: 2px solid var(--text-primary); }
+.perfil-grid-panel { margin-bottom: 20px; }
+.perfil-post-controls { position: absolute; bottom: 6px; left: 6px; right: 6px; display: flex; justify-content: space-between; gap: 5px; z-index: 3; }
+.perfil-post-controls button { background: rgba(0,0,0,.72); color: white; border: 0; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.profile-edit-dialog { position: relative; padding: 20px; border-radius: 12px; background: var(--bg-card); width: min(90vw, 440px); }
+.profile-edit-dialog h2 { margin-bottom: 18px; }
+.profile-edit-dialog label { display: block; margin: 14px 0; font-size: 13px; }
+.profile-edit-dialog input, .profile-edit-dialog textarea { display: block; margin-top: 5px; padding: 10px; width: 100%; border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text-primary); border-radius: 6px; }
+.profile-edit-dialog button[type="submit"] { background: var(--accent); color: white; cursor: pointer; padding: 10px 18px; border: 0; border-radius: 6px; }
+.profile-notice { margin: 12px 0; font-size: 13px; }
+.profile-actions-main { display: flex; gap: 8px; flex-wrap: wrap; }
+.profile-section-empty { color: var(--text-muted); padding: 26px; text-align: center; }
+@media (max-width: 735px) { .perfil-post-controls { position: static; display: flex; flex-direction: column; background: var(--bg-card); } .perfil-post-controls button { font-size: 11px; } }
+.sidebar-nav .logout-form { margin-top: auto; }
+.sidebar-nav .logout-form button { background: transparent; border: none; }
+@media (max-width: 768px) { .sidebar-nav .logout-form { display: none; } }
+
+/* Fotos de perfil (feed, comentários, sugestões e navegação) */
+.sidebar-profile-avatar { width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--border); object-fit: cover; }
+.comment-item { display: flex; align-items: flex-start; gap: 8px; }
+.comment-avatar-link { display: inline-flex; flex-shrink: 0; }
+.comment-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
+.comment-content { margin: 4px 0 0; line-height: 1.45; overflow-wrap: anywhere; }
+.barra-online .user-row > img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+.chat-header-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }

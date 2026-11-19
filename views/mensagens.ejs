@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Mensagens • EchoNet</title>
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/chat.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+  <link rel="stylesheet" href="/css/functions.css" />
+</head>
+<body class="app-layout chat-layout <%= destinatario ? 'chat-conversation' : 'chat-list' %>">
+  <%- include('partials/sidebar') %>
+
+  <% if (destinatario) { %>
+  <header class="mobile-header mobile-header-chat">
+    <a href="/mensagens" class="mobile-header-back" aria-label="Voltar">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <img src="<%= destinatarioAvatar %>" alt="" class="chat-header-avatar"><span class="mobile-header-title"><%= destinatario %></span>
+  </header>
+  <% } else { %>
+  <%- include('partials/mobile-header') %>
+  <% } %>
+
+  <div class="app-content">
+    <div class="lista-contatos" id="listaContatos">
+      <h3>Mensagens</h3>
+      <ul>
+        <% if (contatos.length === 0) { %>
+          <li class="chat-list-empty">
+            Nenhuma conversa ainda.<br>
+            <span>Visite o feed e converse com alguém online!</span>
+          </li>
+        <% } else { %>
+          <% contatos.forEach(c => {
+            const nome = c.contato;
+            const isActive = destinatario === nome;
+          %>
+          <li>
+            <a href="/mensagens/<%= encodeURIComponent(nome) %>" class="<%= isActive ? 'active' : '' %>">
+              <img src="<%= c.avatar || '/img/default-avatar.svg' %>" alt="Foto de perfil de <%= nome %>">
+              <div class="contato-info">
+                <span class="nome"><%= nome %></span>
+                <span class="preview">Toque para abrir a conversa</span>
+              </div>
+            </a>
+          </li>
+          <% }); %>
+        <% } %>
+      </ul>
+    </div>
+
+    <% if (destinatario) { %>
+      <div class="mensagem-container">
+        <div class="mensagem-topo mensagem-topo-desktop">
+          <img src="<%= destinatarioAvatar %>" alt="Foto de perfil de <%= destinatario %>">
+          <span><%= destinatario %></span>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+          <% if (mensagens.length === 0) { %>
+            <p class="chat-empty">Nenhuma mensagem ainda. Diga olá! 👋</p>
+          <% } else { %>
+            <% mensagens.forEach(m => { %>
+              <div class="msg <%= m.remetente === usuarioLogado ? 'eu' : 'outro' %>"
+                   data-time="<%= new Date(m.enviado_em).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}) %>">
+                <%= m.conteudo %>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+
+        <form id="formMensagem" class="form-mensagem">
+          <input type="hidden" name="destinatario" value="<%= destinatario %>">
+          <input type="text" name="conteudo" placeholder="Mensagem..." maxlength="2000" required autocomplete="off">
+          <button type="submit" aria-label="Enviar">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    <% } else { %>
+      <div class="mensagem-container mensagem-container-placeholder">
+        <div class="chat-box">
+          <p class="chat-empty">
+            <i class="fa-regular fa-paper-plane"></i>
+            Suas mensagens<br>
+            <span>Envie mensagens privadas para seus amigos.</span>
+          </p>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('partials/modal-post') %>
+
+  <script src="/js/common.js" defer></script>
+  <script src="/js/chat.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Redefinir Senha - EchoNet</title>
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<body>
+  <div class="reset-page">
+    <div class="reset-box">
+      <div class="form-logo">
+        <span class="echo">Echo</span><span class="net">Net</span>
+      </div>
+      <h2>Redefinir senha</h2>
+      <div id="resetError" class="error-message"></div>
+      <div id="resetSuccess" class="success-message" style="display:none;"></div>
+      <form id="resetForm">
+        <input type="hidden" name="token" value="<%= token %>">
+        <input type="password" name="password" placeholder="Nova senha" minlength="8" required>
+        <input type="password" name="confirmPassword" placeholder="Confirmar nova senha" minlength="8" required>
+        <button type="submit">Atualizar senha</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("resetForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("resetError");
+      const okEl = document.getElementById("resetSuccess");
+      errEl.style.display = "none";
+      okEl.style.display = "none";
+
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const res = await fetch("/resetar-senha", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content },
+          body: JSON.stringify(data),
+        });
+        const result = await res.json();
+        if (result.success) {
+          okEl.textContent = result.message;
+          okEl.style.display = "block";
+          setTimeout(() => window.location.href = "/login.html", 2000);
+        } else {
+          errEl.textContent = result.message;
+          errEl.style.display = "block";
+        }
+      } catch {
+        errEl.textContent = "Erro na comunicação com o servidor.";
+        errEl.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

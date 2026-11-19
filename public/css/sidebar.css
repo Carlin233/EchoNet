@@ -1,0 +1,121 @@
+/* ===== SIDEBAR - Instagram Style ===== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 12px 12px 24px;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  padding: 12px 12px 24px;
+  text-decoration: none;
+  font-family: 'Segoe UI', cursive;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  transition: opacity var(--transition);
+}
+
+.sidebar-brand:hover { opacity: 0.7; }
+
+.brand-echo { color: var(--text-primary); }
+.brand-net {
+  background: var(--ig-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  transition: background var(--transition);
+}
+
+.sidebar-link i {
+  font-size: 24px;
+  width: 24px;
+  text-align: center;
+}
+
+.sidebar-link:hover {
+  background: var(--bg-elevated);
+}
+
+.sidebar-link.active {
+  font-weight: 700;
+}
+
+.sidebar-link.active i {
+  font-weight: 900;
+}
+
+.sidebar-link span {
+  display: inline;
+}
+
+.sidebar-create i {
+  font-size: 22px;
+}
+
+.sidebar-logout {
+  margin-top: auto;
+  color: var(--text-secondary);
+}
+
+.sidebar-logout:hover {
+  color: var(--danger);
+  background: rgba(237, 73, 86, 0.08);
+}
+
+@media (max-width: 1264px) {
+  .sidebar {
+    width: var(--sidebar-narrow);
+    padding: 12px 8px 24px;
+    align-items: center;
+  }
+
+  .sidebar-brand {
+    padding: 12px 0 24px;
+    font-size: 18px;
+    justify-content: center;
+  }
+
+  .brand-echo, .brand-net { font-size: 16px; }
+
+  .sidebar-link {
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+  }
+
+  .sidebar-link span { display: none; }
+
+  .app-content {
+    margin-left: var(--sidebar-narrow);
+  }
+}

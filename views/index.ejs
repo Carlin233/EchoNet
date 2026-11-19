@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <title>Feed • EchoNet</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/global.css" /><link rel="stylesheet" href="/css/sidebar.css" /><link rel="stylesheet" href="/css/feed.css" /><link rel="stylesheet" href="/css/modal.css" /><link rel="stylesheet" href="/css/responsive.css" /><link rel="stylesheet" href="/css/functions.css" />
+</head>
+<body class="app-layout">
+  <%- include('partials/sidebar') %>
+  <div class="app-content">
+    <%- include('partials/mobile-header') %>
+    <main class="main-feed"><div class="feed">
+      <div class="stories-bar"><div class="stories-scroll">
+        <a href="#" class="story-item story-add" id="abrirModalStory" aria-label="Criar publicação"><div class="story-ring"><img src="<%= myAvatar %>" alt="" /></div><span class="story-name">Publicar foto</span></a>
+        <% const authors = Array.from(new Map(posts.filter(p => p.usuario !== username).map(p => [p.usuario, { username: p.usuario, avatar: p.author_avatar }])).values()).slice(0, 8); %>
+        <% authors.forEach(author => { %><a href="/perfil/<%= encodeURIComponent(author.username) %>" class="story-item"><div class="story-ring"><img src="<%= author.avatar || '/img/default-avatar.svg' %>" alt="" /></div><span class="story-name"><%= author.username %></span></a><% }) %>
+      </div></div>
+      <% if (!posts.length) { %><div class="feed-empty"><i class="fa-regular fa-images"></i><p>Nenhuma publicação ainda.</p><p>Crie a primeira foto para começar!</p></div><% } %>
+      <% posts.forEach(post => { %>
+      <article class="post-card" id="post-<%= post.id %>" data-post-id="<%= post.id %>">
+        <div class="post-header"><img src="<%= post.author_avatar || '/img/default-avatar.svg' %>" alt="" class="post-avatar" /><a class="author" href="/perfil/<%= encodeURIComponent(post.usuario) %>"><%= post.usuario %></a><button type="button" class="post-more" title="Copiar link da publicação" aria-label="Copiar link"><i class="fa-solid fa-ellipsis"></i></button></div>
+        <div class="post-image"><img src="<%= post.imagem %>" alt="Publicação de <%= post.usuario %>" loading="lazy" /></div>
+        <div class="post-footer">
+          <div class="post-actions">
+            <button type="button" class="btn-like <%= post.liked ? 'liked' : '' %>" aria-label="Curtir" aria-pressed="<%= Boolean(post.liked) %>"><i class="<%= post.liked ? 'fa-solid' : 'fa-regular' %> fa-heart"></i></button>
+            <button type="button" class="btn-comment" aria-label="Comentar"><i class="fa-regular fa-comment"></i></button>
+            <button type="button" class="btn-share" aria-label="Compartilhar"><i class="fa-regular fa-paper-plane"></i></button>
+            <button type="button" class="action-save <%= post.saved ? 'saved' : '' %>" aria-label="Salvar publicação" aria-pressed="<%= Boolean(post.saved) %>" title="<%= post.saved ? 'Remover dos salvos' : 'Salvar' %>"><i class="<%= post.saved ? 'fa-solid' : 'fa-regular' %> fa-bookmark"></i></button>
+          </div>
+          <div class="post-likes"><span class="like-count"><%= post.like_count %></span> curtidas</div>
+          <div class="caption"><a href="/perfil/<%= encodeURIComponent(post.usuario) %>" class="author-name"><%= post.usuario %></a> <%= post.legenda %></div>
+          <button type="button" class="post-comments-link">Ver comentários (<span class="comments-count"><%= post.comment_count %></span>)</button>
+          <section class="comments-panel" hidden><div class="comments-list" aria-live="polite"></div><form class="comment-form"><input name="conteudo" maxlength="1000" placeholder="Adicione um comentário..." autocomplete="off" required><button type="submit">Enviar</button></form></section>
+          <div class="post-time"><%= safeDate(post.criado_em) %></div>
+        </div>
+      </article>
+      <% }) %>
+    </div></main>
+    <aside class="barra-online"><div class="suggestions-card"><div class="account-header"><strong><%= username %></strong><form action="/logout" method="POST"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit" class="text-link">Sair</button></form></div><div class="user-row"><img src="<%= myAvatar %>" alt=""><div class="user-info"><div class="name"><%= username %></div><div class="sub">Sua conta</div></div></div></div><h3>Pessoas para conhecer</h3><ul id="usuariosOnline"></ul></aside>
+  </div>
+  <%- include('partials/modal-post') %>
+  <script src="/js/common.js" defer></script><script src="/js/feed.js" defer></script>
+</body>
+</html>
