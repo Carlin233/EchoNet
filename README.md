@@ -1,69 +1,52 @@
-# EchoNet — contas e publicações persistentes
+# EchoNet — Supabase PostgreSQL + Storage
 
-Esta versão mantém o EchoNet Mobile, Stories, notificações, feed, perfis e chat. Foram incluídas **duas opções** de persistência, sem depender do diretório temporário de deploy:
+Rede social Node.js/Express/EJS adaptada para que **contas, publicações, mensagens, comentários, seguidores, notificações e imagens sobrevivam aos deploys no Render**. Mantém o feed, Stories de 24 horas, chat, notificações SSE e interface para celular.
 
-1. **Render Free — Turso + Cloudinary**: dados relacionais (contas, senhas criptografadas, posts, curtidas, comentários, mensagens, seguidores, notificações e Stories) em banco remoto **Turso/libSQL**, imagens no **Cloudinary**. As contas e imagens não são apagadas quando o Render reinicia. Cada serviço tem limites de uso; mantenha backups periódicos.
-2. **Render pago — Persistent Disk**: mantenha SQLite e uploads locais, porém em disco persistente montado em `/var/data` (ou no caminho efetivamente montado no painel). Mais simples, mas **não disponível no Render gratuito**.
+## O que mudou
 
-**O EchoNet ainda usa cookies e sessões temporárias no processo. Após um deploy, um usuário pode precisar fazer login novamente; isso não significa que a conta foi apagada.**
+- `DATABASE_URL` ativa o PostgreSQL remoto. Não usa banco SQLite temporário no Render.
+- `SUPABASE_URL` + `SUPABASE_SECRET_KEY` enviam fotos de perfil, posts e Stories ao **Supabase Storage**, em vez de salvá-las apenas no disco do Render.
+- `db/supabase-schema.sql` define as tabelas e ativa Row Level Security (RLS), sem políticas públicas. **As páginas acessam o banco pelo servidor Express autenticado, não pela API pública do Supabase**.
+- `scripts/migrar-sqlite-para-supabase.js` simula a transferência de um backup SQLite e, apenas com `--execute`, migra dados e imagens. Não publica nem inclui o banco original.
+- Quando `DATABASE_URL` não está definida, o desenvolvimento local continua utilizando SQLite; a opção Turso/Cloudinary legada também foi preservada.
 
-## Regra principal antes de publicar
+## MUITO IMPORTANTE: não faça deploy antes da migração
 
-**NÃO faça deploy se ainda houver contas/fotos no Render temporário que você não possui em backup.** Esta versão não recupera dados apagados anteriormente, nem move dados automaticamente de um Render Free em execução para o Turso. Migrar para banco novo vazio sem importar o antigo faria contas existentes desaparecerem da nova instalação. Guarde e migre uma cópia confiável do `database.sqlite` **e** da pasta `public/uploads` antes de virar o novo banco.
+Seu `Atualizada.rar` incluía arquivos `database.sqlite`, `database.sqlite-wal`, `database.sqlite-shm` e imagens enviados por usuários. **Por privacidade, esses arquivos estão fora do ZIP entregue.** O backup do RAR é apenas uma cópia de um momento: confirme se é o estado mais recente do EchoNet. Se usuários publicaram depois desse backup, as postagens mais novas não estarão nele. Não apague seu serviço Render atual até validar o conteúdo do Supabase.
 
-## A. Configuração no Render Free (Turso + Cloudinary)
+Siga **[MIGRAR_COM_SEGURANCA.md](MIGRAR_COM_SEGURANCA.md)**. Um resumo:
 
-1. Crie um banco libSQL no [Turso](https://turso.tech/) e obtenha sua URL de conexão (`libsql://...`) e token de autenticação.
-2. Crie uma conta [Cloudinary](https://cloudinary.com/) e obtenha as credenciais da API. O SDK usa `CLOUDINARY_URL` no formato `cloudinary://API_KEY:API_SECRET@CLOUD_NAME`.
-3. **Antes de publicar** a atualização, adicione estas variáveis na seção **Environment** do seu serviço Render:
+1. Salve um backup **consistente** do banco SQLite original e da pasta `public/uploads`, incluindo o WAL enquanto o app estiver fechado, se houver. Para um sistema ativo no Render gratuito, backups anteriores talvez não contenham dados recentes.
+2. No projeto Supabase, crie em **Storage** o bucket `echonet-media`, configurado como **Public**. Isso permite exibir as imagens da rede social por links diretos; os arquivos do bucket são acessíveis a quem tiver o URL.
+3. Vá a **Project Settings > API Keys** e copie a **Secret key** do servidor (`sb_secret_...`). Nunca a coloque em HTML, JS público ou GitHub.
+4. Em **Connect > Session pooler > URI**, pegue a conexão PostgreSQL para `DATABASE_URL` (porta 5432). A senha no endereço deve ser codificada se contiver caracteres especiais.
+5. No computador, faça a simulação da migração; confirme que não faltam imagens. Depois, com um Supabase vazio e a aplicação antiga sem novas gravações, rode a migração real.
+6. Só após validar os dados, configure no Render: `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `SUPABASE_STORAGE_BUCKET=echonet-media`, `REQUIRE_PERSISTENCE=1`, mantendo `SESSION_SECRET` e `TRUST_PROXY=1`.
+7. Publique a versão no GitHub, acione o deploy, e teste login, feed, perfil, chat, Stories, e notificações com o novo banco. Não limpe seus backups até ter validado tudo.
 
-   | KEY | VALUE |
-   | --- | --- |
-   | `TURSO_DATABASE_URL` | URL privada do banco Turso |
-   | `TURSO_AUTH_TOKEN` | Token do banco Turso (segredo) |
-   | `CLOUDINARY_URL` | Credencial Cloudinary (segredo) |
-   | `REQUIRE_PERSISTENCE` | `1` |
+### Atenção às contas e sessões
 
-4. Mantenha `SESSION_SECRET` e `TRUST_PROXY=1` já configurados. Não escreva tokens ou senhas no código ou no GitHub.
-5. Se houver backup local de contas antigas, migre **antes de conectar usuários ao novo banco** com o script abaixo. A cópia de origem precisa conter imagens originais e o banco SQLite correspondente.
-6. No Render, confirme que o **Build Command** é `npm install` (não `npm ci`, pois esta edição usa dependências novas sem um `package-lock.json` atualizado). Faça o upload do projeto atualizado ao GitHub e inicie o deploy. Em **Logs**, confirme que não há erros de banco, dependências ou Cloudinary.
-7. Execute `npm install` também no clone local antes de preparar o commit para atualizar o `package-lock.json`, então teste cadastrar uma conta, criar um post, enviar foto, fazer login, depois realizar um novo deploy e conferir se os dados continuam. Guarde backups periódicos fora do provedor.
+As contas e senhas com hash bcrypt são migradas do SQLite. O Supabase Auth não substitui automaticamente a autenticação atual do EchoNet: o login continua no Express. A sessão de navegador pode encerrar após um deploy porque o Express ainda usa sessão na memória; **isso não significa que a conta foi apagada**, basta entrar novamente. Para preservar a sessão entre reinicializações, um armazenamento de sessões no PostgreSQL será uma melhoria posterior.
 
-### Migração opcional de um backup local
+### Requisitos
 
-No computador que contém o backup, extraia o projeto, execute `npm install` e configure `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN` e `CLOUDINARY_URL` **somente no terminal local**. Em seguida:
+- Node.js 20 ou superior.
+- PostgreSQL com `pg` e Supabase Storage com `@supabase/supabase-js` (dependências declaradas no `package.json`).
+- `npm install` gera um `package-lock.json` novo; o lock anterior foi removido por estar incompleto e não incluir as dependências de Supabase.
+
+### Rodar localmente (SQLite)
 
 ```powershell
-node scripts/importar-backup-para-turso.js "C:\backups\database.sqlite" "C:\backups\uploads"
-```
-
-O destino Turso deve estar **vazio**. O script interrompe a operação se faltar qualquer arquivo referenciado pelas publicações/avatares/Stories. Evite repetir uma importação parcial; confira os registros do provedor antes de tentar de novo.
-
-> No Render Free, uma cópia dos arquivos criados dentro do serviço pode não estar mais disponível após um reinício. Se não houver backup, não é possível prometer recuperar contas já perdidas.
-
-## B. Configuração no Render pago (Persistent Disk)
-
-1. Em **Render → EchoNet → Disk**, adicione um Persistent Disk e monte em `/var/data` (exemplo, use o caminho configurado no Render).
-2. Em **Environment**, adicione `PERSISTENT_DATA_DIR` com valor `/var/data` e `REQUIRE_PERSISTENCE=1`. Mantenha `SESSION_SECRET` e `TRUST_PROXY=1`.
-3. O EchoNet passará a gravar `database.sqlite` em `/var/data/database.sqlite` e uploads em `/var/data/uploads`.
-4. **Atenção:** o Render **não transfere automaticamente** o `database.sqlite` e imagens anteriores para o disco novo. Preserve ou migre os dados antes de alterar a configuração. A simples instalação do disco não recupera o que já foi apagado.
-5. Não compartilhe o disco com vários serviços; faça backups periódicos. Persistent Disk desativa deploy sem interrupção (zero-downtime).
-
-## Desenvolvimento local
-
-Sem as variáveis de nuvem, o comportamento permanece igual ao anterior, com SQLite local e arquivos em `public/uploads`:
-
-```bash
 npm install
 npm test
 npm start
 ```
 
-O GitHub **não** é armazenamento para banco de dados de produção ou fotos privadas. Os arquivos `.sqlite`, `.db`, `.env` e `public/uploads` continuam ignorados pelo Git.
+Abra `http://localhost:3000`. Sem `DATABASE_URL`, continua usando SQLite local.
 
-## Testes e limitações
+### Testes disponíveis
 
-- Testes automatizados locais de cadastro/login, feed, fotos, perfil, comentários, Stories, notificações e permissões passaram.
-- A integração com **Turso e Cloudinary** exige credenciais próprias; **não foi testada contra contas reais dos provedores** nesta entrega.
-- O banco remoto e as imagens na nuvem somente passam a ser persistentes **depois** de configurar as credenciais, migrar os dados existentes, e concluir um deploy bem-sucedido.
-- Manter dados entre deploys não substitui backups, planos adequados ao uso, monitoramento e restauração.
+- `node test/postgres-sql.js`: verifica a conversão de comandos legados SQLite para a sintaxe PostgreSQL (não requer conexão remota).
+- `npm test`: também executa os testes de integração locais sobre SQLite.
+
+**Limitação:** testes de conexão, migração e uploads reais no Supabase dependem das suas credenciais e do seu ambiente. Não foram executados com sua conta, e o banco remoto não foi modificado por esta entrega.

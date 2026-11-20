@@ -43,7 +43,8 @@
         const message = document.createElement('div');
         message.className = 'msg ' + (m.remetente === other ? 'outro' : 'eu');
         message.textContent = m.conteudo;
-        const date = m.enviado_em ? new Date(String(m.enviado_em).replace(' ', 'T') + (String(m.enviado_em).includes('Z') ? '' : 'Z')) : new Date();
+        const rawDate = String(m.enviado_em || '');
+        const date = rawDate ? new Date(/(?:Z|[+-]\d\d:\d\d)$/.test(rawDate) ? rawDate : rawDate.replace(' ', 'T') + 'Z') : new Date();
         message.dataset.time = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
         frag.appendChild(message);
       });

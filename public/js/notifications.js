@@ -40,7 +40,8 @@
       const text = node('span','notification-text');
       const message = node('span','notification-message', item.message);
       const when = node('small','notification-date');
-      const date = item.created_at ? new Date(String(item.created_at).replace(' ','T') + 'Z') : null;
+      const rawDate = String(item.created_at || '');
+      const date = rawDate ? new Date(/(?:Z|[+-]\d\d:\d\d)$/.test(rawDate) ? rawDate : rawDate.replace(' ','T') + 'Z') : null;
       when.textContent = date && Number.isFinite(date.getTime()) ? date.toLocaleString('pt-BR', { dateStyle:'short', timeStyle:'short' }) : '';
       const badge = node('i',`fa-solid ${icons[item.kind] || 'fa-bell'} notification-kind`);
       badge.setAttribute('aria-hidden','true');

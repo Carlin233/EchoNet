@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "node test/integration.js",
-    "start": "node server.js"
+    "test": "node test/postgres-sql.js && node test/integration.js",
+    "start": "node server.js",
+    "check:supabase": "node scripts/verificar-supabase.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "Rede social EchoNet: banco SQLite local ou Turso e imagens Cloudinary para deploy durável",
+  "description": "EchoNet: rede social responsiva com suporte a Supabase PostgreSQL/Storage e SQLite local",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
@@ -21,7 +22,9 @@
     "multer": "^2.0.1",
     "sqlite3": "^5.1.7",
     "@libsql/client": "^0.18.0",
-    "cloudinary": "^2.5.0"
+    "cloudinary": "^2.5.0",
+    "pg": "^8.13.1",
+    "@supabase/supabase-js": "^2.58.0"
   },
   "engines": {
     "node": ">=20"

@@ -6,7 +6,8 @@ const os = require('os');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
-const sqlite3 = process.env.TURSO_DATABASE_URL ? null : require('sqlite3').verbose();
+const USING_POSTGRES = Boolean(process.env.DATABASE_URL);
+const sqlite3 = (USING_POSTGRES || process.env.TURSO_DATABASE_URL) ? null : require('sqlite3').verbose();
 const multer = require('multer');
 
 const app = express();
@@ -25,37 +26,68 @@ const UPLOAD_DIR = path.resolve(process.env.UPLOAD_DIR || (DATA_DIR ? path.join(
 const AVATAR_DIR = path.join(UPLOAD_DIR, 'avatars');
 const STORY_DIR = path.join(UPLOAD_DIR, 'stories');
 const REMOTE_DATABASE = Boolean(process.env.TURSO_DATABASE_URL);
+if (USING_POSTGRES && REMOTE_DATABASE) throw new Error('Use apenas DATABASE_URL (Supabase) OU TURSO_DATABASE_URL.');
 const CLOUD_IMAGES = Boolean(process.env.CLOUDINARY_URL);
+const SUPABASE_IMAGES = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY);
+const SUPABASE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'echonet-media';
+const SUPABASE_PROJECT_URL = (process.env.SUPABASE_URL || '').replace(/\/+$/, '');
+if (USING_POSTGRES && !SUPABASE_IMAGES && IN_PRODUCTION) throw new Error('Configure SUPABASE_URL e SUPABASE_SECRET_KEY para persistir imagens.');
+if (USING_POSTGRES && (!process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY)) {
+  console.warn('[AVISO] DATABASE_URL sem Supabase Storage: uploads locais não persistem.');
+}
+if (SUPABASE_IMAGES && !/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(process.env.SUPABASE_URL)) {
+  throw new Error('SUPABASE_URL precisa ser a URL HTTPS oficial do seu projeto.');
+}
+if (!/^[a-z0-9][a-z0-9-]{0,62}$/.test(SUPABASE_BUCKET)) throw new Error('Nome inválido do bucket Supabase.');
 if (REMOTE_DATABASE && !process.env.TURSO_AUTH_TOKEN) throw new Error('Falta TURSO_AUTH_TOKEN.');
 if (REMOTE_DATABASE && !CLOUD_IMAGES && IN_PRODUCTION) throw new Error('Configure CLOUDINARY_URL para manter fotos e Stories após deploy.');
-if (IN_PRODUCTION && process.env.REQUIRE_PERSISTENCE === '1' && !REMOTE_DATABASE && !DATA_DIR && !(process.env.DB_PATH && process.env.UPLOAD_DIR)) {
+if (IN_PRODUCTION && process.env.REQUIRE_PERSISTENCE === '1' && !USING_POSTGRES && !REMOTE_DATABASE && !DATA_DIR && !(process.env.DB_PATH && process.env.UPLOAD_DIR)) {
   throw new Error('Sem armazenamento durável: configure Turso + Cloudinary ou disco persistente do Render.');
 }
-if (IN_PRODUCTION && !REMOTE_DATABASE && !DATA_DIR && !(process.env.DB_PATH && process.env.UPLOAD_DIR)) {
+if (IN_PRODUCTION && !USING_POSTGRES && !REMOTE_DATABASE && !DATA_DIR && !(process.env.DB_PATH && process.env.UPLOAD_DIR)) {
   console.warn('[AVISO] SQLite e uploads no disco temporário: contas, posts e fotos podem sumir após redeploy.');
 }
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 fs.mkdirSync(AVATAR_DIR, { recursive: true });
 fs.mkdirSync(STORY_DIR, { recursive: true });
 if (!REMOTE_DATABASE) fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-const db = REMOTE_DATABASE
+const postgres = USING_POSTGRES ? require('./db/postgres').createPostgresAdapter(process.env.DATABASE_URL) : null;
+const db = USING_POSTGRES ? postgres.pool : REMOTE_DATABASE
   ? require('@libsql/client').createClient({ url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN })
   : new sqlite3.Database(DB_PATH);
-if (!REMOTE_DATABASE) db.configure('busyTimeout', 5000);
+if (!USING_POSTGRES && !REMOTE_DATABASE) db.configure('busyTimeout', 5000);
 const cloudinary = CLOUD_IMAGES ? require('cloudinary').v2 : null;
 if (cloudinary) cloudinary.config({ secure: true });
-const run = (sql, params = []) => REMOTE_DATABASE
+const supabaseAdmin = SUPABASE_IMAGES ? require('@supabase/supabase-js').createClient(
+  SUPABASE_PROJECT_URL, process.env.SUPABASE_SECRET_KEY,
+  { auth: { persistSession: false, autoRefreshToken: false } }
+) : null;
+const run = (sql, params = []) => USING_POSTGRES ? postgres.run(sql, params) : REMOTE_DATABASE
   ? db.execute({ sql, args: params }).then(r => ({ changes: r.rowsAffected, lastID: r.lastInsertRowid ? Number(r.lastInsertRowid) : undefined }))
   : new Promise((resolve, reject) => db.run(sql, params, function (err) { err ? reject(err) : resolve({ changes: this.changes, lastID: this.lastID }); }));
-const get = (sql, params = []) => REMOTE_DATABASE
+const get = (sql, params = []) => USING_POSTGRES ? postgres.get(sql, params) : REMOTE_DATABASE
   ? db.execute({ sql, args: params }).then(r => r.rows[0] ? { ...r.rows[0] } : undefined)
   : new Promise((resolve, reject) => db.get(sql, params, (err, row) => err ? reject(err) : resolve(row)));
-const all = (sql, params = []) => REMOTE_DATABASE
+const all = (sql, params = []) => USING_POSTGRES ? postgres.all(sql, params) : REMOTE_DATABASE
   ? db.execute({ sql, args: params }).then(r => r.rows.map(row => ({ ...row })))
   : new Promise((resolve, reject) => db.all(sql, params, (err, rows) => err ? reject(err) : resolve(rows)));
 
 // Arquivos de usuários são armazenados no Cloudinary quando configurado.
 async function saveMedia(file, folder) {
+  if (supabaseAdmin) {
+    const filename = path.basename(file.filename);
+    const key = `echonet/${folder}/${filename}`;
+    try {
+      const content = await fs.promises.readFile(file.path);
+      const { error } = await supabaseAdmin.storage.from(SUPABASE_BUCKET).upload(key, content, {
+        contentType: file.mimetype, upsert: false, cacheControl: '3600'
+      });
+      if (error) throw new Error(`Falha no Supabase Storage: ${error.message}`);
+      const { data } = supabaseAdmin.storage.from(SUPABASE_BUCKET).getPublicUrl(key);
+      if (!data?.publicUrl) throw new Error('URL pública do arquivo não foi gerada.');
+      return data.publicUrl;
+    } finally { await fs.promises.unlink(file.path).catch(() => {}); }
+  }
   if (!cloudinary) return `/uploads/${folder === 'posts' ? '' : `${folder}/`}${file.filename}`;
   try {
     const uploaded = await cloudinary.uploader.upload(file.path, {
@@ -69,6 +101,19 @@ async function saveMedia(file, folder) {
 }
 async function removeMedia(imagePath, folder) {
   if (typeof imagePath !== 'string' || !['posts', 'avatars', 'stories'].includes(folder)) return;
+  if (supabaseAdmin && imagePath.startsWith(`${SUPABASE_PROJECT_URL}/storage/v1/object/public/`)) {
+    try {
+      const origin = new URL(SUPABASE_PROJECT_URL);
+      const url = new URL(imagePath);
+      const prefix = `/storage/v1/object/public/${SUPABASE_BUCKET}/echonet/${folder}/`;
+      if (url.origin !== origin.origin || !url.pathname.startsWith(prefix)) return;
+      const filename = url.pathname.slice(prefix.length);
+      if (!/^[a-zA-Z0-9_-]+\.(jpg|jpeg|png|gif|webp)$/.test(filename)) return;
+      const { error } = await supabaseAdmin.storage.from(SUPABASE_BUCKET).remove([`echonet/${folder}/${filename}`]);
+      if (error) console.error('Falha ao limpar arquivo no Storage:', error.message);
+    } catch (error) { console.error('Erro ao validar imagem do Supabase:', error.message); }
+    return;
+  }
   if (cloudinary && imagePath.startsWith('https://res.cloudinary.com/')) {
     const expectedCloud = cloudinary.config().cloud_name;
     try {
@@ -91,6 +136,11 @@ async function removeMedia(imagePath, folder) {
 }
 
 async function initialize() {
+  if (USING_POSTGRES) {
+    await postgres.initialize();
+    await purgeExpiredStories();
+    return;
+  }
   if (!REMOTE_DATABASE) {
     await run('PRAGMA journal_mode = WAL');
     await run('PRAGMA foreign_keys = ON');
@@ -195,7 +245,12 @@ const withErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next))
 const clean = value => typeof value === 'string' ? value.trim() : '';
 const validId = value => /^[1-9]\d*$/.test(String(value));
 const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254;
-const safeDate = str => str ? new Date(String(str).replace(' ', 'T') + (String(str).includes('Z') ? '' : 'Z')).toLocaleDateString('pt-BR') : '';
+const safeDate = str => {
+  if (!str) return '';
+  const date = str instanceof Date ? str : new Date(/(?:Z|[+-]\d\d:\d\d)$/.test(String(str))
+    ? String(str) : String(str).replace(' ', 'T') + 'Z');
+  return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('pt-BR');
+};
 const validPassword = value => typeof value === 'string' && value.length >= 8 && value.length <= 128;
 const attemptMap = new Map();
 function limitAttempts(kind, max, windowMs = 15 * 60 * 1000) {
@@ -292,7 +347,7 @@ app.post('/register', limitAttempts('register', 12), withErrors(async (req, res)
   if (taken) return res.status(409).json({ success: false, message: 'Usuário ou e-mail já está cadastrado.' });
   try {
     await run('INSERT INTO users(username,email,password) VALUES(?,?,?)', [username, email, await bcrypt.hash(password, 10)]);
-  } catch (e) { if (e.code === 'SQLITE_CONSTRAINT') return res.status(409).json({ success: false, message: 'Usuário ou e-mail já está cadastrado.' }); throw e; }
+  } catch (e) { if (e.code === 'SQLITE_CONSTRAINT' || e.code === '23505') return res.status(409).json({ success: false, message: 'Usuário ou e-mail já está cadastrado.' }); throw e; }
   return res.status(201).json({ success: true, message: 'Conta criada. Faça seu login.' });
 }));
 

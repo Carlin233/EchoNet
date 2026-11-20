@@ -1,36 +1,13 @@
-# Publicar persistência sem apagar contas
+# Atualização do EchoNet no GitHub e Render
 
-**Primeiro leia o [README.md](README.md). Não faça push do ZIP no Render antes de configurar o armazenamento permanente e cuidar dos dados existentes.**
+**Antes de publicar:** faça a migração do banco SQLite e das imagens para o Supabase, seguindo [MIGRAR_COM_SEGURANCA.md](MIGRAR_COM_SEGURANCA.md). Publicar o código primeiro inicia o projeto com um banco novo e vazio.
 
-1. Escolha a configuração de banco:
-   - Render Free: Turso + Cloudinary, com as chaves **apenas** em Environment.
-   - Render pago: Persistent Disk montado em `/var/data` e variável `PERSISTENT_DATA_DIR=/var/data`.
-2. Faça backup de `database.sqlite` e **de todas as imagens de uploads**, se ainda existirem em algum lugar. Sem cópia, a migração dos dados atuais pode ser impossível.
-3. Para Turso, caso possua backup, execute o script de importação do README **antes** de mudar o serviço para o banco novo.
-4. Em **Render → Settings**, confirme `Build Command = npm install` (esta edição adiciona pacotes e não inclui `package-lock.json`). Em **Render → Environment**, configure as variáveis da opção escolhida; preserve `SESSION_SECRET` e `TRUST_PROXY=1`.
-5. Clone o repositório em uma pasta nova, ou atualize um clone limpo:
+Depois da migração:
 
-```powershell
-git clone https://github.com/Carlin233/EchoNet.git EchoNet_Publicar
-cd EchoNet_Publicar
-```
+1. Configure as variáveis secretas `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `SUPABASE_STORAGE_BUCKET=echonet-media` e `REQUIRE_PERSISTENCE=1` no Render → EchoNet → Environment. Conserve as variáveis `SESSION_SECRET` e `TRUST_PROXY=1` que já funcionam.
+2. Atualize um clone limpo de `https://github.com/Carlin233/EchoNet`, copiando apenas os arquivos de código de `EchoNet_Supabase_Adaptado`. Nunca copie seu arquivo `.env` nem dados de `public/uploads/` para o repositório.
+3. No terminal dentro do clone, confira `git status`, `git add -A`, `git diff --cached --name-only`, `git commit -m "EchoNet Supabase PostgreSQL e Storage"`, `git push origin main`.
+4. No Render, use `npm install` como comando de build. Esta entrega não inclui lockfile antigo porque ele não declarava as dependências novas. Se desejar gerar um lockfile reproduzível, execute `npm install` localmente com Node 20+ e inclua o `package-lock.json` gerado.
+5. Após o deploy, verifique os logs e teste contas antigas, feed, comentários, fotos, chat, Stories e notificações. Repita um deploy de teste apenas depois de validar a persistência dos dados.
 
-6. Copie **o conteúdo extraído** da pasta `EchoNet_Persistencia_Permanente` para `EchoNet_Publicar`, substituindo os arquivos correspondentes. **Não copie o banco `.sqlite`, pastas uploads nem secrets**.
-7. Na pasta do repositório, execute `npm install` para atualizar o `package-lock.json` com as novas dependências. Depois confira o resultado:
-
-```powershell
-git status
-git add -A
-git diff --cached --name-only
-```
-
-8. Certifique-se de que não existem `database.sqlite`, `banco.db`, `.env`, tokens ou fotos privadas entre arquivos adicionados. Então:
-
-```powershell
-git commit -m "Persistencia de contas posts e imagens"
-git push origin main
-```
-
-9. Espere o Render concluir o deploy, depois teste criação de conta, login, publicação, foto de perfil e novo deploy.
-
-**Não force o push. Não apague ou troque o antigo banco antes de possuir backup verificado.**
+Se algo falhar, **não exclua o banco Supabase, não recrie contas nem sobrescreva o backup**. Guarde os logs com credenciais ocultas e faça o diagnóstico antes de tentar novamente.
