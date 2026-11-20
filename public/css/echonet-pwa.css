@@ -1,0 +1,16 @@
+/* Interface discreta para instalar o EchoNet. Nao altera o restante do site. */
+.echonet-pwa-prompt{position:fixed;right:18px;bottom:20px;max-width:min(335px,calc(100vw - 28px));z-index:2147483000;background:#151b38;color:#f7f7ff;border:1px solid #7777bf77;box-shadow:0 16px 55px #0b0c2266;border-radius:18px;display:flex;align-items:center;gap:12px;padding:12px;font:500 14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif;animation:echonet-pwa-enter .3s ease both}
+.echonet-pwa-prompt img{width:42px;height:42px;flex:none;border-radius:11px}
+.echonet-pwa-prompt .pwa-copy{display:grid;gap:3px;min-width:0;flex:1}
+.echonet-pwa-prompt strong{color:white;font-size:14px;font-weight:750}
+.echonet-pwa-prompt span{color:#ced3ed;font-size:12px}
+.echonet-pwa-prompt button{border:0;font:inherit;cursor:pointer}
+.echonet-pwa-prompt .pwa-action{color:white;background:linear-gradient(120deg,#625af3,#ae51d8);padding:9px 12px;border-radius:10px;font-weight:700;white-space:nowrap}
+.echonet-pwa-prompt .pwa-dismiss{color:#cbd0e8;background:transparent;font-size:20px;line-height:1;padding:2px 4px;align-self:start}
+.echonet-pwa-prompt button:focus-visible{outline:2px solid #5cddff;outline-offset:3px}
+.echonet-pwa-overlay{position:fixed;inset:0;z-index:2147483001;background:rgba(5,8,21,.7);display:grid;place-items:center;padding:18px}
+.echonet-pwa-dialog{max-width:390px;width:100%;padding:25px 23px;border-radius:23px;background:#171d3d;border:1px solid #7777bf77;color:#f6f7ff;box-shadow:0 25px 80px #0009;font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+.echonet-pwa-dialog h2{margin:0 0 8px;font-size:22px}.echonet-pwa-dialog p{margin:0 0 12px;color:#d3d7e9}.echonet-pwa-dialog ol{padding-left:20px;margin:8px 0 20px}.echonet-pwa-dialog li{margin:8px 0}.echonet-pwa-dialog button{background:#8065ed;border:0;color:white;font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;cursor:pointer}
+@keyframes echonet-pwa-enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.app-layout .echonet-pwa-prompt{bottom:calc(80px + env(safe-area-inset-bottom,0px))}.echonet-pwa-prompt{right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));gap:9px;padding:10px}.echonet-pwa-prompt img{width:38px;height:38px}.echonet-pwa-prompt .pwa-action{padding:8px}}
+@media(prefers-reduced-motion:reduce){.echonet-pwa-prompt{animation:none}}

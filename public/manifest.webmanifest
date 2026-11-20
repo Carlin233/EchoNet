@@ -1,0 +1,73 @@
+{
+  "id": "/",
+  "name": "EchoNet — Sua rede social",
+  "short_name": "EchoNet",
+  "description": "Compartilhe momentos, Stories e mensagens no EchoNet.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#11182f",
+  "theme_color": "#11182f",
+  "orientation": "any",
+  "categories": [
+    "social",
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/img/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Feed",
+      "short_name": "Início",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/img/pwa/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Mensagens",
+      "url": "/mensagens",
+      "icons": [
+        {
+          "src": "/img/pwa/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Meu perfil",
+      "url": "/perfil",
+      "icons": [
+        {
+          "src": "/img/pwa/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
