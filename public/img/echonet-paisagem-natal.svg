@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 550" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<defs>
+  <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#27336b" stop-opacity="0"/><stop offset="1" stop-color="#19244c" stop-opacity=".7"/></linearGradient>
+  <linearGradient id="far" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#7286c6"/><stop offset="1" stop-color="#354976"/></linearGradient>
+  <linearGradient id="near" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#8798ce"/><stop offset="1" stop-color="#343e70"/></linearGradient>
+  <linearGradient id="snow" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#eff1ff"/><stop offset="1" stop-color="#b8c7ea"/></linearGradient>
+  <radialGradient id="town" cx=".5" cy=".5" r=".65"><stop stop-color="#ffc47c" stop-opacity=".55"/><stop offset="1" stop-color="#ffab67" stop-opacity="0"/></radialGradient>
+  <g id="pine"><path d="M0 0v80" stroke="#1a294d" stroke-width="6"/><path d="M0-11-31 43H31Z" fill="#182b4d"/><path d="M0 9-33 64H33Z" fill="#1b3354"/><path d="M-19 26 0-6 18 25 0 14Z" fill="#d6e3ff" opacity=".85"/><path d="M-23 52-14 39-6 51 0 37 14 52 24 52" fill="none" stroke="#a8c3ec" stroke-width="5" stroke-linejoin="round"/></g>
+  <g id="house"><rect x="-26" y="-2" width="52" height="34" rx="2" fill="#263456"/><path d="m-34 0 34-28L34 0Z" fill="#c4d4fa"/><path d="m-30 1 30-23L30 1" fill="none" stroke="#e8efff" stroke-width="5" stroke-linecap="round"/><rect x="-17" y="8" width="10" height="12" rx="1" fill="#ffd69c"/><rect x="8" y="8" width="10" height="12" rx="1" fill="#ffd69c"/><path d="M-12 8v12M13 8v12" stroke="#9a683b"/><rect x="-2" y="15" width="6" height="17" fill="#5c4f72"/></g>
+</defs>
+<rect width="1600" height="550" fill="url(#sky)"/>
+<path d="M0 282 122 190l75 66 165-177 109 144 122-91 87 133 140-174 105 125 124-113 113 133 165-142 173 165V550H0Z" fill="url(#far)" opacity=".7"/>
+<path d="M197 256 362 79l96 127-45-29-51-60-63 90ZM704 248 820 91l96 125-48-29-48-62-45 78ZM1127 235l124-133 90 93-40-16-50-40-47 72" fill="#bfcdf2" opacity=".86"/>
+<path d="M0 350 166 237l117 95 98-122 143 151 191-141 115 137 136-156 111 137 143-116 160 122V550H0Z" fill="url(#near)" opacity=".95"/>
+<path d="m166 237 72 61 45 34-49-25-68-41-63 65Zm215-27 143 151-69-49-74-66-56 66Zm334 10 115 137-56-49-59-62-89 84Zm251-19 111 137-54-46-57-62-60 58Zm254 21 160 122-74-42-86-50-57 64Z" fill="#d3def6" opacity=".86"/>
+<ellipse cx="800" cy="440" rx="360" ry="103" fill="url(#town)"/>
+<path d="M0 412Q100 355 215 398T477 400Q620 354 750 419T1074 400Q1262 345 1433 403T1600 383V550H0Z" fill="#30466c"/>
+<g opacity=".82">
+  <use href="#pine" transform="translate(113 354) scale(1.38)"/><use href="#pine" transform="translate(205 373) scale(.82)"/>
+  <use href="#pine" transform="translate(289 360) scale(1.16)"/><use href="#pine" transform="translate(450 385) scale(.85)"/>
+  <use href="#pine" transform="translate(1098 377) scale(1.1)"/><use href="#pine" transform="translate(1217 355) scale(1.4)"/>
+  <use href="#pine" transform="translate(1352 362) scale(.95)"/><use href="#pine" transform="translate(1453 332) scale(1.46)"/>
+</g>
+<g>
+  <use href="#house" transform="translate(500 413) scale(.92)"/><use href="#house" transform="translate(575 436) scale(.7)"/>
+  <use href="#house" transform="translate(666 415) scale(.85)"/><use href="#house" transform="translate(752 431) scale(.82)"/>
+  <use href="#house" transform="translate(833 407) scale(1.06)"/><use href="#house" transform="translate(942 427) scale(.83)"/>
+  <use href="#house" transform="translate(1030 401) scale(.76)"/><use href="#house" transform="translate(1175 413) scale(.78)"/>
+</g>
+<path d="M0 464Q174 420 332 464T668 460Q850 423 1049 469T1443 451T1600 458V550H0Z" fill="#e0e6fb" opacity=".70"/>
+<path d="M0 491Q228 454 396 495T810 500Q1057 453 1275 487T1600 480V550H0Z" fill="url(#snow)" opacity=".90"/>
+<g opacity=".9"><use href="#pine" transform="translate(42 435) scale(1.5)"/><use href="#pine" transform="translate(165 440) scale(1.2)"/><use href="#pine" transform="translate(354 463) scale(1.0)"/><use href="#pine" transform="translate(1307 455) scale(1.2)"/><use href="#pine" transform="translate(1543 440) scale(1.65)"/></g>
+<path d="M0 543Q220 494 420 543T844 532Q1100 498 1323 539T1600 521V550H0Z" fill="#dce5ff"/>
+</svg>

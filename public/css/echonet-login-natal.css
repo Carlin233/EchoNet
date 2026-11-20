@@ -1,0 +1,175 @@
+/* EchoNet · Edição Natal 3D (2026)
+   Escopo isolado ao login: nenhuma regra afeta feed, perfil ou mensagens. */
+:root { color-scheme: dark; }
+html { min-height: 100%; }
+body.echonet-login-natal {
+  --natal-ink: #fff;
+  --natal-muted: #c9d2ef;
+  --natal-border: rgba(225,225,255,.22);
+  --natal-pink: #ff72df;
+  --natal-purple: #a58aff;
+  --natal-gradient: linear-gradient(116deg,#91daff 0%,#bba0ff 52%,#fc82d3 100%);
+  margin: 0; color: var(--natal-ink); background: #0b1431;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+.echonet-login-natal *, .echonet-login-natal *::before, .echonet-login-natal *::after { box-sizing: border-box; }
+.echonet-login-natal button { font: inherit; }
+.echonet-login-natal .gradient-word { color: #bf9aff; background: var(--natal-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.echonet-login-natal .natal-backdrop { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse at 22% 32%,rgba(75,55,190,.35),transparent 50%), radial-gradient(ellipse at 76% 63%,rgba(99,52,174,.29),transparent 43%), linear-gradient(180deg,#090d2a 0%,#121c47 54%,#28356b 100%); overflow: hidden; pointer-events: none; }
+.echonet-login-natal .natal-backdrop::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg,rgba(5,10,30,.13),transparent 48%,rgba(6,9,29,.23)); z-index: 4; }
+.echonet-login-natal .natal-stars { position: absolute; inset: 0; opacity: .68; background-image: radial-gradient(circle,rgba(255,255,255,.83) 1px,transparent 1.5px), radial-gradient(circle,rgba(220,206,255,.7) 1px,transparent 1.5px), radial-gradient(circle,rgba(255,255,255,.55) .7px,transparent 1.2px); background-size: 113px 95px,172px 137px,67px 59px; background-position: 8px 20px,92px 36px,33px 9px; }
+.echonet-login-natal .natal-aurora { position: absolute; border-radius: 50%; filter: blur(40px); mix-blend-mode: screen; transform-origin: center; opacity: .62; animation: natal-aurora-pulse 10s ease-in-out infinite alternate; }
+.echonet-login-natal .aurora-a { width: 62vw; height: 26vw; left: -17vw; top: -12vw; transform: rotate(-10deg); background: conic-gradient(from 50deg at 40% 50%, transparent,rgba(31,221,181,.30),rgba(73,117,255,.32),rgba(149,63,243,.38),transparent); }
+.echonet-login-natal .aurora-b { width: 65vw; height: 22vw; top: 0; left: 22vw; animation-delay: -4s; background: radial-gradient(ellipse,rgba(156,80,247,.35),rgba(20,199,208,.15) 45%,transparent 75%); transform: rotate(11deg); }
+.echonet-login-natal .natal-moon { position: absolute; width: clamp(110px,12vw,190px); aspect-ratio: 1; right: 10%; top: 5%; border-radius: 50%; background: radial-gradient(circle at 31% 30%,#fff 0%,#fbf2ed 35%,#d7c9e6 65%,#a0adcf 100%); box-shadow: 0 0 80px 30px rgba(208,212,255,.18),0 0 17px rgba(255,255,255,.4); opacity: .83; }
+.echonet-login-natal .natal-moon::after { content: ''; position: absolute; inset: 18%; border-radius: 50%; background: radial-gradient(circle at 10% 10%,rgba(119,131,174,.16) 0 9%,transparent 10%),radial-gradient(circle at 66% 37%,rgba(112,119,166,.16) 0 12%,transparent 13%),radial-gradient(circle at 42% 78%,rgba(98,110,147,.12) 0 15%,transparent 16%); }
+.echonet-login-natal .natal-santa-flight { position: absolute; top: 12%; left: 0; z-index: 3; width: clamp(230px,29vw,430px); animation: natal-santa-cross 29s linear infinite; will-change: transform; filter: drop-shadow(0 0 10px rgba(255,208,104,.6)); }
+.echonet-login-natal .natal-santa-flight img { display: block; width: 100%; }
+.echonet-login-natal .natal-landscape { position: absolute; inset: auto 0 0; height: min(54%,480px); background-image: linear-gradient(to top,rgba(12,20,56,.52),transparent 62%),url('/img/echonet-paisagem-natal.svg'); background-size: cover, cover; background-position: center bottom; background-repeat: no-repeat; z-index: 1; }
+.echonet-login-natal .natal-snow { position: absolute; z-index: 5; inset: 0; overflow: hidden; }
+.echonet-login-natal .natal-snowflake { position: absolute; top: -15px; left: var(--left); width: var(--size); height: var(--size); background: rgba(255,255,255,var(--opacity)); border-radius: 50%; box-shadow: 0 0 9px rgba(255,255,255,.28); animation: natal-snowfall var(--duration) linear infinite; animation-delay: var(--delay); }
+.echonet-login-natal .natal-login-page { position: relative; z-index: 2; min-height: 100vh; min-height: 100dvh; display: block; padding: 0 30px 24px; background: none !important; }
+.echonet-login-natal .natal-shell { width: min(100%,1480px); min-height: calc(100vh - 24px); min-height: calc(100dvh - 24px); margin: 0 auto; display: flex; flex-direction: column; }
+.echonet-login-natal .natal-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 27px 12px 9px; }
+.echonet-login-natal .natal-brand { display: inline-flex; align-items: center; gap: 12px; font-size: clamp(24px,2.2vw,32px); font-weight: 800; letter-spacing: -.065em; text-decoration: none; color: white; white-space: nowrap; }
+.echonet-login-natal .brand-icon { width: 42px; height: 42px; border-radius: 16px; display: grid; place-items: center; background: linear-gradient(145deg,#50c5f1,#9e69ef 65%,#df78f5); box-shadow: 0 7px 25px rgba(117,104,249,.37); }
+.echonet-login-natal .brand-icon svg { width: 30px; height: 30px; }
+.echonet-login-natal .natal-edition { background: rgba(177,135,237,.12); color: #f1e4ff; border: 1px solid rgba(225,198,255,.29); padding: 10px 17px; border-radius: 99px; font-size: 13px; font-weight: 670; letter-spacing: .01em; box-shadow: inset 0 1px 0 rgba(255,255,255,.13); backdrop-filter: blur(12px); }
+.echonet-login-natal .natal-edition span { margin: 0 3px; color: #ffbddb; }
+.echonet-login-natal .natal-main { flex: 1; display: grid; grid-template-columns: minmax(0,1.04fr) minmax(200px,.69fr) minmax(340px,420px); align-items: center; gap: clamp(12px,2.2vw,35px); padding: clamp(16px,3vh,44px) 10px 25px; }
+.echonet-login-natal .natal-pitch { align-self: center; position: relative; z-index: 3; padding: 0 0 22px 4px; }
+.echonet-login-natal .natal-eyebrow { display: inline-flex; gap: 7px; align-items: center; color: #ffe1f5; background: rgba(139,69,169,.23); border: 1px solid rgba(252,170,236,.35); padding: 9px 14px; border-radius: 99px; font-size: 12px; font-weight: 690; margin-bottom: 22px; box-shadow: 0 0 22px rgba(255,95,220,.1); }
+.echonet-login-natal .natal-eyebrow span { color: #ffd9a2; }
+.echonet-login-natal .natal-pitch h1 { margin: 0 0 20px; color: white; font-weight: 820; font-size: clamp(35px,3.35vw,58px); line-height: 1.16; letter-spacing: -.057em; text-shadow: 0 6px 28px rgba(2,4,20,.1); }
+.echonet-login-natal .natal-pitch p { max-width: 430px; margin: 0; color: #d9dcf4; font-size: clamp(14px,1.1vw,17px); line-height: 1.8; text-shadow: 0 2px 14px rgba(0,0,0,.2); }
+.echonet-login-natal .natal-highlights { display: flex; gap: clamp(14px,2.8vw,36px); flex-wrap: wrap; margin-top: 36px; font-weight: 690; font-size: 13px; }
+.echonet-login-natal .natal-highlights > span { display: flex; align-items: center; gap: 8px; }
+.echonet-login-natal .highlight-mark { display: grid; place-items: center; width: 34px; height: 34px; background: rgba(229,219,255,.12); border: 1px solid rgba(224,219,255,.18); border-radius: 12px; font-size: 21px; color: #e8ddff; }
+/* Pure CSS 3D phone: gently floating, not a looping video. */
+.echonet-login-natal .natal-phone-area { height: 590px; min-width: 0; position: relative; display: grid; place-items: center; perspective: 900px; isolation: isolate; }
+.echonet-login-natal .natal-phone-halo { position: absolute; width: 320px; height: 370px; border-radius: 50%; background: radial-gradient(ellipse,rgba(150,91,251,.40),rgba(84,89,238,.16) 54%,transparent 72%); filter: blur(38px); }
+.echonet-login-natal .natal-phone-float { position: relative; z-index: 1; animation: natal-phone-bob 5.4s ease-in-out infinite; filter: drop-shadow(-20px 27px 20px rgba(4,7,27,.42)); }
+.echonet-login-natal .natal-phone { width: 237px; height: 478px; position: relative; border-radius: 40px; border: 5px solid #97a6eb; background: linear-gradient(125deg,#282e70,#181b44 50%,#8b58eb); padding: 7px; box-shadow: inset 0 0 0 2px rgba(240,242,255,.65), 10px 8px 0 #29224f, 16px 15px 35px rgba(25,12,82,.53),0 0 32px rgba(157,123,255,.4); transform: rotate(-11deg) rotateY(-14deg) rotateX(4deg); }
+.echonet-login-natal .natal-phone::after { content: ''; position: absolute; right: -14px; top: 130px; height: 67px; width: 5px; border-radius: 5px; background: linear-gradient(#b6a2fa,#373074); }
+.echonet-login-natal .natal-phone-screen { overflow: hidden; width: 100%; height: 100%; position: relative; border-radius: 29px; background: radial-gradient(ellipse at 50% 36%,rgba(122,103,245,.72),transparent 46%), linear-gradient(180deg,#0a133a,#373573 55%,#6c5c99 78%,#cad8f9); color: white; }
+.echonet-login-natal .natal-phone-screen::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); top: 0; width: 70px; height: 18px; background: #070a1b; border-radius: 0 0 13px 13px; }
+.echonet-login-natal .natal-phone-screen::after { content: ''; position: absolute; top: 26px; left: -80px; width: 340px; height: 140px; transform: rotate(-25deg); background: linear-gradient(transparent,rgba(54,250,228,.15),rgba(174,91,255,.28),transparent); filter: blur(10px); }
+.echonet-login-natal .natal-phone-status { position: relative; z-index: 4; display: flex; justify-content: space-between; padding: 23px 23px 0; font-size: 11px; font-weight: 800; }
+.echonet-login-natal .natal-phone-logo { position: relative; z-index: 4; display: flex; align-items: center; flex-direction: column; margin: 87px 0 0; font-size: 29px; letter-spacing: -.04em; line-height: 1.1; }
+.echonet-login-natal .natal-phone-logo strong { font-weight: 820; }
+.echonet-login-natal .natal-phone-logo strong span { color: #e4adff; }
+.echonet-login-natal .phone-wave { margin-bottom: 10px; width: 63px; height: 56px; display: grid; place-items: center; border: 4px solid rgba(166,221,255,.85); border-radius: 25px; color: #fceaff; background: rgba(118,98,225,.30); text-shadow: 0 0 9px white; font-size: 42px; box-shadow: 0 0 26px rgba(158,111,245,.54); }
+.echonet-login-natal .natal-phone-tag { position: relative; z-index: 4; font-size: 10px; text-align: center; margin-top: 12px; color: #e2dcff; }
+.echonet-login-natal .natal-phone-landscape { position: absolute; z-index: 2; inset: auto 0 0; height: 46%; background: linear-gradient(162deg,transparent 26%,#7f8fd0 27% 36%,transparent 37%),linear-gradient(26deg,transparent 30%,#a5b6e5 31% 55%,transparent 56%),linear-gradient(170deg,transparent 44%,#d3dbf8 45%); }
+.echonet-login-natal .natal-phone-landscape::before { content: ''; position: absolute; inset: 35% 0 0; background: linear-gradient(160deg,transparent 35%,#3d4b81 36% 44%,transparent 45%),linear-gradient(23deg,transparent 44%,#586795 45% 50%,transparent 51%); }
+.echonet-login-natal .natal-phone-landscape .tree { position: absolute; bottom: 24px; z-index: 3; color: #273c65; font-size: 70px; text-shadow: 8px 4px #d5e6ff; }
+.echonet-login-natal .tree-one { left: 15px; }
+.echonet-login-natal .tree-two { left: 62px; transform: scale(.6); }
+.echonet-login-natal .tree-three { right: 15px; transform: scale(.83); }
+.echonet-login-natal .natal-phone-home { position: absolute; bottom: 30px; left: 100px; color: #ffce8c; z-index: 4; font-size: 44px; text-shadow: 0 0 8px #ffba76; }
+.echonet-login-natal .second-home { left: 143px; bottom: 22px; transform: scale(.65); }
+.echonet-login-natal .natal-orbit { position: absolute; left: 50%; top: 52%; z-index: 1; border: 2px solid rgba(233,174,255,.68); width: 365px; height: 115px; border-radius: 50%; box-shadow: 0 0 14px rgba(231,139,255,.38),inset 0 0 14px rgba(231,139,255,.2); transform: translate(-50%,-50%) rotate(-22deg); }
+.echonet-login-natal .natal-orbit.two { transform: translate(-50%,-50%) rotate(-22deg) scale(.88); opacity: .28; }
+.echonet-login-natal .natal-phone-glimmer { position: absolute; z-index: 4; right: 1%; top: 25%; font-size: 36px; color: #fad7ff; text-shadow: 0 0 13px #edb3ff; animation: natal-twinkle 3s ease-in-out infinite alternate; }
+/* Login glass card */
+.echonet-login-natal .login-forms { display: flex; align-items: stretch; width: 100%; max-width: 420px; gap: 9px; justify-self: end; }
+.echonet-login-natal .natal-login-card { padding: clamp(28px,3.6vw,45px) clamp(23px,2.65vw,36px) 30px; position: relative; overflow: hidden; width: 100%; border: 1px solid rgba(239,228,255,.32); border-radius: 29px; background: linear-gradient(140deg,rgba(49,63,111,.78),rgba(39,39,91,.82) 61%,rgba(76,48,113,.77)); backdrop-filter: blur(27px); -webkit-backdrop-filter: blur(27px); box-shadow: 0 27px 80px rgba(3,5,28,.33),inset 0 1px 1px rgba(255,255,255,.18),0 0 65px rgba(129,91,237,.11); text-align: center; color: white; }
+.echonet-login-natal .natal-login-card::before { content: ''; position: absolute; top: -100px; right: -85px; width: 240px; height: 240px; background: radial-gradient(circle,rgba(166,113,235,.24),transparent 72%); pointer-events: none; }
+.echonet-login-natal .natal-card-sparkle { color: #ffd3f7; font-size: 20px; position: absolute; right: 26px; top: 21px; }
+.echonet-login-natal .natal-card-icon { display: grid; place-items: center; margin: 0 auto 15px; width: 51px; height: 51px; border: 1px solid rgba(235,208,255,.38); border-radius: 17px; font-size: 27px; color: #fff; background: linear-gradient(145deg,rgba(120,148,251,.57),rgba(191,105,232,.46)); box-shadow: 0 10px 24px rgba(68,38,125,.34); }
+.echonet-login-natal .natal-login-card h2 { color: white; font-size: clamp(24px,2.06vw,30px); font-weight: 800; letter-spacing: -.055em; line-height: 1.2; margin: 0; }
+.echonet-login-natal .natal-subtitle { font-size: 13px; line-height: 1.6; color: #cdd2ec; margin: 10px 0 15px; }
+.echonet-login-natal .natal-card-divider { display: flex; align-items: center; gap: 12px; color: #e4b0ec; font-size: 18px; margin-bottom: 18px; }
+.echonet-login-natal .natal-card-divider::before,.echonet-login-natal .natal-card-divider::after { content: ''; height: 1px; flex: 1; background: linear-gradient(to right,transparent,#9a90d8); }
+.echonet-login-natal .natal-card-divider::after { background: linear-gradient(to left,transparent,#9a90d8); }
+.echonet-login-natal .natal-login-card .login-form { display: flex; gap: 0; text-align: left; }
+.echonet-login-natal .natal-field-label { font-size: 12px; color: #e7e8ff; font-weight: 680; margin: 4px 0 8px 4px; }
+.echonet-login-natal .natal-input-wrap { position: relative; display: flex; align-items: center; min-height: 52px; margin-bottom: 16px; border-radius: 13px; background: rgba(19,28,68,.38); border: 1px solid rgba(211,207,255,.32); transition: box-shadow .2s,border-color .2s, background .2s; }
+.echonet-login-natal .natal-input-wrap:focus-within { border-color: #d5bbff; background: rgba(18,23,60,.63); box-shadow: 0 0 0 4px rgba(179,126,255,.11); }
+.echonet-login-natal .natal-input-wrap > svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #c1c3ed; pointer-events: none; }
+.echonet-login-natal .natal-login-card .natal-input-wrap input { appearance: none; width: 100%; min-height: 52px; border: 0; outline: 0; background: transparent !important; box-shadow: none !important; color: #fff !important; border-radius: 13px; padding: 14px 45px !important; font-size: 14px; line-height: 22px; }
+.echonet-login-natal .natal-input-wrap input::placeholder { color: #bdc4e0; opacity: 1; }
+.echonet-login-natal .natal-login-card input:-webkit-autofill { -webkit-text-fill-color: #fff !important; transition: background-color 9999s ease-in-out 0s; }
+.echonet-login-natal .natal-password-toggle { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; display: grid; place-items: center; padding: 8px; border: 0; background: transparent; color: #c9c5ee; border-radius: 10px; cursor: pointer; }
+.echonet-login-natal .natal-password-toggle:hover { background: rgba(205,195,255,.12); }
+.echonet-login-natal .natal-password-toggle svg { width: 20px; height: 20px; }
+.echonet-login-natal .natal-login-help { display: flex; justify-content: flex-end; margin: -4px 0 17px; }
+.echonet-login-natal .natal-login-help button { background: transparent; border: 0; padding: 7px 0; color: #e6b8ff; font-weight: 660; font-size: 12px; cursor: pointer; }
+.echonet-login-natal .natal-login-help button:hover,.echonet-login-natal .natal-join button:hover { color: white; text-decoration: underline; }
+.echonet-login-natal .login-form .natal-enter-button { width: 100%; min-height: 53px; border: 1px solid rgba(255,216,255,.52); border-radius: 15px; padding: 12px 20px; display: flex; justify-content: center; align-items: center; gap: 17px; cursor: pointer; color: white; font-size: 15px; font-weight: 770; letter-spacing: .01em; background: linear-gradient(100deg,#656bea,#945ce9 55%,#da69ce); box-shadow: 0 9px 22px rgba(132,77,232,.33),inset 0 1px 0 rgba(255,255,255,.28); margin: 0; }
+.echonet-login-natal .login-form .natal-enter-button:hover { background: linear-gradient(100deg,#7d82fc,#a36cf3 55%,#e87adb); box-shadow: 0 11px 30px rgba(132,77,232,.44),0 0 14px rgba(255,143,236,.28); transform: translateY(-1px); }
+.echonet-login-natal .login-form .natal-enter-button:active { transform: translateY(1px); }
+.echonet-login-natal .natal-enter-button span:last-child { font-size: 22px; font-weight: 400; }
+.echonet-login-natal .natal-join { display: flex; flex-direction: column; align-items: center; gap: 9px; margin-top: 25px; color: #cad1eb; font-size: 12px; }
+.echonet-login-natal .natal-join button { background: transparent; border: 1px solid rgba(222,215,255,.53); color: #fff; border-radius: 12px; width: 100%; min-height: 47px; font-size: 13px; font-weight: 750; padding: 10px; cursor: pointer; transition: background .2s,border-color .2s; }
+.echonet-login-natal .natal-join button:hover { text-decoration: none; background: rgba(174,135,245,.13); border-color: #fff; }
+.echonet-login-natal .login-footer { color: #d4d3ee; font-size: 11px; text-shadow: 0 2px 8px rgba(0,0,0,.2); margin: 9px 0; }
+/* Existing functional registration/recovery modals, restyled without modifying endpoints. */
+.echonet-login-natal .modal { padding: 18px; background: rgba(5,9,29,.79); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); overflow-y: auto; }
+.echonet-login-natal .modal .modal-content { width: min(100%,425px); margin: auto; padding: 36px 30px 30px; border-radius: 23px; color: white; border: 1px solid rgba(223,211,255,.29); background: linear-gradient(140deg,#30366b,#252854 72%,#433461); box-shadow: 0 28px 90px rgba(0,0,0,.5); }
+.echonet-login-natal .modal .modal-content h2 { font-size: 24px; letter-spacing: -.05em; color: #fff; margin-bottom: 20px; }
+.echonet-login-natal .modal .modal-content input { width: 100%; min-height: 48px; border: 1px solid rgba(220,218,255,.31); border-radius: 12px; background: rgba(16,21,57,.45); color: #fff; font-size: 16px; margin: 0 0 6px; padding: 12px 14px; }
+.echonet-login-natal .modal .modal-content input::placeholder { color: #c5c6e8; }
+.echonet-login-natal .modal .modal-content input:focus { outline: 2px solid rgba(211,156,245,.55); outline-offset: 1px; }
+.echonet-login-natal .modal .modal-content button[type=submit] { min-height: 48px; border-radius: 12px; color: white; border: 1px solid rgba(238,204,255,.28); background: linear-gradient(115deg,#666af0,#c56bd6); font-weight: 760; cursor: pointer; margin-top: 8px; }
+.echonet-login-natal .modal .close-btn { color: #fff; background: rgba(255,255,255,.09); border: 0; border-radius: 10px; top: 12px; right: 12px; width: 35px; height: 35px; cursor: pointer; }
+.echonet-login-natal .error-message { color: #fff; background: rgba(211,49,83,.26); border: 1px solid rgba(255,157,170,.42); border-radius: 10px; font-size: 13px; line-height: 1.4; padding: 11px 12px; margin: 0 0 15px; }
+.echonet-login-natal .success-message { background: rgba(53,190,137,.20); color: #baf7d6; border: 1px solid rgba(131,230,176,.25); border-radius: 10px; font-size: 13px; padding: 12px; line-height: 1.5; }
+.echonet-login-natal :where(button,a,input):focus-visible { outline: 2px solid #f4d0ff; outline-offset: 3px; }
+@media (max-width:1270px) {
+  .echonet-login-natal .natal-main { grid-template-columns: minmax(0,1fr) minmax(170px,.6fr) minmax(320px,400px); gap: 8px; }
+  .echonet-login-natal .natal-pitch h1 { font-size: clamp(33px,3.7vw,45px); }
+  .echonet-login-natal .natal-phone-area { transform: scale(.89); margin: 0 -17px; }
+  .echonet-login-natal .natal-highlights { gap: 10px; }
+}
+@media (max-width:1030px) {
+  .echonet-login-natal .natal-main { grid-template-columns: minmax(0,1fr) minmax(350px,410px); gap: 28px; }
+  .echonet-login-natal .natal-phone-area { display: none; }
+  .echonet-login-natal .natal-pitch { padding-left: 15px; }
+  .echonet-login-natal .natal-pitch h1 { font-size: clamp(36px,4.4vw,53px); }
+}
+@media (max-width:720px) {
+  .echonet-login-natal .natal-login-page { padding: 0 18px 18px; }
+  .echonet-login-natal .natal-header { padding: max(20px,env(safe-area-inset-top)) 0 8px; }
+  .echonet-login-natal .natal-edition { font-size: 11px; padding: 8px 11px; }
+  .echonet-login-natal .natal-brand { font-size: 25px; gap: 8px; }
+  .echonet-login-natal .brand-icon { width: 36px; height: 36px; border-radius: 13px; }
+  .echonet-login-natal .natal-main { grid-template-columns: minmax(0,1fr); gap: 16px; padding: 22px 0 10px; }
+  .echonet-login-natal .natal-pitch { padding: 0 4px; text-align: center; }
+  .echonet-login-natal .natal-pitch h1 { font-size: clamp(30px,7.3vw,44px); margin-bottom: 12px; }
+  .echonet-login-natal .natal-pitch p { max-width: 440px; margin: 0 auto; font-size: 13px; line-height: 1.6; }
+  .echonet-login-natal .natal-eyebrow { margin: 0 0 14px; font-size: 11px; padding: 7px 12px; }
+  .echonet-login-natal .natal-highlights { display: none; }
+  .echonet-login-natal .login-forms { justify-self: center; max-width: 430px; }
+  .echonet-login-natal .natal-login-card { padding: 27px 23px 24px; border-radius: 23px; }
+  .echonet-login-natal .natal-card-icon { display: none; }
+  .echonet-login-natal .natal-moon { right: -33px; top: 55px; opacity: .50; }
+  .echonet-login-natal .natal-santa-flight { top: 12%; width: 215px; }
+  .echonet-login-natal .natal-landscape { height: 37%; opacity: .57; }
+}
+@media (max-width:375px) {
+  .echonet-login-natal .natal-login-page { padding-inline: 12px; }
+  .echonet-login-natal .natal-edition { font-size: 9px; }
+  .echonet-login-natal .natal-pitch h1 { font-size: 29px; }
+  .echonet-login-natal .natal-login-card { padding: 24px 17px 20px; }
+  .echonet-login-natal .natal-login-card h2 { font-size: 23px; }
+}
+@media (max-height:770px) and (min-width:1031px) {
+  .echonet-login-natal .natal-header { padding-top: 14px; }
+  .echonet-login-natal .natal-main { padding-top: 5px; padding-bottom: 6px; }
+  .echonet-login-natal .natal-phone-area { height: 500px; transform: scale(.87); }
+  .echonet-login-natal .natal-login-card { padding-top: 26px; padding-bottom: 23px; }
+  .echonet-login-natal .natal-card-icon { margin-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .echonet-login-natal .natal-phone-float, .echonet-login-natal .natal-santa-flight,
+  .echonet-login-natal .natal-aurora,.echonet-login-natal .natal-snowflake,
+  .echonet-login-natal .natal-phone-glimmer { animation: none !important; }
+  .echonet-login-natal .natal-santa-flight { transform: translateX(36vw); }
+}
+@keyframes natal-santa-cross { from { transform: translateX(-38vw) translateY(0) rotate(-3deg); } 50% { transform: translateX(40vw) translateY(-14px) rotate(0deg); } to { transform: translateX(125vw) translateY(8px) rotate(3deg); } }
+@keyframes natal-snowfall { from { transform: translate3d(0,-15px,0); } to { transform: translate3d(var(--drift),110vh,0); } }
+@keyframes natal-phone-bob { 0%,100% { transform: translateY(-11px) rotate(-1deg); } 50% { transform: translateY(16px) rotate(1deg); } }
+@keyframes natal-twinkle { from { opacity: .3; transform: scale(.9); } to { opacity: 1; transform: scale(1.25); } }
+@keyframes natal-aurora-pulse { from { opacity: .33; filter: blur(45px); } to { opacity: .67; filter: blur(38px); } }
