@@ -1,0 +1,134 @@
+/* EchoNet 2.0.1 — navegacao imediata e barra mobile visivel.
+   Carregar DEPOIS de echonet-app-v2.css e dos demais estilos.
+   Mantem a animacao natalina dentro da pagina de login e o splash inicial do PWA. */
+
+/* Nao animar o documento inteiro a cada troca de pagina: isso tambem
+   cria temporariamente um ancestral transformado para menus fixos. */
+body.app-layout,
+body.echonet-login-natal {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+body.echonet-route-out {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --mobile-nav-height: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* As imagens do feed nao podem cobrir os controles do aplicativo. */
+  body.app-layout .sidebar {
+    position: fixed !important;
+    top: auto !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    display: flex !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--mobile-nav-height) !important;
+    padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    box-sizing: border-box !important;
+    border: 0 !important;
+    border-top: 1px solid var(--border, #e6e9f2) !important;
+    border-radius: 0 !important;
+    background: var(--bg-secondary, #fff) !important;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 -4px 20px rgba(20, 24, 50, .08);
+    z-index: 1000 !important;
+    transform: none !important;
+    overflow: visible !important;
+    isolation: isolate;
+  }
+
+  /* Seis atalhos: inicio, criar, notificacoes, mensagens, perfil, ajustes. */
+  body.app-layout .sidebar .sidebar-nav {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0 !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    width: 100% !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+  }
+  body.app-layout .sidebar .sidebar-nav > .sidebar-link {
+    display: flex !important;
+    position: relative;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    border-radius: 0 !important;
+    box-sizing: border-box;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body.app-layout .sidebar .sidebar-nav > .sidebar-link .nav-icon,
+  body.app-layout .sidebar .sidebar-profile-avatar {
+    display: block !important;
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px;
+  }
+  body.app-layout .sidebar .sidebar-profile-avatar {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  body.app-layout .sidebar .sidebar-label,
+  body.app-layout .sidebar .sidebar-brand,
+  body.app-layout .sidebar .logout-form {
+    display: none !important;
+  }
+  body.app-layout .sidebar .notification-nav-button .notification-badge:not([hidden]) {
+    display: inline-flex !important;
+    position: absolute;
+    top: 3px;
+    right: max(1px, calc(50% - 27px));
+    z-index: 1;
+  }
+
+  /* Reserva a faixa dos botoes para que o ultimo post nao fique escondido. */
+  body.app-layout:not(.chat-conversation) .app-content {
+    margin-bottom: var(--mobile-nav-height) !important;
+  }
+  body.app-layout .mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 950;
+  }
+
+  /* A tela de conversa continua com seu proprio cabecalho e voltar. */
+  body.app-layout.chat-conversation .sidebar {
+    display: none !important;
+  }
+  body.app-layout.chat-conversation .app-content {
+    margin-bottom: 0 !important;
+  }
+
+  /* Janelas de notificacao e Stories ficam por cima da navegacao
+     quando forem abertas intencionalmente. */
+  .notifications-backdrop { z-index: 1005 !important; }
+  .notifications-panel { z-index: 1006 !important; }
+  .story-modal:not([hidden]) { z-index: 1100 !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+}

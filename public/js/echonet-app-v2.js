@@ -184,8 +184,17 @@
   }
 
   ready(() => {
-    launchSplash();
-    navigationTransitions();
+    // ECHONET_APP2_NAV_FIX_2026: splash somente no primeiro acesso desta sessao.
+    try {
+      const chaveSplash = 'echonet-splash-inicial-v2';
+      if (!sessionStorage.getItem(chaveSplash)) {
+        sessionStorage.setItem(chaveSplash, '1');
+        launchSplash();
+      }
+    } catch (_) {
+      // Se o armazenamento estiver bloqueado, evita animacoes repetitivas.
+    }
+    // Sem interceptar cliques: paginas abrem imediatamente.
     pushControlCard();
     cleanOnLogout();
     restoreExistingSubscription();
