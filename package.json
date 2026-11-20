@@ -12,19 +12,20 @@
   "license": "ISC",
   "description": "EchoNet: rede social responsiva com suporte a Supabase PostgreSQL/Storage e SQLite local",
   "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "@supabase/supabase-js": "^2.58.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
+    "cloudinary": "^2.5.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "multer": "^2.0.1",
-    "sqlite3": "^5.1.7",
-    "@libsql/client": "^0.18.0",
-    "cloudinary": "^2.5.0",
     "pg": "^8.13.1",
-    "@supabase/supabase-js": "^2.58.0"
+    "sqlite3": "^5.1.7",
+    "web-push": "^3.6.7"
   },
   "engines": {
     "node": ">=20"

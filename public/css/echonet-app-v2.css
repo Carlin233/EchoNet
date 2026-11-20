@@ -1,0 +1,48 @@
+/* EchoNet 2.0 — animacoes com acessibilidade e configuracao de push. */
+:root { --echonet-ease: cubic-bezier(.2,.7,.2,1); }
+@media (prefers-reduced-motion: no-preference) {
+  body.app-layout, body.echonet-login-natal { animation: echonet-page-enter .27s var(--echonet-ease) both; }
+  body.echonet-route-out { opacity: .42; transition: opacity .14s ease; }
+  .sidebar-link, .sidebar-nav a, .sidebar-nav button, .mobile-nav a, button:not(:disabled) {
+    transition: transform .18s var(--echonet-ease), background-color .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .sidebar-link:active, .mobile-nav a:active, button:not(:disabled):active { transform: scale(.96); }
+  @keyframes echonet-page-enter { from { opacity: .72; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+}
+.echonet-splash {
+  position: fixed; inset: 0; z-index: 2147483600;
+  background: radial-gradient(ellipse at 45% 22%, #4335a0 0%, #1c2057 32%, #0b1027 100%);
+  display: grid; place-items: center; color: white; opacity: 0;
+  transition: opacity .36s ease; pointer-events: auto;
+}
+.echonet-splash-show { opacity: 1; }
+.echonet-splash-hide { opacity: 0; pointer-events: none; }
+.echonet-splash-content { display: flex; align-items: center; flex-direction: column; text-align: center; gap: 10px; }
+.echonet-splash-logo { width: 106px; height: 106px; display: grid; place-items: center; border-radius: 27px;
+  background: rgba(255,255,255,.12); box-shadow: 0 20px 75px rgba(68,76,224,.35), inset 0 0 0 1px rgba(255,255,255,.16); }
+.echonet-splash-logo img { display: block; width: 92px; height: 92px; border-radius: 22px; }
+.echonet-splash-content strong { font: 800 clamp(2.1rem, 8vw, 3.2rem)/1.05 system-ui, sans-serif; letter-spacing: -.07em; }
+.echonet-splash-content strong span { color: #9e88ff; }
+.echonet-splash-content small { font: 500 .9rem/1.4 system-ui, sans-serif; color: #c6c9e6; }
+@media (prefers-reduced-motion: no-preference) {
+  .echonet-splash-show .echonet-splash-logo { animation: echonet-logo-float .95s ease-in-out both; }
+  @keyframes echonet-logo-float { from { opacity: 0; transform: translateY(22px) scale(.85); } to { opacity: 1; transform: translateY(0) scale(1); } }
+}
+.echonet-push-card { min-width: 0; }
+.echonet-push-note { color: #64708b; line-height: 1.65; margin: 10px 0 16px; }
+.echonet-push-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+#echonet-push-toggle {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+  border: 0; border-radius: 13px; padding: 11px 20px; font: 700 .91rem/1.3 system-ui, sans-serif;
+  cursor: pointer; color: white; background: linear-gradient(115deg, #704bec, #aa53d8);
+  box-shadow: 0 8px 23px rgba(111,69,218,.22);
+}
+#echonet-push-toggle:disabled { cursor: not-allowed; opacity: .53; box-shadow: none; }
+.echonet-push-state { font: 500 .85rem/1.45 system-ui, sans-serif; color: #64708b; }
+.echonet-push-state.is-error { color: #c3485b; }
+.echonet-push-footnote { display: block; color: #8390a7; line-height: 1.55; margin-top: 16px; }
+@media (max-width: 580px) { .echonet-push-actions { align-items: stretch; flex-direction: column; } #echonet-push-toggle { width: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .echonet-splash { transition: none; }
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

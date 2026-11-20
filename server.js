@@ -271,6 +271,10 @@ const userAvatar = async userId => (await get('SELECT avatar FROM users WHERE id
 
 // Uma conexão SSE por aba: atualiza a sineta sem serviços adicionais no Render.
 // SSE envia apenas um aviso para recarregar; os dados privados são lidos via API autenticada.
+// ECHONET_APP2_PUSH — integracao modular de notificacoes web.
+const echonetPush = require('./echonet-push-server').register({
+  app, run, all, requireLogin, withErrors, limitAttempts
+});
 const notificationStreams = new Map();
 function emitNotification(recipientId) {
   for (const stream of notificationStreams.get(Number(recipientId)) || []) {
@@ -283,6 +287,11 @@ async function notify(recipientId, actor, kind, message, targetUrl) {
   await run('INSERT INTO notifications(recipient_id,actor_id,kind,message,target_url) VALUES(?,?,?,?,?)',
     [recipientId,actor.id,kind,`${actor.username} ${message}`,targetUrl]);
   emitNotification(recipientId);
+  // ECHONET_APP2_DELIVERY — envia push sem atrasar a notificacao existente.
+  echonetPush.send(recipientId, {
+    kind, body: kind === 'message' ? 'Você recebeu uma nova mensagem.' : `${actor.username} ${message}`,
+    url: targetUrl
+  }).catch(error => console.warn('[EchoNet Push] Erro ao enviar:', error?.message || 'indisponivel'));
 }
 async function purgeExpiredStories() {
   const expired = await all("SELECT image_path FROM stories WHERE expires_at <= datetime('now')");
