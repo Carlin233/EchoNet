@@ -1,61 +1,98 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Entrar • EchoNet</title>
+  <meta charset="UTF-8">
   <meta name="csrf-token" content="__CSRF_TOKEN__">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#ffffff" />
-  <link rel="stylesheet" href="/css/login.css" />
-  <link rel="stylesheet" href="/css/mobile-optimizations.css" />
-  <link rel="stylesheet" href="/css/echonet-modern.css?v=20261120-2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1734">
+  <meta name="description" content="Entre no EchoNet para compartilhar momentos, conversar e criar novas conexões.">
+  <title>Entrar no EchoNet • Edição de Natal</title>
+  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/css/mobile-optimizations.css">
+  <link rel="stylesheet" href="/css/echonet-modern.css?v=20261120-2">
+  <link rel="stylesheet" href="/css/echonet-login-natal.css?v=20261120-1">
 </head>
-<body>
-  <div class="login-page">
-    <div class="login-wrapper">
-      <!-- Lado esquerdo: mockup visual (só desktop) -->
-      <div class="login-showcase" aria-hidden="true">
-        <div class="phone-frame">
-          <div class="phone-screen">
-            <div class="phone-header">
-              <img src="/img/echonet-logo.svg" alt="" class="phone-logo" />
-            </div>
-            <div class="phone-feed">
-              <div class="phone-story-row">
-                <span></span><span></span><span></span><span></span>
+<body class="echonet-login-natal">
+  <div class="natal-backdrop" aria-hidden="true">
+    <div class="natal-aurora aurora-a"></div>
+    <div class="natal-aurora aurora-b"></div>
+    <div class="natal-moon"></div>
+    <div class="natal-stars"></div>
+    <div class="natal-santa-flight"><img src="/img/echonet-santa.svg" alt=""></div>
+    <div class="natal-snow" id="natalSnow"></div>
+    <div class="natal-landscape"></div>
+  </div>
+
+  <div class="login-page natal-login-page">
+    <div class="natal-shell">
+      <header class="natal-header">
+        <a class="natal-brand" href="/login.html" aria-label="EchoNet, página de entrada">
+          <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 9.5C4.8 14 4.9 23 9.2 27.7L8 34l7.6-4.2c7.1 2.3 14.8-1.4 17.1-8.6C35.4 12.6 28.3 5.8 19.8 6.2c-4.3.2-7.8 1.3-10.8 3.3Z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/><path d="M13 19.6v-3M18 23v-9M23 25v-12M28 20v-4" stroke="white" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+          <span>Echo<span class="gradient-word">Net</span></span>
+        </a>
+        <span class="natal-edition"><span aria-hidden="true">✦</span> Edição especial de Natal <span aria-hidden="true">❄</span></span>
+      </header>
+
+      <main class="natal-main">
+        <section class="natal-pitch" aria-label="Bem-vindo ao EchoNet">
+          <div class="natal-eyebrow"><span aria-hidden="true">✦</span> Uma nova forma de se conectar</div>
+          <h1>Compartilhe momentos.<br><span class="gradient-word">Viva conexões.</span></h1>
+          <p>Seu espaço para conversar, descobrir novidades e ficar perto de quem importa — com um toque especial de magia neste Natal.</p>
+          <div class="natal-highlights" aria-label="Destaques do EchoNet">
+            <span><span class="highlight-mark" aria-hidden="true">✦</span> Histórias</span>
+            <span><span class="highlight-mark" aria-hidden="true">♡</span> Conexões</span>
+            <span><span class="highlight-mark" aria-hidden="true">↗</span> Conversas</span>
+          </div>
+        </section>
+
+        <div class="natal-phone-area" aria-hidden="true">
+          <div class="natal-phone-halo"></div>
+          <div class="natal-phone-float">
+            <div class="natal-phone">
+              <div class="natal-phone-screen">
+                <div class="natal-phone-status"><span>9:41</span><span>◔ ▰</span></div>
+                <div class="natal-phone-logo"><div class="phone-wave">⌁</div><strong>Echo<span>Net</span></strong></div>
+                <div class="natal-phone-tag">O melhor do momento é compartilhar.</div>
+                <div class="natal-phone-landscape">
+                  <span class="tree tree-one">♠</span><span class="tree tree-two">♠</span><span class="tree tree-three">♠</span>
+                  <span class="natal-phone-home">⌂</span><span class="natal-phone-home second-home">⌂</span>
+                </div>
               </div>
-              <div class="phone-post"></div>
-              <div class="phone-post short"></div>
             </div>
           </div>
+          <span class="natal-orbit one"></span><span class="natal-orbit two"></span>
+          <span class="natal-phone-glimmer">✧</span>
         </div>
-        <p class="login-tagline">Seu espaço para momentos, conversas e novas conexões.</p>
-      </div>
 
-      <!-- Lado direito: formulários -->
-      <div class="login-forms">
-        <div class="form-box">
-          <div class="form-logo">
-            <span class="echo">Echo</span><span class="net">Net</span>
+        <section class="login-forms" aria-label="Acessar sua conta">
+          <div class="form-box natal-login-card">
+            <div class="natal-card-sparkle" aria-hidden="true">✦</div>
+            <div class="natal-card-icon" aria-hidden="true">✳</div>
+            <h2>Bem-vindo ao <span class="gradient-word">EchoNet!</span></h2>
+            <p class="natal-subtitle">Entre na sua conta e continue compartilhando.</p>
+            <div class="natal-card-divider" aria-hidden="true"><span>✧</span></div>
+            <form action="/login" method="POST" class="login-form">
+              <input type="hidden" name="_csrf" value="__CSRF_TOKEN__">
+              <p id="loginError" class="error-message" role="alert" style="display:none"></p>
+              <label class="natal-field-label" for="login-email">Seu e-mail</label>
+              <div class="natal-input-wrap">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="2.8" y="5" width="18.4" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <input id="login-email" type="email" name="email" placeholder="Digite seu e-mail" required autocomplete="username">
+              </div>
+              <label class="natal-field-label" for="login-password">Sua senha</label>
+              <div class="natal-input-wrap">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="4.5" y="10" width="15" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <input id="login-password" type="password" name="password" placeholder="Digite sua senha" minlength="8" required autocomplete="current-password">
+                <button type="button" id="toggleLoginPassword" class="natal-password-toggle" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar ou ocultar senha"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg></button>
+              </div>
+              <div class="natal-login-help"><button type="button" id="openRecoveryBtn">Esqueceu a senha?</button></div>
+              <button type="submit" class="natal-enter-button"><span>Entrar no EchoNet</span><span aria-hidden="true">→</span></button>
+            </form>
+            <div class="natal-join"><span>Primeira vez por aqui?</span><button type="button" id="openModalBtn">Criar uma conta grátis</button></div>
           </div>
-          <form action="/login" method="POST" class="login-form">
-            <input type="hidden" name="_csrf" value="__CSRF_TOKEN__">
-            <p id="loginError" class="error-message" style="display:none"></p>
-            <input type="email" name="email" placeholder="E-mail" required autocomplete="username" />
-            <input type="password" name="password" placeholder="Senha" minlength="8" required autocomplete="current-password" />
-            <button type="submit">Entrar</button>
-          </form>
-          <p class="forgot-link">
-            <a id="openRecoveryBtn">Esqueceu a senha?</a>
-          </p>
-        </div>
-
-        <div class="signup-box">
-          Não tem uma conta? <a id="openModalBtn">Cadastre-se</a>
-        </div>
-
-        <p class="login-footer">EchoNet © 2026</p>
-      </div>
+          <p class="login-footer">EchoNet © 2026 <span aria-hidden="true">·</span> Feito para conectar pessoas</p>
+        </section>
+      </main>
     </div>
   </div>
 
@@ -174,5 +211,6 @@
       }
     });
   </script>
+  <script src="/js/echonet-login-natal.js?v=20261120-1" defer></script>
 </body>
 </html>
