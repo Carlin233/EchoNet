@@ -18,6 +18,7 @@
         <img class="ecpv-photo" alt="Foto da publicação">
         <button type="button" class="ecpv-arrow ecpv-next" data-ecpv="next" aria-label="Próxima publicação">&#10095;</button>
       </div>
+      <button type="button" class="ecpv-comments-backdrop" data-ecpv="close-comments" tabindex="-1" aria-label="Fechar comentários" aria-hidden="true"></button>
       <section class="ecpv-panel" aria-label="Detalhes da publicação">
         <header class="ecpv-heading">
           <a class="ecpv-author-link" href="#"><img class="ecpv-avatar" alt=""><strong class="ecpv-author"></strong></a>
@@ -32,20 +33,23 @@
             <button type="button" data-ecpv="delete" class="ecpv-menu-danger" hidden>Excluir publicação</button>
           </div>
         </header>
-        <div class="ecpv-comments-area" role="region" aria-label="Comentários">
+        <div class="ecpv-comments-sheet" id="ecpv-comments-sheet" aria-label="Comentários da publicação">
+          <div class="ecpv-sheet-head"><strong>Comentários</strong><button type="button" class="ecpv-icon-btn" data-ecpv="close-comments" aria-label="Fechar comentários">&times;</button></div>
+          <div class="ecpv-comments-area" role="region" aria-label="Lista de comentários">
           <div class="ecpv-caption-row"><img class="ecpv-caption-avatar" alt=""><p><strong class="ecpv-caption-author"></strong> <span class="ecpv-caption-text"></span></p></div>
           <div class="ecpv-comments" aria-live="polite"><p class="ecpv-muted">Carregando comentários...</p></div>
+          </div>
+          <form class="ecpv-comment-form"><input class="ecpv-comment-input" aria-label="Escreva um comentário" placeholder="Adicione um comentário..." maxlength="1000" autocomplete="off" required><button class="ecpv-send" type="submit">Publicar</button></form>
         </div>
         <div class="ecpv-footer">
           <div class="ecpv-social-actions">
             <button type="button" data-ecpv="like" class="ecpv-social-btn ecpv-like" aria-label="Curtir publicação" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></svg></button>
-            <button type="button" data-ecpv="focus-comment" class="ecpv-social-btn" aria-label="Comentar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3a8.5 8.5 0 0 1 8.5 8.5Z"/></svg></button>
+            <button type="button" data-ecpv="focus-comment" class="ecpv-social-btn" aria-label="Mostrar comentários" aria-controls="ecpv-comments-sheet" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3a8.5 8.5 0 0 1 8.5 8.5Z"/></svg></button>
             <button type="button" data-ecpv="share" class="ecpv-social-btn" aria-label="Compartilhar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4.6-8.4L2 9l20-7ZM10.4 13.6 22 2"/></svg></button>
             <button type="button" data-ecpv="save" class="ecpv-social-btn ecpv-save" aria-label="Salvar publicação" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18l-7-5-7 5V3Z"/></svg></button>
           </div>
           <p class="ecpv-like-count"></p>
           <p class="ecpv-status" role="status" aria-live="polite"></p>
-          <form class="ecpv-comment-form"><input class="ecpv-comment-input" aria-label="Escreva um comentário" placeholder="Adicione um comentário..." maxlength="1000" autocomplete="off" required><button class="ecpv-send" type="submit">Publicar</button></form>
         </div>
       </section>
     </div>
@@ -69,6 +73,9 @@
   const confirmBox = $('.ecpv-confirm');
   const commentForm = $('.ecpv-comment-form');
   const input = $('.ecpv-comment-input');
+  const commentsSheet = $('.ecpv-comments-sheet');
+  const commentsToggle = $('[data-ecpv="focus-comment"]');
+  const mobileQuery = window.matchMedia('(max-width: 700px)');
   let current = null, oldFocus = null, oldOverflow = '', requestSequence = 0;
   const ownerControls = item => !!item?.querySelector('form[action^="/deletar-post/"] input[name="_csrf"]');
   const archived = item => !!item?.closest('#tab-archive');
@@ -89,6 +96,20 @@
   }
   function url() { return new URL('/post/' + postId(current), location.origin).href; }
   function closeMenu() { menu.hidden = true; menuTrigger.setAttribute('aria-expanded', 'false'); }
+  // No celular, os comentários são um painel que desce do topo ao tocar no balão.
+  // No desktop, os comentários continuam visíveis ao lado da publicação.
+  function setCommentsOpen(open, { focusTrigger = false } = {}) {
+    const visible = mobileQuery.matches && !!open;
+    dialog.classList.toggle('ecpv-comments-open', visible);
+    commentsToggle.setAttribute('aria-expanded', String(!mobileQuery.matches || visible));
+    commentsToggle.setAttribute('aria-label', !mobileQuery.matches ? 'Escrever comentário' : (visible ? 'Fechar comentários' : 'Mostrar comentários'));
+    commentsSheet.setAttribute('aria-hidden', String(mobileQuery.matches && !visible));
+    commentsSheet.inert = mobileQuery.matches && !visible;
+    if (focusTrigger && mobileQuery.matches && dialog.open) commentsToggle.focus({ preventScroll: true });
+  }
+  if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', () => setCommentsOpen(false));
+  else mobileQuery.addListener(() => setCommentsOpen(false));
+  setCommentsOpen(false);
   function message(msg = '') { status.textContent = msg; }
   function textElement(tag, cls, value) { const n = document.createElement(tag); if (cls) n.className = cls; n.textContent = value; return n; }
   function setCounts() {
@@ -129,7 +150,7 @@
       if (seq === requestSequence && item === current) comments.replaceChildren(textElement('p', 'ecpv-muted', err.message));
     }
   }
-  function configure(item) {
+  function configure(item, { openComments = false } = {}) {
     const image = item.querySelector('img'); if (!image) return;
     current = item; ++requestSequence; closeMenu(); confirmBox.hidden = true; message();
     photo.src = image.currentSrc || image.src;
@@ -153,18 +174,19 @@
     commentForm.hidden = isArchived;
     $('.ecpv-options-trigger').hidden = false;
     input.value = '';
+    setCommentsOpen(openComments);
     setCounts(); updateArrows(); loadComments();
   }
-  function show(item) {
+  function show(item, options = {}) {
     if (!dialog.open) { oldFocus = document.activeElement; oldOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; }
-    configure(item);
+    configure(item, options);
     if (!dialog.open) dialog.showModal();
-    $('.ecpv-close').focus();
+    (mobileQuery.matches && options.openComments ? $('[data-ecpv="close-comments"]:not(.ecpv-comments-backdrop)') : $('.ecpv-close')).focus({ preventScroll: true });
   }
   function close() { if (dialog.open) dialog.close(); }
   dialog.addEventListener('close', () => {
     ++requestSequence; document.body.style.overflow = oldOverflow; current = null;
-    confirmBox.hidden = true; closeMenu(); photo.removeAttribute('src');
+    confirmBox.hidden = true; closeMenu(); setCommentsOpen(false); photo.removeAttribute('src');
     if (oldFocus?.isConnected) oldFocus.focus({ preventScroll: true });
   });
   // Intercepta somente fotos da grade, nao avatar ou foto de Story.
@@ -175,11 +197,14 @@
     e.preventDefault(); show(item);
   });
   // Acessibilidade: abrir pelo link ao pressionar Enter tambem.
+  // Clique no balao de comentarios da grade ja abre o painel no celular.
   document.addEventListener('click', e => {
     const link = e.target.closest?.('.perfil-page .perfil-grid-panel .grid-item > a[href^="/post/"]');
     if (!link || e.target.closest('img')) return;
     const item = link.closest('.grid-item'); if (!validId(postId(item))) return;
-    e.preventDefault(); show(item);
+    const commentChip = e.target.closest('.grid-overlay span');
+    const openComments = !!commentChip?.querySelector('.fa-comment, .fa-comment-dots, [data-comment-icon]');
+    e.preventDefault(); show(item, { openComments });
   });
   dialog.addEventListener('click', e => {
     if (e.target === dialog) close();
@@ -202,6 +227,7 @@
     const btn = e.target.closest('button[data-ecpv]'); if (!btn || btn.disabled) return;
     const action = btn.dataset.ecpv;
     if (action === 'close') return close();
+    if (action === 'close-comments') { setCommentsOpen(false, { focusTrigger: true }); return; }
     if (action === 'prev') return switchPost(-1);
     if (action === 'next') return switchPost(1);
     if (action === 'menu') { menu.hidden = !menu.hidden; menuTrigger.setAttribute('aria-expanded', String(!menu.hidden)); return; }
@@ -226,7 +252,13 @@
       else await copyUrl();
       return;
     }
-    if (action === 'focus-comment') return input.focus();
+    if (action === 'focus-comment') {
+      if (mobileQuery.matches) {
+        const opening = !dialog.classList.contains('ecpv-comments-open');
+        setCommentsOpen(opening, { focusTrigger: !opening });
+      } else input.focus();
+      return;
+    }
     if (action === 'like' || action === 'save') {
       if (archived(current)) return;
       const item = current, id = postId(item); btn.disabled = true; message();
@@ -254,6 +286,7 @@
   dialog.addEventListener('cancel', e => {
     if (!confirmBox.hidden) { e.preventDefault(); confirmBox.hidden = true; menuTrigger.focus(); }
     else if (!menu.hidden) { e.preventDefault(); closeMenu(); menuTrigger.focus(); }
+    else if (dialog.classList.contains('ecpv-comments-open')) { e.preventDefault(); setCommentsOpen(false, { focusTrigger: true }); }
   });
   document.addEventListener('keydown', e => {
     if (!dialog.open || !confirmBox.hidden || document.activeElement === input) return;

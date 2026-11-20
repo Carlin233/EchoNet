@@ -30,7 +30,9 @@
 .ecpv-menu button:last-child { border-bottom:0; }
 .ecpv-menu button:hover { background:#f7f7f9; }
 .ecpv-menu .ecpv-menu-danger { color:#dc3047; font-weight:750; }
-.ecpv-comments-area { min-height:0; flex:1; overflow-y:auto; overscroll-behavior:contain; padding:22px 18px; scrollbar-width:thin; }
+.ecpv-comments-sheet { display:contents; }
+.ecpv-sheet-head, .ecpv-comments-backdrop { display:none; }
+.ecpv-comments-area { min-height:0; flex:1; order:1; overflow-y:auto; overscroll-behavior:contain; padding:22px 18px; scrollbar-width:thin; }
 .ecpv-caption-row { display:flex; align-items:flex-start; gap:11px; margin:0 0 20px; }
 .ecpv-caption-avatar, .ecpv-comment img { flex-shrink:0; width:32px; height:32px; border-radius:50%; object-fit:cover; background:#eee; }
 .ecpv-caption-row p { margin:4px 0 0; font-size:14px; overflow-wrap:anywhere; line-height:1.55; white-space:pre-wrap; }
@@ -40,7 +42,8 @@
 .ecpv-comment-body { font-size:13.5px; line-height:1.5; overflow-wrap:anywhere; min-width:0; white-space:pre-wrap; }
 .ecpv-comment-body strong { margin-right:4px; }
 .ecpv-muted { color:#777; font-size:13px; line-height:1.5; margin:0; }
-.ecpv-footer { border-top:1px solid #efefef; flex-shrink:0; }
+.ecpv-footer { border-top:1px solid #efefef; flex-shrink:0; order:2; }
+.ecpv-comment-form { order:3; }
 .ecpv-social-actions { display:flex; align-items:center; gap:2px; padding:7px 11px 0; }
 .ecpv-social-btn { width:39px; height:38px; border:0; border-radius:6px; background:transparent; color:#252525; display:grid; place-items:center; padding:7px; }
 .ecpv-social-btn:hover { background:#f5f5f5; }
@@ -62,19 +65,30 @@
 .ecpv-confirm-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .ecpv-confirm-actions button { border-radius:9px; padding:11px 8px; border:1px solid #ddd; background:#f8f8f8; color:#333; font-size:12px; font-weight:700; }
 .ecpv-confirm-actions .ecpv-confirm-delete { background:#d63146; border-color:#d63146; color:white; }
+/* Celular: foto em primeiro plano; comentarios em folha deslizante de cima para baixo. */
 @media(max-width:700px) {
   .ecpv-dialog { width:100vw; max-height:100dvh; height:100dvh; border-radius:0; }
-  .ecpv-layout { width:100%; height:100dvh; min-height:0; max-height:100dvh; grid-template-columns:1fr; grid-template-rows:minmax(220px,43dvh) minmax(0,1fr); }
-  .ecpv-photo-pane { min-height:0; }
+  .ecpv-layout { position:relative; width:100%; height:100dvh; min-height:0; max-height:100dvh; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; }
+  .ecpv-photo-pane { grid-row:1; grid-column:1; min-height:0; padding-top:55px; }
   .ecpv-photo { width:100%; height:100%; }
-  .ecpv-arrow { width:30px; height:30px; font-size:16px; } .ecpv-prev { left:6px; } .ecpv-next { right:6px; }
-  .ecpv-heading { height:55px; min-height:55px; padding:8px 12px; }
+  .ecpv-arrow { width:32px; height:32px; font-size:16px; }
+  .ecpv-prev { left:6px; } .ecpv-next { right:6px; }
+  .ecpv-panel { display:contents; }
+  .ecpv-heading { position:absolute; top:0; left:0; right:0; z-index:40; height:55px; min-height:55px; padding:8px 12px; background:#fff; }
+  .ecpv-menu { top:49px; z-index:60; }
   .ecpv-avatar { width:32px; height:32px; }
-  .ecpv-comments-area { padding:13px 14px; }
-  .ecpv-caption-row { margin-bottom:12px; }
-  .ecpv-footer { padding-bottom:env(safe-area-inset-bottom, 0px); }
-  .ecpv-comment-form { padding:7px 11px; }
-  .ecpv-social-actions { padding-top:3px; }
+  .ecpv-footer { grid-row:2; grid-column:1; position:relative; z-index:20; background:#fff; min-height:68px; padding-bottom:env(safe-area-inset-bottom, 0px); }
+  .ecpv-social-actions { padding-top:5px; }
+  .ecpv-comments-backdrop { display:block; position:absolute; z-index:10; inset:55px 0 0; width:100%; border:0; padding:0; background:rgba(8,11,20,.43); opacity:0; pointer-events:none; transition:opacity .26s ease; }
+  .ecpv-comments-open .ecpv-comments-backdrop { opacity:1; pointer-events:auto; }
+  .ecpv-comments-sheet { display:flex; position:absolute; z-index:30; left:0; right:0; top:55px; width:100%; height:min(72dvh, 610px); max-height:calc(100dvh - 125px - env(safe-area-inset-bottom,0px)); flex-direction:column; min-height:0; background:#fff; color:#262626; box-shadow:0 12px 34px rgba(0,0,0,.27); border-radius:0 0 20px 20px; overflow:hidden; transform:translate3d(0,calc(-100% - 60px),0); opacity:0; visibility:hidden; pointer-events:none; transition:transform .36s cubic-bezier(.22,.8,.25,1),opacity .24s ease,visibility 0s linear .36s; }
+  .ecpv-comments-open .ecpv-comments-sheet { transform:translate3d(0,0,0); opacity:1; visibility:visible; pointer-events:auto; transition:transform .36s cubic-bezier(.22,.8,.25,1),opacity .24s ease,visibility 0s; }
+  .ecpv-sheet-head { display:flex; justify-content:space-between; align-items:center; padding:10px 16px 9px; border-bottom:1px solid #eaeaea; flex-shrink:0; min-height:48px; }
+  .ecpv-sheet-head strong { font-size:15px; }
+  .ecpv-comments-area { order:initial; flex:1 1 0; overflow-y:auto; overscroll-behavior:contain; padding:14px 15px; }
+  .ecpv-caption-row { margin-bottom:14px; }
+  .ecpv-comment-form { order:initial; flex-shrink:0; display:flex; padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px)); background:#fff; }
+  .ecpv-confirm { z-index:120; }
   .ecpv-confirm-actions { grid-template-columns:1fr; }
 }
 @media(prefers-reduced-motion:reduce) { .ecpv-dialog *, .ecpv-dialog *::before, .ecpv-dialog *::after { animation:none!important; transition:none!important; } }
