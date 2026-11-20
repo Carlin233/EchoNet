@@ -1,61 +1,80 @@
-/* EchoNet — visualização ampliada do perfil. Responsivo, sem alterar Stories/avatares. */
+/* EchoNet — Janela de posts, foto + comentarios em painel; visual inspirado no padrao social. */
 .perfil-page .perfil-grid-panel .grid-item img { cursor: zoom-in; }
-.ecpv-dialog { position: fixed; inset: 0; margin: auto; padding: 0; border: 1px solid rgba(255,255,255,.23); border-radius: 25px; width: min(1020px, calc(100vw - 36px)); max-width: none; max-height: min(88dvh, 900px); color: #e9eefe; background: #101528; box-shadow: 0 30px 100px #050819cc; overflow: hidden; }
+/* As rotas e formularios antigos continuam no DOM para seguranca; nao aparecerao na grade. */
+.ecpv-ready .perfil-page .perfil-grid-panel .perfil-post-controls { display: none !important; }
+.ecpv-dialog { position: fixed; inset: 0; margin: auto; padding: 0; width: min(1080px, calc(100vw - 52px)); max-width: none; max-height: min(91dvh, 850px); border: 0; border-radius: 13px; color: #262626; background: #fff; box-shadow: 0 25px 90px rgba(0,0,0,.35); overflow: hidden; z-index: 2147483000; }
 .ecpv-dialog[open] { display: block; }
-.ecpv-dialog::backdrop { background: rgba(5,10,24,.72); -webkit-backdrop-filter: blur(17px); backdrop-filter: blur(17px); }
-.ecpv-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, .88fr); min-height: 380px; height: min(77dvh, 710px); max-height: calc(88dvh - 2px); }
-.ecpv-photo-pane { position: relative; display: flex; align-items: center; justify-content: center; min-width: 0; background: radial-gradient(ellipse at 30% 20%, #26305a, transparent 60%), #0b1120; overflow: hidden; }
-.ecpv-photo { display: block; max-height: 100%; max-width: 100%; height: 100%; width: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
-.ecpv-panel { display: flex; flex-direction: column; min-width: 0; overflow: auto; padding: clamp(19px, 2.7vw, 34px); background: linear-gradient(145deg,#191e36,#14172c 76%); }
-.ecpv-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 28px; }
-.ecpv-brand { letter-spacing: -.65px; font-size: 21px; font-weight: 850; color: #fafbff; }
-.ecpv-brand > span:first-child { color: #ae8bff; }
-.ecpv-badge { font-size: 9px; letter-spacing: 1.5px; font-weight: 750; border-radius: 20px; padding: 5px 9px; vertical-align: middle; margin-left: 9px; color: #a5bafa; background: #30385b; }
-.ecpv-title { color: #fff; font-size: clamp(21px,2.2vw,28px); line-height: 1.2; margin: 0 0 8px; font-weight: 800; overflow-wrap: anywhere; }
-.ecpv-subtitle { color: #a7b2ce; font-size: 13px; line-height: 1.5; margin: 0 0 28px; }
-.ecpv-actions { display: grid; gap: 9px; }
-.ecpv-action { display: flex; gap: 11px; align-items: center; text-align: left; padding: 13px 15px; width: 100%; min-height: 47px; border-radius: 13px; border: 1px solid #414969; background: #222a45; color: #f2f4ff; font-size: 14px; font-weight: 650; cursor: pointer; transition: background .16s, transform .16s, border-color .16s; }
-.ecpv-action:not([hidden]):hover { transform: translateY(-1px); background: #303b60; }
-.ecpv-primary { background: linear-gradient(110deg,#7559e6,#5968ef); border-color: #877cf8; color: white; }
-.ecpv-primary:not([hidden]):hover { background: linear-gradient(110deg,#896af4,#6977ff); }
-.ecpv-danger { border-color: #954451; background: rgba(165,48,69,.14); color: #ffb0bc; }
-.ecpv-danger:not([hidden]):hover { background: rgba(183,52,75,.29); }
-.ecpv-action[hidden], .ecpv-confirm[hidden] { display: none !important; }
-.ecpv-message { min-height: 20px; margin: 15px 0 0; color: #b1facd; font-size: 13px; }
-.ecpv-footnote { margin-top: auto; padding-top: 16px; font-size: 11px; color: #7d89a9; }
-.ecpv-desktop-close, .ecpv-top-close { display: flex; align-items: center; justify-content: center; width: 33px; height: 33px; border-radius: 50%; background: rgba(255,255,255,.1); color: white; border: 0; font-size: 26px; cursor: pointer; }
-.ecpv-top-close { display: none; position: absolute; top: 12px; right: 12px; z-index: 1; }
-.ecpv-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 1; border: 1px solid rgba(255,255,255,.22); color: #fdfdff; background: rgba(10,13,28,.68); width: 39px; height: 39px; border-radius: 50%; font-size: 20px; cursor: pointer; }
-.ecpv-arrow:disabled { opacity: .25; cursor: default; }
-.ecpv-prev { left: 12px; }.ecpv-next { right: 12px; }
-.ecpv-confirm { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(5,8,18,.84); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); z-index: 4; padding: 22px; }
-.ecpv-confirm-box { border: 1px solid #4a506c; background: linear-gradient(145deg,#232940,#181c32); border-radius: 20px; max-width: 405px; width: 100%; padding: 28px; text-align: center; box-shadow: 0 25px 55px #06091280; }
-.ecpv-warning-symbol { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; font-weight: 900; margin: 0 auto 14px; background: #8d3a4a4d; color: #ffb5c1; }
-.ecpv-confirm-box h3 { color: white; font-size: 20px; margin: 0 0 9px; }
-.ecpv-confirm-box p { color: #bfcae1; font-size: 13px; line-height: 1.55; margin: 0 0 23px; }
-.ecpv-confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.ecpv-confirm-actions button { min-height: 43px; border-radius: 10px; border: 1px solid #525c76; background: #30394f; color: #fff; cursor: pointer; font-size: 13px; font-weight: 700; }
-.ecpv-confirm-actions .ecpv-confirm-delete { background: #ca3550; border-color: #de4e67; }
-.ecpv-dialog button:focus-visible { outline: 3px solid #a5a2ff; outline-offset: 2px; }
-@media (max-width: 720px) {
-  .ecpv-dialog { width: calc(100vw - 18px); max-height: calc(100dvh - 28px); border-radius: 19px; }
-  .ecpv-layout { grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(210px, 1fr) auto; height: min(89dvh, 820px); max-height: calc(100dvh - 30px); }
-  .ecpv-photo-pane { min-height: 0; }
-  .ecpv-photo { max-height: 100%; }
-  .ecpv-panel { padding: 16px 17px calc(17px + env(safe-area-inset-bottom)); max-height: min(44dvh, 355px); }
-  .ecpv-heading { margin-bottom: 10px; }
-  .ecpv-brand { font-size: 18px; }
-  .ecpv-badge { font-size: 8px; }
-  .ecpv-title { font-size: 18px; margin-bottom: 5px; }
-  .ecpv-subtitle { margin-bottom: 12px; font-size: 12px; }
-  .ecpv-actions { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
-  .ecpv-action { font-size: 12px; gap: 6px; min-height: 40px; padding: 9px; justify-content: center; }
-  .ecpv-danger { grid-column: 1 / -1; }
-  .ecpv-footnote { display: none; }
-  .ecpv-message { margin-top: 8px; }
-  .ecpv-top-close { display: flex; }
-  .ecpv-desktop-close { display: none; }
-  .ecpv-arrow { width: 33px; height: 33px; font-size: 17px; }
-  .ecpv-confirm-actions { grid-template-columns: 1fr; }
+.ecpv-dialog::backdrop { background: rgba(13,17,27,.76); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.ecpv-dialog * { box-sizing: border-box; }
+.ecpv-dialog button, .ecpv-dialog input { font-family: inherit; }
+.ecpv-dialog button { cursor: pointer; }
+.ecpv-dialog button:disabled { cursor: not-allowed; opacity: .45; }
+.ecpv-dialog [hidden] { display:none !important; }
+.ecpv-layout { display: grid; grid-template-columns: minmax(0, 1.26fr) minmax(320px, 420px); height: min(84dvh, 750px); min-height: 420px; }
+.ecpv-photo-pane { position:relative; min-width:0; min-height:0; display:flex; justify-content:center; align-items:center; background:#101015; overflow:hidden; }
+.ecpv-photo { width:100%; height:100%; min-height:0; object-fit:contain; user-select:none; }
+.ecpv-arrow { position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; border:0; border-radius:50%; background:rgba(255,255,255,.94); color:#232323; box-shadow:0 2px 10px #0004; z-index:1; font-size:20px; }
+.ecpv-prev { left:12px; } .ecpv-next { right:12px; }
+.ecpv-panel { min-height:0; display:flex; flex-direction:column; background:#fff; color:#262626; }
+.ecpv-heading { height:68px; min-height:68px; padding:12px 17px; display:flex; align-items:center; justify-content:space-between; gap:12px; border-bottom:1px solid #ececec; position:relative; }
+.ecpv-author-link { display:flex; align-items:center; gap:10px; min-width:0; text-decoration:none !important; color:#262626 !important; }
+.ecpv-author { font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ecpv-avatar { border-radius:50%; height:38px; width:38px; flex-shrink:0; object-fit:cover; background:#eee; }
+.ecpv-header-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.ecpv-icon-btn { width:34px; height:34px; border:0; background:transparent; color:#262626; display:grid; place-items:center; border-radius:50%; font-size:21px; font-weight:700; }
+.ecpv-icon-btn:hover { background:#f3f3f4; }
+.ecpv-options-trigger { font-size:14px; letter-spacing:3px; }
+.ecpv-close { font-size:30px; font-weight:400; }
+.ecpv-menu { position:absolute; top:58px; right:10px; width:min(260px,calc(100vw - 30px)); display:flex; flex-direction:column; background:white; border:1px solid #e3e3e3; border-radius:12px; box-shadow:0 12px 40px #0003; overflow:hidden; z-index:10; }
+.ecpv-menu button { text-align:left; color:#292929; padding:13px 17px; background:#fff; border:0; border-bottom:1px solid #eee; font-size:14px; }
+.ecpv-menu button:last-child { border-bottom:0; }
+.ecpv-menu button:hover { background:#f7f7f9; }
+.ecpv-menu .ecpv-menu-danger { color:#dc3047; font-weight:750; }
+.ecpv-comments-area { min-height:0; flex:1; overflow-y:auto; overscroll-behavior:contain; padding:22px 18px; scrollbar-width:thin; }
+.ecpv-caption-row { display:flex; align-items:flex-start; gap:11px; margin:0 0 20px; }
+.ecpv-caption-avatar, .ecpv-comment img { flex-shrink:0; width:32px; height:32px; border-radius:50%; object-fit:cover; background:#eee; }
+.ecpv-caption-row p { margin:4px 0 0; font-size:14px; overflow-wrap:anywhere; line-height:1.55; white-space:pre-wrap; }
+.ecpv-caption-row strong { margin-right:3px; }
+.ecpv-comments { display:grid; align-content:start; gap:20px; }
+.ecpv-comment { display:flex; align-items:flex-start; gap:11px; }
+.ecpv-comment-body { font-size:13.5px; line-height:1.5; overflow-wrap:anywhere; min-width:0; white-space:pre-wrap; }
+.ecpv-comment-body strong { margin-right:4px; }
+.ecpv-muted { color:#777; font-size:13px; line-height:1.5; margin:0; }
+.ecpv-footer { border-top:1px solid #efefef; flex-shrink:0; }
+.ecpv-social-actions { display:flex; align-items:center; gap:2px; padding:7px 11px 0; }
+.ecpv-social-btn { width:39px; height:38px; border:0; border-radius:6px; background:transparent; color:#252525; display:grid; place-items:center; padding:7px; }
+.ecpv-social-btn:hover { background:#f5f5f5; }
+.ecpv-social-btn svg { display:block; width:24px; height:24px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.8; }
+.ecpv-like.is-liked { color:#ef334d; } .ecpv-like.is-liked svg { fill:currentColor; }
+.ecpv-save { margin-left:auto; } .ecpv-save.is-saved svg { fill:#343434; }
+.ecpv-like-count { font-weight:700; font-size:13px; margin:3px 18px 4px; }
+.ecpv-status { font-size:12px; color:#9b3057; padding:0 18px; margin:4px 0; min-height:0; }
+.ecpv-status:empty { display:none; }
+.ecpv-comment-form { display:flex; align-items:center; gap:8px; border-top:1px solid #eee; padding:12px 15px; }
+.ecpv-comment-input { flex:1; min-width:0; min-height:30px; border:none !important; outline:none !important; font-size:13px; background:#fff !important; color:#222 !important; padding:5px; box-shadow:none !important; }
+.ecpv-comment-input::placeholder { color:#888; }
+.ecpv-send { border:0; background:transparent; color:#5752dc; font-size:13px; font-weight:800; padding:8px 4px; }
+.ecpv-dialog button:focus-visible, .ecpv-dialog a:focus-visible, .ecpv-dialog input:focus-visible { outline:3px solid #8f74fe !important; outline-offset:2px; }
+.ecpv-confirm { position:absolute; inset:0; z-index:20; background:#090b16a8; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); display:grid; place-items:center; padding:20px; }
+.ecpv-confirm-box { background:#fff; color:#222; width:min(360px,100%); border-radius:16px; padding:28px 22px; text-align:center; box-shadow:0 20px 65px #0005; }
+.ecpv-confirm-box h3 { margin:0 0 9px; font-size:20px; font-weight:750; }
+.ecpv-confirm-box p { margin:0 0 25px; font-size:13px; line-height:1.6; color:#666; }
+.ecpv-confirm-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.ecpv-confirm-actions button { border-radius:9px; padding:11px 8px; border:1px solid #ddd; background:#f8f8f8; color:#333; font-size:12px; font-weight:700; }
+.ecpv-confirm-actions .ecpv-confirm-delete { background:#d63146; border-color:#d63146; color:white; }
+@media(max-width:700px) {
+  .ecpv-dialog { width:100vw; max-height:100dvh; height:100dvh; border-radius:0; }
+  .ecpv-layout { width:100%; height:100dvh; min-height:0; max-height:100dvh; grid-template-columns:1fr; grid-template-rows:minmax(220px,43dvh) minmax(0,1fr); }
+  .ecpv-photo-pane { min-height:0; }
+  .ecpv-photo { width:100%; height:100%; }
+  .ecpv-arrow { width:30px; height:30px; font-size:16px; } .ecpv-prev { left:6px; } .ecpv-next { right:6px; }
+  .ecpv-heading { height:55px; min-height:55px; padding:8px 12px; }
+  .ecpv-avatar { width:32px; height:32px; }
+  .ecpv-comments-area { padding:13px 14px; }
+  .ecpv-caption-row { margin-bottom:12px; }
+  .ecpv-footer { padding-bottom:env(safe-area-inset-bottom, 0px); }
+  .ecpv-comment-form { padding:7px 11px; }
+  .ecpv-social-actions { padding-top:3px; }
+  .ecpv-confirm-actions { grid-template-columns:1fr; }
 }
-@media (prefers-reduced-motion: reduce) { .ecpv-action { transition: none !important; } }
+@media(prefers-reduced-motion:reduce) { .ecpv-dialog *, .ecpv-dialog *::before, .ecpv-dialog *::after { animation:none!important; transition:none!important; } }
