@@ -1,5 +1,6 @@
 <div class="notifications-backdrop" id="notificationsBackdrop" hidden></div>
 <section class="notifications-panel" id="notificationsPanel" role="dialog" aria-modal="false" aria-label="Notificações" hidden>
-  <header class="notifications-header"><h2>Notificações</h2><div class="notifications-actions"><button type="button" id="notificationsReadAll" title="Marcar tudo como lido">Marcar lidas</button><button type="button" id="notificationsClose" aria-label="Fechar notificações"><span aria-hidden="true">&times;</span></button></div></header>
+  <header class="notifications-header"><h2>Notificações</h2><div class="notifications-actions"><button type="button" id="notificationsSoundToggle" class="notification-sound-toggle" aria-pressed="true" title="Ativar ou silenciar o som">🔊 Som ligado</button><button type="button" id="notificationsReadAll" title="Marcar tudo como lido">Marcar lidas</button><button type="button" id="notificationsClose" aria-label="Fechar notificações"><span aria-hidden="true">&times;</span></button></div></header>
   <div class="notifications-items" id="notificationsItems" aria-live="polite"><p>Carregando...</p></div>
 </section>
+<div class="notification-toast-host" id="notificationToasts" role="status" aria-live="polite" aria-label="Avisos novos"></div>

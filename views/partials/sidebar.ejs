@@ -1,30 +1,30 @@
-<aside class="sidebar">
+<aside class="sidebar" aria-label="Menu principal">
   <a href="/" class="sidebar-brand" title="EchoNet">
-    <span class="brand-echo">Echo</span><span class="brand-net">Net</span>
+    <span class="brand-mark" aria-hidden="true">E</span><span class="brand-full"><span class="brand-echo">Echo</span><span class="brand-net">Net</span></span>
   </a>
-  <nav class="sidebar-nav">
+  <nav class="sidebar-nav" aria-label="Navegação">
     <a href="/" class="sidebar-link <%= currentPage === 'home' ? 'active' : '' %>" title="Página inicial">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
-      <span>Início</span>
+      <span class="sidebar-label">Início</span>
     </a>
     <a href="#" class="sidebar-link sidebar-create" id="abrirModal" title="Criar">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 7v10M7 12h10"/></svg>
-      <span>Criar</span>
+      <span class="sidebar-label">Criar</span>
     </a>
     <button type="button" class="sidebar-link notification-nav-button notification-trigger" aria-label="Abrir notificações" aria-haspopup="dialog" aria-expanded="false" title="Notificações">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span>Notificações</span><span class="notification-badge" hidden>0</span>
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="sidebar-label">Notificações</span><span class="notification-badge" hidden>0</span>
     </button>
     <a href="/mensagens" class="sidebar-link <%= currentPage === 'mensagens' ? 'active' : '' %>" title="Mensagens">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7.5 20-4.5-8-8-4.5L22 2Z"/><path d="M22 2 10 14"/></svg>
-      <span>Mensagens</span>
+      <span class="sidebar-label">Mensagens</span>
     </a>
     <a href="/perfil" class="sidebar-link <%= currentPage === 'perfil' ? 'active' : '' %>" title="Perfil">
       <img src="<%= myAvatar %>" class="sidebar-profile-avatar" alt="" width="24" height="24">
-      <span>Perfil</span>
+      <span class="sidebar-label">Perfil</span>
     </a>
     <form action="/logout" method="POST" class="logout-form"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit" class="sidebar-link sidebar-logout sidebar-logout-desktop" title="Sair">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"/></svg>
-      <span>Sair</span>
+      <span class="sidebar-label">Sair</span>
     </button></form>
   </nav>
 </aside>

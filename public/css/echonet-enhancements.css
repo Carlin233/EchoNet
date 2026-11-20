@@ -1,0 +1,151 @@
+/* EchoNet: navegação compacta com expansão ao passar o mouse + avisos em tempo real.
+   Carregar APÓS mobile-optimizations.css para preservar a barra inferior no celular. */
+@media (min-width: 769px) {
+  :root { --echonet-compact-sidebar: 76px; --echonet-open-sidebar: 244px; }
+  .sidebar {
+    width: var(--echonet-compact-sidebar);
+    padding: 12px 10px 18px;
+    align-items: stretch;
+    z-index: 1003;
+    overflow: visible;
+    box-shadow: none;
+    transition: width 190ms ease, box-shadow 190ms ease;
+  }
+  .sidebar:is(:hover, :focus-within) {
+    width: var(--echonet-open-sidebar);
+    box-shadow: 10px 0 26px rgba(0,0,0,.12);
+  }
+  .app-content { margin-left: var(--echonet-compact-sidebar) !important; }
+  .sidebar-brand {
+    min-height: 62px;
+    padding: 7px 7px 20px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+  .sidebar-brand .brand-mark {
+    display: grid;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    background: var(--ig-gradient);
+    color: white;
+    font-size: 27px;
+    font-weight: 800;
+    border-radius: 13px;
+  }
+  .sidebar-brand .brand-full { display: none; }
+  .sidebar:is(:hover, :focus-within) .sidebar-brand .brand-mark { display: none; }
+  .sidebar:is(:hover, :focus-within) .sidebar-brand .brand-full { display: inline; }
+  .sidebar-nav { align-items: stretch; width: 100%; gap: 5px; }
+  .sidebar .logout-form { width: 100%; margin-top: auto; }
+  .sidebar-nav > .sidebar-link, .sidebar .logout-form > .sidebar-link {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    padding: 0 15px;
+    white-space: nowrap;
+    border-radius: 12px;
+    position: relative;
+  }
+  .sidebar:is(:hover, :focus-within) .sidebar-nav > .sidebar-link,
+  .sidebar:is(:hover, :focus-within) .logout-form > .sidebar-link { gap: 19px; }
+  .sidebar .sidebar-link .sidebar-label {
+    display: inline-block;
+    visibility: hidden;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 120ms ease;
+  }
+  .sidebar:is(:hover, :focus-within) .sidebar-link .sidebar-label {
+    visibility: visible;
+    max-width: 155px;
+    opacity: 1;
+  }
+  .sidebar .sidebar-link .nav-icon,
+  .sidebar .sidebar-profile-avatar { flex: 0 0 24px; width: 24px; height: 24px; }
+  .sidebar .sidebar-profile-avatar { border-radius: 50%; object-fit: cover; }
+  .sidebar .notification-nav-button .notification-badge:not([hidden]) {
+    position: absolute;
+    top: 2px;
+    right: auto;
+    left: 31px;
+    margin: 0;
+    min-width: 18px;
+    height: 18px;
+    padding: 1px 4px;
+  }
+  .sidebar:is(:hover, :focus-within) .notification-nav-button .notification-badge:not([hidden]) {
+    left: auto;
+    right: 10px;
+    top: 15px;
+  }
+  .notifications-panel { left: calc(var(--echonet-compact-sidebar) + 12px); }
+}
+@media (max-width: 768px) {
+  .sidebar-brand .brand-mark { display: none; }
+  .sidebar .sidebar-label { display: none !important; }
+  .notifications-panel { left: 0; }
+}
+.notification-sound-toggle {
+  border: 1px solid var(--border) !important;
+  padding: 7px 9px !important;
+  border-radius: 9px;
+  white-space: nowrap;
+  background: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  font-size: 12px !important;
+}
+.notification-sound-toggle[aria-pressed="false"] { opacity: .72; }
+.notification-toast-host {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: min(360px, calc(100vw - 24px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1050;
+  pointer-events: none;
+}
+.notification-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 76px;
+  padding: 12px;
+  border-radius: 15px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 9px 32px rgba(0,0,0,.18);
+  animation: echonet-toast-in 210ms ease-out both;
+}
+.notification-toast-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: 0 0 40px; }
+.notification-toast-body { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 4px; }
+.notification-toast-heading { font-size: 13px; }
+.notification-toast-message { font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
+.notification-toast-open { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 700; padding: 8px 2px; }
+.notification-toast-close { flex: 0 0 28px; width: 28px; height: 28px; background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 22px; }
+@keyframes echonet-toast-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 768px) {
+  .notification-toast-host {
+    top: calc(var(--mobile-header-height, 52px) + 10px);
+    right: 10px;
+    width: calc(100vw - 20px);
+  }
+  .notification-toast { min-height: 72px; }
+  .notifications-actions { gap: 6px; }
+  .notifications-header { flex-wrap: wrap; }
+  .notification-sound-toggle { font-size: 11px !important; padding: 6px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar, .sidebar .sidebar-label { transition: none !important; }
+  .notification-toast { animation: none; }
+}
