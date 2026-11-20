@@ -381,11 +381,68 @@ async function renderProfile(req, res, name) {
   if (!owner) return res.status(404).send('Perfil não encontrado.');
   const me = owner.id === req.session.user.id;
   const posts = await listPosts(req.session.user.id, 'WHERE p.usuario=? AND p.archived=0 ORDER BY p.id DESC LIMIT 100', [owner.username]);
-  const savedPosts = me ? await listPosts(req.session.user.id, 'INNER JOIN saved_posts s ON s.post_id=p.id AND s.user_id=? WHERE p.archived=0 ORDER BY p.id DESC LIMIT 100', [req.session.user.id]) : [];
+  // PostgreSQL não possui s.rowid; ordenar pelo ID da publicação.
+  const savedPosts = me
+    ? await listPosts(
+        req.session.user.id,
+        'INNER JOIN saved_posts s ON s.post_id=p.id AND s.user_id=? WHERE p.archived=0 ORDER BY p.id DESC LIMIT 100',
+        [req.session.user.id]
+      )
+    : [];
   const archivedPosts = me ? await listPosts(req.session.user.id, 'WHERE p.usuario=? AND p.archived=1 ORDER BY p.id DESC LIMIT 100', [owner.username]) : [];
   const follows = await get('SELECT (SELECT COUNT(*) FROM follows WHERE following_id = ?) AS followers, (SELECT COUNT(*) FROM follows WHERE follower_id = ?) AS following, EXISTS(SELECT 1 FROM follows WHERE follower_id=? AND following_id=?) AS isFollowing', [owner.id, owner.id, req.session.user.id, owner.id]);
-  res.render('perfil', { username: owner.username, owner, myAvatar: await userAvatar(req.session.user.id), viewer: req.session.user.username, isMine: me, posts, savedPosts, archivedPosts, follows, currentPage: 'perfil' });
+  // O anel colorido só aparece se houver Story não expirado do dono do perfil.
+  const storyState = await get("SELECT COUNT(*) AS total FROM stories WHERE user_id=? AND expires_at>datetime('now')", [owner.id]);
+  const hasActiveStory = Number(storyState?.total || 0) > 0;
+  res.render('perfil', { username: owner.username, owner, myAvatar: await userAvatar(req.session.user.id), viewer: req.session.user.username, isMine: me, posts, savedPosts, archivedPosts, follows, hasActiveStory, currentPage: 'perfil' });
 }
+// Configurações são sempre consultadas pelo ID autenticado, nunca por e-mail enviado pelo navegador.
+app.get('/configuracoes', requireLogin, withErrors(async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const account = await get('SELECT id,username,email,display_name,avatar FROM users WHERE id=?', [req.session.user.id]);
+  if (!account) return res.status(401).send('Sessão inválida. Faça login novamente.');
+  res.render('configuracoes', {
+    username: account.username,
+    account,
+    myAvatar: account.avatar || '/img/default-avatar.svg',
+    currentPage: 'settings'
+  });
+}));
+
+// Protegido por sessão, token CSRF, limite de tentativas e confirmação da senha anterior.
+app.post('/api/conta/alterar-senha', requireLogin, limitAttempts('account-password', 12), withErrors(async (req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const currentPassword = req.body.senhaAtual;
+  const newPassword = req.body.novaSenha;
+  const confirmation = req.body.confirmarSenha;
+  if (typeof currentPassword !== 'string' || !currentPassword || currentPassword.length > 128) {
+    return res.status(400).json({ success: false, message: 'Informe sua senha atual.' });
+  }
+  if (!validPassword(newPassword)) {
+    return res.status(400).json({ success: false, message: 'A nova senha deve ter entre 8 e 128 caracteres.' });
+  }
+  if (newPassword !== confirmation) {
+    return res.status(400).json({ success: false, message: 'A confirmação da nova senha não confere.' });
+  }
+  const account = await get('SELECT id,username,email,password FROM users WHERE id=?', [req.session.user.id]);
+  if (!account || !await bcrypt.compare(currentPassword, account.password)) {
+    return res.status(400).json({ success: false, message: 'Senha atual incorreta.' });
+  }
+  if (await bcrypt.compare(newPassword, account.password)) {
+    return res.status(400).json({ success: false, message: 'Escolha uma senha diferente da atual.' });
+  }
+  const newHash = await bcrypt.hash(newPassword, 12);
+  await run('UPDATE users SET password=? WHERE id=?', [newHash, account.id]);
+  await run('DELETE FROM password_resets WHERE email=?', [account.email]);
+  // Renova a sessão e o CSRF para esta conta após uma alteração sensível.
+  req.session.regenerate(error => {
+    if (error) return next(error);
+    req.session.user = { id: account.id, username: account.username, email: account.email };
+    req.session.csrfToken = crypto.randomBytes(24).toString('hex');
+    req.session.save(error => error ? next(error) : res.json({ success: true, message: 'Senha alterada com sucesso!' }));
+  });
+}));
+
 app.get('/perfil', requireLogin, withErrors((req, res) => renderProfile(req, res, req.session.user.username)));
 app.get('/perfil/:username', requireLogin, withErrors((req, res) => renderProfile(req, res, req.params.username)));
 app.post('/api/perfil', requireLogin, withErrors(async (req, res) => {

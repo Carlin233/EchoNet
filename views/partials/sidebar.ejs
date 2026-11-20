@@ -22,6 +22,10 @@
       <img src="<%= myAvatar %>" class="sidebar-profile-avatar" alt="" width="24" height="24">
       <span class="sidebar-label">Perfil</span>
     </a>
+    <a href="/configuracoes" class="sidebar-link <%= currentPage === 'settings' ? 'active' : '' %>" title="Configurações da conta">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05-2.8 2.8-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1.5 1.7V22h-4v-.9A1.7 1.7 0 0 0 8 19.4a1.7 1.7 0 0 0-1.88.34l-.05.05-2.8-2.8.05-.05A1.7 1.7 0 0 0 3.6 15 1.7 1.7 0 0 0 1.9 13.5H1v-4h.9A1.7 1.7 0 0 0 3.6 8a1.7 1.7 0 0 0-.34-1.88l-.05-.05 2.8-2.8.05.05A1.7 1.7 0 0 0 8 3.6 1.7 1.7 0 0 0 9.5 1.9V1h4v.9A1.7 1.7 0 0 0 15 3.6a1.7 1.7 0 0 0 1.88-.34l.05-.05 2.8 2.8-.05.05A1.7 1.7 0 0 0 19.4 8a1.7 1.7 0 0 0 1.7 1.5h.9v4h-.9a1.7 1.7 0 0 0-1.7 1.5z"/></svg>
+      <span class="sidebar-label">Configurações</span>
+    </a>
     <form action="/logout" method="POST" class="logout-form"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit" class="sidebar-link sidebar-logout sidebar-logout-desktop" title="Sair">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"/></svg>
       <span class="sidebar-label">Sair</span>

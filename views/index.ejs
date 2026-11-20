@@ -8,12 +8,14 @@
   <link rel="stylesheet" href="/css/stories-notifications.css" /><link rel="stylesheet" href="/css/global.css" /><link rel="stylesheet" href="/css/sidebar.css" /><link rel="stylesheet" href="/css/feed.css" /><link rel="stylesheet" href="/css/modal.css" /><link rel="stylesheet" href="/css/responsive.css" /><link rel="stylesheet" href="/css/functions.css" />
   <link rel="stylesheet" href="/css/mobile-optimizations.css" />
   <link rel="stylesheet" href="/css/echonet-enhancements.css?v=20261120" />
+  <link rel="stylesheet" href="/css/echonet-modern.css?v=20261120-2" />
 </head>
 <body class="app-layout">
   <%- include('partials/sidebar') %>
   <div class="app-content">
     <%- include('partials/mobile-header') %>
     <main class="main-feed"><div class="feed">
+      <header class="page-intro feed-intro"><span class="eyebrow">ECHONET SOCIAL</span><h1>Seu feed <span class="intro-accent">✨</span></h1><p>Momentos, histórias e pessoas que fazem parte do seu dia.</p></header>
       <div class="stories-bar" data-current-user="<%= username %>"><div class="stories-scroll" id="storiesList">
         <button type="button" class="story-item story-add" id="abrirModalStory" aria-label="Criar Story"><span class="story-ring"><img src="<%= myAvatar %>" alt="" /></span><span class="story-name">Seu Story +</span></button>
         <span class="stories-loading" id="storiesLoading">Carregando Stories...</span>

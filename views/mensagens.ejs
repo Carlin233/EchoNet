@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="/css/functions.css" />
   <link rel="stylesheet" href="/css/mobile-optimizations.css" />
   <link rel="stylesheet" href="/css/echonet-enhancements.css?v=20261120" />
+  <link rel="stylesheet" href="/css/echonet-modern.css?v=20261120-2" />
 </head>
 <body class="app-layout chat-layout <%= destinatario ? 'chat-conversation' : 'chat-list' %>">
   <%- include('partials/sidebar') %>
@@ -33,7 +34,7 @@
 
   <div class="app-content">
     <div class="lista-contatos" id="listaContatos">
-      <h3>Mensagens</h3>
+      <div class="chat-contact-title"><span class="eyebrow">CONVERSE E CONECTE</span><h3>Mensagens</h3><p>Suas conversas em um só lugar.</p></div>
       <ul>
         <% if (contatos.length === 0) { %>
           <li class="chat-list-empty">
@@ -63,7 +64,7 @@
       <div class="mensagem-container">
         <div class="mensagem-topo mensagem-topo-desktop">
           <img src="<%= destinatarioAvatar %>" alt="Foto de perfil de <%= destinatario %>">
-          <span><%= destinatario %></span>
+          <div class="chat-top-copy"><span><%= destinatario %></span><small>Conversa privada</small></div>
         </div>
 
         <div class="chat-box" id="chatBox">

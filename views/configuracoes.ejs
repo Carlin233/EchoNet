@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <meta name="theme-color" content="#f7f8fd">
+  <title>Configurações • EchoNet</title>
+  <link rel="stylesheet" href="/css/stories-notifications.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/functions.css">
+  <link rel="stylesheet" href="/css/mobile-optimizations.css">
+  <link rel="stylesheet" href="/css/echonet-enhancements.css?v=20261120">
+  <link rel="stylesheet" href="/css/echonet-modern.css?v=20261120-2">
+</head>
+<body class="app-layout settings-layout">
+  <%- include('partials/sidebar') %>
+  <div class="app-content">
+    <%- include('partials/mobile-header') %>
+    <main class="settings-page">
+      <div class="settings-container">
+        <header class="page-intro settings-intro"><span class="eyebrow">CONTA E PRIVACIDADE</span><h1>Configurações <span class="intro-accent">da conta</span></h1><p>Gerencie suas informações e a segurança do seu EchoNet.</p></header>
+        <div class="settings-grid">
+          <section class="settings-card account-card" aria-labelledby="accountTitle">
+            <div class="settings-card-heading"><span class="settings-icon" aria-hidden="true">◎</span><div><h2 id="accountTitle">Minha conta</h2><p>Suas informações de acesso</p></div></div>
+            <div class="settings-user"><img src="<%= myAvatar %>" alt="Sua foto de perfil"><div><strong><%= account.display_name || account.username %></strong><span>@<%= account.username %></span></div><a href="/perfil">Ver perfil</a></div>
+            <div class="settings-info-list">
+              <div class="settings-info-row"><span>Nome de usuário</span><strong>@<%= account.username %></strong></div>
+              <div class="settings-info-row"><span>E-mail cadastrado</span><strong class="settings-email"><%= account.email %></strong></div>
+            </div>
+            <div class="settings-hint">O e-mail está disponível aqui somente para você. Para modificá-lo, será necessário implementar uma etapa de verificação do novo endereço.</div>
+          </section>
+          <section class="settings-card password-card" aria-labelledby="passwordTitle">
+            <div class="settings-card-heading"><span class="settings-icon" aria-hidden="true">✦</span><div><h2 id="passwordTitle">Alterar senha</h2><p>Proteja o acesso à sua conta</p></div></div>
+            <form id="changePasswordForm" autocomplete="off">
+              <label for="senhaAtual">Senha atual</label>
+              <input id="senhaAtual" name="senhaAtual" type="password" autocomplete="current-password" minlength="8" maxlength="128" required placeholder="Digite sua senha atual">
+              <label for="novaSenha">Nova senha</label>
+              <input id="novaSenha" name="novaSenha" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="Mínimo de 8 caracteres">
+              <label for="confirmarSenha">Confirmar nova senha</label>
+              <input id="confirmarSenha" name="confirmarSenha" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="Repita a nova senha">
+              <p class="settings-form-help">Escolha uma senha única, com pelo menos 8 caracteres. Evite reutilizar senhas de outros sites.</p>
+              <p id="passwordStatus" class="settings-status" role="status" aria-live="polite" hidden></p>
+              <button type="submit" id="changePasswordButton">Salvar nova senha</button>
+            </form>
+          </section>
+        </div>
+        <footer class="settings-footer"><a href="/perfil">← Voltar ao perfil</a><span>EchoNet • Sua conta, suas escolhas.</span></footer>
+      </div>
+    </main>
+  </div>
+  <%- include('partials/notifications') %>
+  <script src="/js/common.js" defer></script>
+  <script src="/js/notifications.js?v=20261120" defer></script>
+  <script src="/js/settings.js?v=20261120-2" defer></script>
+</body>
+</html>
