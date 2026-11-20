@@ -381,7 +381,14 @@ async function renderProfile(req, res, name) {
   if (!owner) return res.status(404).send('Perfil não encontrado.');
   const me = owner.id === req.session.user.id;
   const posts = await listPosts(req.session.user.id, 'WHERE p.usuario=? AND p.archived=0 ORDER BY p.id DESC LIMIT 100', [owner.username]);
-  const savedPosts = me ? await listPosts(req.session.user.id, 'INNER JOIN saved_posts s ON s.post_id=p.id AND s.user_id=? WHERE p.archived=0 ORDER BY p.id DESC. LIMIT 100', [req.session.user.id]) : [];
+  // PostgreSQL não possui s.rowid; ordenar pelo ID da publicação.
+  const savedPosts = me
+    ? await listPosts(
+        req.session.user.id,
+        'INNER JOIN saved_posts s ON s.post_id=p.id AND s.user_id=? WHERE p.archived=0 ORDER BY p.id DESC LIMIT 100',
+        [req.session.user.id]
+      )
+    : [];
   const archivedPosts = me ? await listPosts(req.session.user.id, 'WHERE p.usuario=? AND p.archived=1 ORDER BY p.id DESC LIMIT 100', [owner.username]) : [];
   const follows = await get('SELECT (SELECT COUNT(*) FROM follows WHERE following_id = ?) AS followers, (SELECT COUNT(*) FROM follows WHERE follower_id = ?) AS following, EXISTS(SELECT 1 FROM follows WHERE follower_id=? AND following_id=?) AS isFollowing', [owner.id, owner.id, req.session.user.id, owner.id]);
   res.render('perfil', { username: owner.username, owner, myAvatar: await userAvatar(req.session.user.id), viewer: req.session.user.username, isMine: me, posts, savedPosts, archivedPosts, follows, currentPage: 'perfil' });

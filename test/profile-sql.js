@@ -1,0 +1,11 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const source = fs.readFileSync(path.join(__dirname, '..', 'server.js'), 'utf8');
+const line = source.match(/const savedPosts = me[\s\S]*?const archivedPosts =/);
+assert(line, 'Consulta das publicações salvas não encontrada');
+assert(!/\bs\.rowid\b/.test(line[0]), 'Consulta do perfil contém rowid, que não existe no PostgreSQL');
+assert(!/DESC\.\s+LIMIT/.test(line[0]), 'Consulta do perfil contém ponto inválido após DESC');
+assert(/ORDER BY p\.id DESC LIMIT 100/.test(line[0]), 'Consulta do perfil não ordena por p.id');
+console.log('✓ Consulta do perfil compatível com PostgreSQL');
