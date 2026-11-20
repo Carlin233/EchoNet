@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="EchoNet Pulse">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#00D4FF"/><stop offset=".48" stop-color="#9961FF"/><stop offset="1" stop-color="#E278FF"/></linearGradient><filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter></defs>
+<g stroke="url(#g)" stroke-width="10" stroke-linecap="round" fill="none" opacity=".46" filter="url(#b)"><path d="M20 55v18M40 39v50M64 22v84M88 41v46M108 54v20"/></g>
+<g stroke="url(#g)" stroke-width="10" stroke-linecap="round" fill="none"><path d="M20 55v18M40 39v50M64 22v84M88 41v46M108 54v20"/></g>
+</svg>
