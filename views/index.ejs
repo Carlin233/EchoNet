@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="nv-space">
+<html lang="pt-BR" class="cosmos-active">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="csrf-token" content="<%= csrfToken %>">
@@ -20,14 +20,19 @@
   <link rel="stylesheet" href="/css/echonet-app-v2.css?v=2">
   <link rel="stylesheet" href="/css/echonet-mobile-fix.css?v=20261120-1">
   <link rel="stylesheet" href="/css/echonet-criar-story-perfil.css?v=20261120-21">
-  <!-- EchoNet Pulse: identidade visual -->
   
-  <meta name="theme-color" content="#071020">
-  <!-- NOSVERSO-NEO:css -->
-  <link rel="stylesheet" href="/css/nosverso-neo.css?v=20261121-1">
-  <!-- NOSVERSO-NEO:icons -->
-  <link rel="icon" type="image/png" href="/img/nosverso/icon-192.png">
-  <link rel="apple-touch-icon" href="/img/nosverso/icon-192.png">
+  
+  <meta name="theme-color" content="#050917">
+  
+  
+  
+  
+  
+  <!-- NOSVERSO-ORBITAL:css -->
+  <link rel="stylesheet" href="/css/nosverso-orbital.css?v=20261121-3">
+  <!-- NOSVERSO-ORBITAL:icons -->
+  <link rel="icon" type="image/png" href="/img/nosverso-orbital/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/nosverso-orbital/icon-192.png">
 </head>
 <body class="app-layout">
   <%- include('partials/sidebar') %>
@@ -43,18 +48,28 @@
     <button type="button" data-pulse-create><span class="pulse-switch-icon" aria-hidden="true">＋</span>Criar Echo</button>
   </nav>
       
-      <!-- NOSVERSO-NEO:hero -->
-      <section class="nv-deck" aria-label="Boas-vindas ao seu universo">
-        <div class="nv-deck-copy">
-          <span class="nv-eyebrow">Nósverso • Centro de conexões</span>
-          <h1>Seu mundo.<br><em>Infinitas órbitas.</em></h1>
-          <p>Compartilhe seus momentos, descubra novas pessoas e construa conexões que vão além da tela.</p>
-          <div class="nv-deck-actions">
-            <button type="button" data-nv-create>✦ Criar publicação</button>
-            <a href="/mensagens">Ir para conversas ↗</a>
+      
+      
+
+      <!-- NOSVERSO-ORBITAL:portal -->
+      <section class="cosmos-portal" data-cosmos-scene aria-label="Bem-vindo ao Nósverso">
+        <div class="cx-star-map" aria-hidden="true"></div>
+        <div class="cx-nebula" aria-hidden="true"></div>
+        <div class="cx-orbit-world" aria-hidden="true">
+          <div class="cx-trace"></div><div class="cx-ring cx-ring--back"></div>
+          <div class="cx-world"></div><div class="cx-ring"></div>
+          <div class="cx-satellite"></div><div class="cx-satellite cx-satellite--small"></div>
+        </div>
+        <div class="cx-portal-copy">
+          <span class="cx-kicker">Nósverso · Sua órbita começa aqui</span>
+          <h1>Mais que uma rede.<br><em>Um universo vivo.</em></h1>
+          <p>Compartilhe o seu mundo, encontre novas histórias e descubra conexões que vão além da tela.</p>
+          <div class="cx-portal-actions">
+            <button class="cx-primary" type="button" data-cosmos-create>✦ Criar publicação</button>
+            <a class="cx-secondary" href="/mensagens">Explorar conversas ↗</a>
           </div>
         </div>
-        <div class="nv-deck-art" aria-hidden="true"></div>
+        <div class="cx-scroll-hint" aria-hidden="true">Role para explorar <span>↓</span></div>
       </section>
 <div class="stories-bar" data-current-user="<%= username %>"><div class="stories-scroll" id="storiesList">
         <button type="button" class="story-item story-add" id="abrirModalStory" aria-label="Criar Story"><span class="story-ring"><img src="<%= myAvatar %>" alt="" /></span><span class="story-name">Seu Story +</span></button>
@@ -91,7 +106,9 @@
   <script src="/js/echonet-app-v2.js?v=20261120-3" defer></script>
   <script src="/js/echonet-criar-story-perfil.js?v=20261120-21" defer></script>
   
-  <!-- NOSVERSO-NEO:js -->
-  <script src="/js/nosverso-neo.js?v=20261121-1" defer></script>
+  
+  
+  <!-- NOSVERSO-ORBITAL:js -->
+  <script src="/js/nosverso-orbital.js?v=20261121-3" defer></script>
 </body>
 </html>

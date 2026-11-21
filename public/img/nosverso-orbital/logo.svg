@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Nósverso">
+ <defs><linearGradient id="orb" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7deaff"/><stop offset=".52" stop-color="#a9a5ff"/><stop offset="1" stop-color="#c889f5"/></linearGradient></defs>
+ <rect width="80" height="80" rx="23" fill="#121d40"/>
+ <circle cx="40" cy="40" r="17" fill="url(#orb)" opacity=".94"/>
+ <circle cx="34.5" cy="33" r="5" fill="#fff" opacity=".39"/>
+ <ellipse cx="40" cy="40" rx="32" ry="12" fill="none" stroke="#d9e8ff" stroke-width="3.8" transform="rotate(-30 40 40)"/>
+ <circle cx="65" cy="21" r="5" fill="#a1ffe2"/>
+</svg>

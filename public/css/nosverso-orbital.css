@@ -1,0 +1,232 @@
+/* NÓSVERSO ORBITAL EXPERIENCE — camada visual isolada (nov/2026)
+   NÃO modifica o sistema de contas, posts, Stories, chat ou push.
+   O movimento está restrito a elementos decorativos; respeita reduced-motion. */
+:root.cosmos-active {
+  color-scheme:dark;
+  --cx-void:#050917; --cx-deep:#081127; --cx-panel:#111d39; --cx-fg:#f2f5ff;
+  --cx-muted:#a5b4d7; --cx-line:rgba(167,190,255,.16); --cx-purple:#ad75ff;
+  --cx-cyan:#5ad7fc; --cx-mint:#a1f9da;
+  --bg-primary:#050917;--bg-secondary:#0c1530;--bg-card:#101b34;--bg-elevated:#192645;
+  --bg-input:#111c36;--text-primary:#f2f5ff;--text-secondary:#a6b7d7;
+  --text-muted:#879bbf;--border:rgba(170,192,250,.17);--accent:#a78bfa;
+}
+html.cosmos-active, html.cosmos-active body { background:#050917!important; }
+html.cosmos-active body {color:var(--cx-fg)!important;
+  background:radial-gradient(ellipse 65% 35% at 85% 0%,rgba(51,37,143,.26),transparent 80%),
+    radial-gradient(ellipse 45% 60% at -18% 65%,rgba(4,101,175,.13),transparent 80%),#050917!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important;
+  overflow-x:clip;
+}
+html.cosmos-active :where(a,button,input,textarea,select):focus-visible {outline:2px solid #71ddff!important;outline-offset:3px;}
+html.cosmos-active :where(button,input,textarea,select){font:inherit;}
+html.cosmos-active :where(input,textarea,select){color:#f4f5ff;}
+html.cosmos-active :where(input,textarea,select)::placeholder{color:#9aa9c9;opacity:1;}
+html.cosmos-active ::selection{background:#6d42bb;color:white;}
+html.cosmos-active .app-content{position:relative;min-width:0;}
+/* Única identidade: desliga apenas os cabeçalhos decorativos introduzidos pelos temas anteriores. */
+html.cosmos-active :is(.nv-deck,.nova-hero,.feed-intro,.pulse-feed-switches,.nova-brand-art,.pulse-hero,.nv-brand-mark){display:none!important;}
+html.cosmos-active .cosmos-portal{display:block!important;}
+/* Navegação DESKTOP: ícones compactos, expansão deliberada no hover. */
+@media(min-width:761px){
+  html.cosmos-active body.app-layout .sidebar,html.cosmos-active body.chat-layout .sidebar{
+    position:fixed!important;inset:12px auto 12px 12px!important;
+    width:78px!important;height:calc(100dvh - 24px)!important;
+    padding:13px 10px 15px!important;box-sizing:border-box!important;
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    border:1px solid rgba(158,189,250,.22)!important;border-radius:26px!important;
+    background:rgba(13,22,45,.91)!important;backdrop-filter:blur(30px) saturate(1.2)!important;
+    -webkit-backdrop-filter:blur(30px)!important;box-shadow:0 17px 60px #0007!important;
+    overflow:hidden!important;z-index:850!important;
+    transition:width .28s cubic-bezier(.16,1,.3,1)!important;
+  }
+  html.cosmos-active body.app-layout .sidebar:hover,html.cosmos-active body.chat-layout .sidebar:hover,
+  html.cosmos-active body.app-layout .sidebar:focus-within,html.cosmos-active body.chat-layout .sidebar:focus-within{width:242px!important;}
+  html.cosmos-active .sidebar-nav{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;width:100%;flex:1;}
+  html.cosmos-active .sidebar .sidebar-link{display:flex!important;width:100%!important;min-width:0!important;height:50px!important;min-height:50px!important;
+    justify-content:flex-start!important;align-items:center!important;padding:0 15px!important;
+    border:1px solid transparent!important;border-radius:15px!important;gap:17px!important;
+    color:#c6d2ef!important;background:transparent!important;white-space:nowrap!important;
+    text-decoration:none!important;box-shadow:none!important;}
+  html.cosmos-active .sidebar .sidebar-link:hover{background:rgba(109,116,211,.16)!important;}
+  html.cosmos-active .sidebar .sidebar-link.active{color:#fff!important;border-color:rgba(119,187,255,.23)!important;
+    background:linear-gradient(112deg,rgba(88,88,188,.42),rgba(40,103,141,.22))!important;}
+  html.cosmos-active .sidebar .sidebar-link i{font-size:21px!important;flex:0 0 24px!important;text-align:center!important;width:24px!important;}
+  html.cosmos-active .sidebar .sidebar-link .sidebar-profile-avatar{height:27px!important;width:27px!important;flex:0 0 27px;object-fit:cover;border-radius:11px!important;}
+  html.cosmos-active .sidebar .sidebar-link span{opacity:0!important;visibility:hidden!important;display:inline!important;transition:opacity .15s ease!important;}
+  html.cosmos-active .sidebar:hover .sidebar-link span,html.cosmos-active .sidebar:focus-within .sidebar-link span{opacity:1!important;visibility:visible!important;}
+  html.cosmos-active body.app-layout .app-content,html.cosmos-active body.chat-layout .app-content{
+    margin-left:102px!important;width:calc(100% - 102px)!important;min-width:0!important;
+  }
+}
+html.cosmos-active .sidebar .sidebar-brand{display:flex!important;align-items:center!important;justify-content:flex-start!important;
+  gap:14px!important;color:#f4f6ff!important;text-decoration:none!important;
+  padding:5px 10px 22px!important;min-height:54px;max-width:none!important;width:max-content!important;font-size:20px!important;}
+html.cosmos-active .sidebar .cx-mark,html.cosmos-active .mobile-header-logo .cx-mark{width:33px!important;height:33px!important;flex:0 0 33px!important;object-fit:contain;filter:drop-shadow(0 0 15px #a982ff78);}
+html.cosmos-active .sidebar .cx-brand-name{font-size:19px!important;font-weight:850;letter-spacing:-.065em;white-space:nowrap;}
+@media(min-width:761px){
+  html.cosmos-active .sidebar .cx-brand-name{opacity:0;visibility:hidden;transition:opacity .17s ease;}
+  html.cosmos-active .sidebar:hover .cx-brand-name,html.cosmos-active .sidebar:focus-within .cx-brand-name{opacity:1;visibility:visible;}
+}
+/* Ações, títulos e cartões: uma linguagem só, sem os cartões do tema Pulse. */
+html.cosmos-active .main-feed{background:transparent!important;padding:23px 22px 70px!important;}
+html.cosmos-active .feed{width:min(100%,780px)!important;max-width:780px!important;margin-inline:auto!important;}
+html.cosmos-active .post-card{background:linear-gradient(145deg,rgba(18,30,57,.98),rgba(11,19,39,.99))!important;
+  border:1px solid rgba(134,162,231,.18)!important;border-radius:25px!important;color:#eff4ff!important;
+  box-shadow:0 20px 58px rgba(0,0,0,.24)!important;overflow:hidden!important;margin-bottom:20px!important;}
+html.cosmos-active .post-header{padding:14px 18px!important;background:transparent!important;}
+html.cosmos-active .post-header .author,html.cosmos-active .author-name{color:#f4f6ff!important;}
+html.cosmos-active .post-image{background:#071126!important;}
+html.cosmos-active .post-image img{max-height:620px;object-fit:contain;}
+html.cosmos-active .post-footer{padding:16px 20px 20px!important;background:transparent!important;}
+html.cosmos-active .post-actions button{border:1px solid rgba(145,174,236,.13)!important;
+  background:rgba(105,130,189,.08)!important;border-radius:13px!important;min-width:40px;min-height:40px;}
+html.cosmos-active .post-comments-link,html.cosmos-active .post-time{color:#a3b8db!important;}
+html.cosmos-active :where(.stories-bar,.perfil-header,.settings-card,.suggestions-card,.lista-contatos,.mensagem-container,.perfil-tabs){
+  background:linear-gradient(160deg,rgba(19,31,58,.94),rgba(9,18,38,.92))!important;
+  border:1px solid rgba(153,178,238,.16)!important;border-radius:23px!important;
+  color:#eef4ff!important;box-shadow:0 14px 50px #0003!important;}
+html.cosmos-active .stories-bar{padding:16px!important;margin-bottom:22px!important;}
+html.cosmos-active .stories-bar::before{content:'MUNDOS EM DESTAQUE';display:block;color:#94bdec;font-size:10px;font-weight:800;
+  letter-spacing:.17em;margin-bottom:11px;}
+html.cosmos-active .barra-online{color:#e7efff!important;background:transparent!important;padding:25px 14px!important;}
+html.cosmos-active .barra-online h3{color:#b7c5e3!important;}
+html.cosmos-active .perfil-header{position:relative;overflow:hidden;}
+html.cosmos-active .perfil-header::before{content:'';position:absolute;right:-13%;top:-160px;width:60%;height:420px;
+  background:radial-gradient(circle,rgba(76,130,255,.35),transparent 60%);pointer-events:none;}
+html.cosmos-active .perfil-grid .grid-item{border-radius:18px!important;overflow:hidden;background:#0c1530!important;}
+html.cosmos-active .perfil-btn{border-radius:13px!important;}
+html.cosmos-active :where(.modal,.post-viewer-overlay,.pv-overlay,.story-modal){z-index:1200;}
+html.cosmos-active .mobile-header{background:rgba(8,14,32,.93)!important;color:#f5f5ff!important;
+  border-bottom:1px solid rgba(144,184,255,.17)!important;backdrop-filter:blur(22px)!important;}
+html.cosmos-active .mobile-header-logo{display:inline-flex!important;gap:9px!important;align-items:center!important;color:#f4f7ff!important;text-decoration:none!important;}
+html.cosmos-active .mobile-header-logo .cx-brand-name{font-weight:850;letter-spacing:-.055em;}
+/* PARALLAX: cenário de profundidade, apenas no destaque do feed */
+html.cosmos-active .cosmos-portal{
+  --cx-scroll:0;--cx-mx:0;--cx-my:0;
+  position:relative;isolation:isolate;overflow:hidden;display:block;
+  min-height:438px;margin:0 0 22px;
+  background:radial-gradient(ellipse at 73% 53%,rgba(41,82,163,.25),transparent 37%),
+    radial-gradient(ellipse at 25% 94%,rgba(66,34,161,.23),transparent 55%),
+    #080e25;border:1px solid rgba(124,163,250,.29);border-radius:30px;
+  box-shadow:0 31px 95px #0008,inset 0 1px #ffffff12;
+}
+html.cosmos-active .cosmos-portal::after{content:'';pointer-events:none;position:absolute;inset:0;z-index:4;
+  background:linear-gradient(90deg,rgba(6,12,29,.42),transparent 62%),linear-gradient(to top,rgba(4,10,24,.52),transparent 32%);}
+html.cosmos-active .cx-star-map{position:absolute;inset:-18%;z-index:0;
+  background:url('/img/nosverso-orbital/stars.svg') center/cover no-repeat;opacity:.92;
+  transform:translate3d(var(--cx-star-x,0px),var(--cx-star-y,0px),0) scale(1.07);will-change:transform;}
+html.cosmos-active .cx-nebula{position:absolute;inset:-30%;z-index:1;
+  background:radial-gradient(ellipse 45% 35% at 76% 45%,#573cd66e,transparent 78%),
+    radial-gradient(ellipse 40% 25% at 72% 84%,#00b5c93c,transparent 85%);
+  transform:translate3d(var(--cx-neb-x,0px),var(--cx-neb-y,0px),0);will-change:transform;}
+html.cosmos-active .cx-orbit-world{position:absolute;z-index:2;right:5%;top:5%;width:55%;height:90%;
+  transform-style:preserve-3d;perspective:800px;
+  transform:translate3d(var(--cx-world-x,0px),var(--cx-world-y,0px),0) rotate(var(--cx-world-rotate,0deg));
+  will-change:transform;pointer-events:none;}
+html.cosmos-active .cx-world{position:absolute;width:55%;aspect-ratio:1;max-width:290px;top:15%;right:19%;border-radius:50%;
+  background:radial-gradient(circle at 28% 22%,#e2faff 0%,#9dc6ff 12%,#7690e9 33%,#40358f 64%,#0a1738 89%),
+    #636bc5;
+  box-shadow:inset -27px -22px 45px #030a276b,inset 13px 11px 18px #ffffff42,0 0 82px #6f67fa99,0 0 154px #395fb93d;
+  filter:saturate(1.25);}
+html.cosmos-active .cx-world::after{content:'';position:absolute;inset:0;border-radius:50%;opacity:.36;
+  background:repeating-linear-gradient(160deg,transparent 0px,transparent 18px,#c0e6ff29 22px,transparent 36px);mix-blend-mode:screen;}
+html.cosmos-active .cx-ring{position:absolute;top:31%;right:-7%;width:111%;height:35%;border:2px solid #c8bbff99;border-radius:50%;
+  transform:rotate(-23deg) skewY(-9deg);box-shadow:0 0 19px #7a9cf477,inset 0 0 14px #a6c3ff69;}
+html.cosmos-active .cx-ring--back{opacity:.4;transform:rotate(20deg) skewY(10deg) scale(.91);border-color:#64d9ff80;}
+html.cosmos-active .cx-satellite{position:absolute;right:9%;top:11%;width:48px;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 33% 24%,#fff2dd,#efafc3 46%,#994dba 88%);box-shadow:0 0 22px #bc7ae977;}
+html.cosmos-active .cx-satellite--small{right:82%;top:73%;width:18px;background:#5dffee;box-shadow:0 0 25px #64eae5;}
+html.cosmos-active .cx-trace{position:absolute;right:0;top:0;width:100%;height:100%;border-radius:50%;
+  border:1px solid rgba(191,209,255,.09);transform:scale(.95);}
+html.cosmos-active .cx-portal-copy{position:relative;z-index:5;display:flex;flex-direction:column;align-items:flex-start;
+  width:61%;max-width:485px;padding:64px 0 63px 38px;}
+html.cosmos-active .cx-kicker{display:inline-flex;gap:9px;align-items:center;color:#a7eaff;
+  font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:19px;}
+html.cosmos-active .cx-kicker::before{content:'';width:7px;height:7px;background:#a9ffe8;border-radius:50%;box-shadow:0 0 15px #9afde3;}
+html.cosmos-active .cx-portal-copy h1{margin:0 0 18px;font-size:clamp(35px,4.2vw,58px);font-weight:870;
+  line-height:1.02;letter-spacing:-.075em;color:#fff;}
+html.cosmos-active .cx-portal-copy h1 em{font-style:normal;
+  background:linear-gradient(100deg,#e9e1ff,#95d9ff 58%,#9afbe7);background-clip:text;-webkit-background-clip:text;color:transparent;}
+html.cosmos-active .cx-portal-copy p{font-size:14px;max-width:390px;line-height:1.7;color:#b9c8e9;margin:0 0 24px;}
+html.cosmos-active .cx-portal-actions{display:flex;gap:10px;flex-wrap:wrap;}
+html.cosmos-active .cx-primary,html.cosmos-active .cx-secondary{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  text-decoration:none!important;min-height:47px;padding:10px 17px;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;}
+html.cosmos-active .cx-primary{background:linear-gradient(105deg,#c5adff,#8adbff)!important;color:#09112e!important;border:0!important;
+  box-shadow:0 7px 38px #536fe94b;}
+html.cosmos-active .cx-secondary{color:#f1f6ff!important;border:1px solid #a2b6ed40;background:#a7b6dd12;}
+html.cosmos-active .cx-scroll-hint{position:absolute;bottom:21px;right:31px;z-index:5;color:#a3b6db;
+  font-size:10px;font-weight:750;letter-spacing:.14em;text-transform:uppercase;display:flex;gap:9px;align-items:center;}
+html.cosmos-active .cx-scroll-hint span{font-size:24px;color:#91e9ff;}
+html.cosmos-active .cx-world,html.cosmos-active .cx-satellite{animation:cx-float 7s ease-in-out infinite alternate;}
+html.cosmos-active .cx-satellite{animation-duration:10s;animation-delay:-4s;}
+@keyframes cx-float{from{translate:0 -8px;}to{translate:0 11px;}}
+/* Entrada de posts: delicada, nunca oculta conteúdo nem captura o scroll. */
+@media(prefers-reduced-motion:no-preference){
+  html.cosmos-active .post-card{transition:box-shadow .3s ease,border-color .3s ease!important;}
+  html.cosmos-active .post-card:hover{border-color:rgba(155,208,255,.39)!important;box-shadow:0 24px 70px #0008!important;}
+}
+/* MOBILE: barra sempre fixa sobre as imagens, sem dependência de hover. */
+@media(max-width:760px){
+  html.cosmos-active body.app-layout .sidebar,html.cosmos-active body.chat-layout .sidebar{
+    position:fixed!important;top:auto!important;bottom:max(10px,env(safe-area-inset-bottom))!important;
+    left:50%!important;right:auto!important;transform:translateX(-50%)!important;
+    width:min(calc(100% - 20px),560px)!important;height:66px!important;min-height:66px!important;
+    padding:6px 9px!important;display:flex!important;flex-direction:row!important;align-items:center!important;
+    background:rgba(12,20,43,.95)!important;backdrop-filter:blur(25px)!important;
+    -webkit-backdrop-filter:blur(25px)!important;border:1px solid rgba(150,185,245,.24)!important;
+    border-radius:23px!important;box-shadow:0 18px 58px #0009!important;z-index:850!important;
+    overflow:hidden!important;box-sizing:border-box!important;
+  }
+  html.cosmos-active .sidebar .sidebar-brand{display:none!important;}
+  html.cosmos-active .sidebar-nav{display:flex!important;flex-direction:row!important;justify-content:space-around!important;
+    align-items:center!important;width:100%!important;height:100%!important;gap:0!important;margin:0!important;}
+  html.cosmos-active .sidebar-nav .sidebar-link{display:flex!important;justify-content:center!important;align-items:center!important;
+    width:46px!important;min-width:43px!important;height:46px!important;min-height:46px!important;padding:0!important;
+    border:0!important;border-radius:15px!important;background:transparent!important;color:#c1d1ee!important;gap:0!important;}
+  html.cosmos-active .sidebar-nav .sidebar-link.active{color:#b4fef0!important;background:#727dc830!important;}
+  html.cosmos-active .sidebar-nav .sidebar-link span{display:none!important;}
+  html.cosmos-active .sidebar-nav .sidebar-link i{font-size:20px!important;}
+  html.cosmos-active .sidebar-nav .sidebar-profile-avatar{width:29px!important;height:29px!important;border-radius:11px!important;}
+  html.cosmos-active .sidebar .logout-form{display:none!important;}
+  html.cosmos-active body.app-layout .app-content,html.cosmos-active body.chat-layout .app-content{
+    margin:0!important;width:100%!important;max-width:100%!important;
+    padding-bottom:calc(96px + env(safe-area-inset-bottom))!important;
+  }
+  html.cosmos-active .main-feed{padding:13px 12px 105px!important;}
+  html.cosmos-active .feed{width:100%!important;max-width:100%!important;}
+  html.cosmos-active .cosmos-portal{min-height:420px;border-radius:22px;margin-bottom:16px;}
+  html.cosmos-active .cx-portal-copy{width:100%;max-width:100%;padding:27px 22px 190px;}
+  html.cosmos-active .cx-portal-copy h1{font-size:clamp(34px,9.4vw,48px);max-width:390px;}
+  html.cosmos-active .cx-portal-copy p{font-size:12px;line-height:1.6;max-width:290px;}
+  html.cosmos-active .cx-kicker{font-size:9px;letter-spacing:.14em;margin-bottom:13px;}
+  html.cosmos-active .cx-orbit-world{width:82%;height:67%;right:-17%;top:42%;opacity:.86;}
+  html.cosmos-active .cx-world{width:55%;top:22%;right:23%;}
+  html.cosmos-active .cx-scroll-hint{bottom:13px;right:18px;font-size:9px;}
+  html.cosmos-active .cx-satellite{width:28px;}
+  html.cosmos-active .mobile-header{position:sticky!important;top:0;z-index:200!important;}
+  html.cosmos-active .barra-online{display:none!important;}
+  html.cosmos-active :where(.perfil-page,.settings-page){padding-bottom:110px!important;}
+  html.cosmos-active .chat-conversation .sidebar{z-index:850!important;}
+}
+@media(max-width:365px){html.cosmos-active .sidebar-nav .sidebar-link{min-width:36px!important;width:40px!important;}}
+@media(prefers-reduced-motion:reduce){
+  html.cosmos-active .cx-world,html.cosmos-active .cx-satellite{animation:none!important;}
+  html.cosmos-active .cx-star-map,html.cosmos-active .cx-nebula,html.cosmos-active .cx-orbit-world{transform:none!important;will-change:auto!important;}
+  html.cosmos-active *{scroll-behavior:auto!important;}
+}
+
+/* Camadas ambientais suaves em TODAS as páginas — nunca cobrem controles. */
+html.cosmos-active body.app-layout::before,html.cosmos-active body.settings-layout::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:url('/img/nosverso-orbital/stars.svg') center/cover no-repeat;
+  opacity:.11;filter:saturate(.7);
+}
+html.cosmos-active body.app-layout .app-content,html.cosmos-active body.settings-layout :is(.settings-page,.settings-container){position:relative;z-index:1;}
+html.cosmos-active .perfil-header::after{content:"";position:absolute;right:-85px;top:-115px;
+  width:min(58%,440px);aspect-ratio:1;z-index:0;pointer-events:none;
+  border:1px solid rgba(153,201,253,.34);border-radius:50%;
+  box-shadow:0 0 0 43px rgba(118,110,244,.025),0 0 0 86px rgba(93,128,231,.025),0 0 62px #6c63ef38;
+  transform:rotate(-29deg) scaleY(.55);
+}
+html.cosmos-active .cx-primary[hidden]{display:none!important;}
+@media(max-width:760px){html.cosmos-active .perfil-header::after{width:320px;right:-130px;top:-86px;}}
