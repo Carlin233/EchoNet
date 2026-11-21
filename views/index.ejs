@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="nv-space">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="csrf-token" content="<%= csrfToken %>">
-  <title>Feed • EchoNet</title>
+  <title>Feed • Nósverso</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="/css/stories-notifications.css" /><link rel="stylesheet" href="/css/global.css" /><link rel="stylesheet" href="/css/sidebar.css" /><link rel="stylesheet" href="/css/feed.css" /><link rel="stylesheet" href="/css/modal.css" /><link rel="stylesheet" href="/css/responsive.css" /><link rel="stylesheet" href="/css/functions.css" />
   <link rel="stylesheet" href="/css/mobile-optimizations.css" />
@@ -21,7 +21,13 @@
   <link rel="stylesheet" href="/css/echonet-mobile-fix.css?v=20261120-1">
   <link rel="stylesheet" href="/css/echonet-criar-story-perfil.css?v=20261120-21">
   <!-- EchoNet Pulse: identidade visual -->
-  <link rel="stylesheet" href="/css/echonet-pulse.css?v=20261120-01">
+  
+  <meta name="theme-color" content="#071020">
+  <!-- NOSVERSO-NEO:css -->
+  <link rel="stylesheet" href="/css/nosverso-neo.css?v=20261121-1">
+  <!-- NOSVERSO-NEO:icons -->
+  <link rel="icon" type="image/png" href="/img/nosverso/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/nosverso/icon-192.png">
 </head>
 <body class="app-layout">
   <%- include('partials/sidebar') %>
@@ -36,7 +42,21 @@
     <a href="/perfil"><span class="pulse-switch-icon" aria-hidden="true">◈</span>Meu espaço</a>
     <button type="button" data-pulse-create><span class="pulse-switch-icon" aria-hidden="true">＋</span>Criar Echo</button>
   </nav>
-      <div class="stories-bar" data-current-user="<%= username %>"><div class="stories-scroll" id="storiesList">
+      
+      <!-- NOSVERSO-NEO:hero -->
+      <section class="nv-deck" aria-label="Boas-vindas ao seu universo">
+        <div class="nv-deck-copy">
+          <span class="nv-eyebrow">Nósverso • Centro de conexões</span>
+          <h1>Seu mundo.<br><em>Infinitas órbitas.</em></h1>
+          <p>Compartilhe seus momentos, descubra novas pessoas e construa conexões que vão além da tela.</p>
+          <div class="nv-deck-actions">
+            <button type="button" data-nv-create>✦ Criar publicação</button>
+            <a href="/mensagens">Ir para conversas ↗</a>
+          </div>
+        </div>
+        <div class="nv-deck-art" aria-hidden="true"></div>
+      </section>
+<div class="stories-bar" data-current-user="<%= username %>"><div class="stories-scroll" id="storiesList">
         <button type="button" class="story-item story-add" id="abrirModalStory" aria-label="Criar Story"><span class="story-ring"><img src="<%= myAvatar %>" alt="" /></span><span class="story-name">Seu Story +</span></button>
         <span class="stories-loading" id="storiesLoading">Carregando Stories...</span>
       </div></div>
@@ -70,6 +90,8 @@
   <script src="/js/echonet-pwa.js?v=1" defer></script>
   <script src="/js/echonet-app-v2.js?v=20261120-3" defer></script>
   <script src="/js/echonet-criar-story-perfil.js?v=20261120-21" defer></script>
-  <script src="/js/echonet-pulse.js?v=20261120-01" defer></script>
+  
+  <!-- NOSVERSO-NEO:js -->
+  <script src="/js/nosverso-neo.js?v=20261121-1" defer></script>
 </body>
 </html>
