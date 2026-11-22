@@ -1,0 +1,176 @@
+/* Nósverso Sinais — ajuste de iOS, versão 3.
+   Somente /mensagens com conversa aberta; não toca nos endpoints ou no chat.js.
+   Esta folha deve ser carregada DEPOIS de nosverso-chat-reparado.css. */
+@media (max-width: 760px) {
+  html body.chat-layout.chat-conversation {
+    position: fixed !important;
+    inset: auto !important;
+    top: var(--nv3-view-top, 0px) !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: var(--nv3-view-height, 100dvh) !important;
+    min-height: 0 !important;
+    max-height: var(--nv3-view-height, 100dvh) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    box-sizing: border-box !important;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background: #070e24 !important;
+  }
+  /* Cabeçalho, conversa e campo precisam dividir EXATAMENTE a altura visível. */
+  html body.chat-layout.chat-conversation .mobile-header,
+  html body.chat-layout.chat-conversation .mobile-header-chat {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 54px !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
+    box-sizing: border-box !important;
+    z-index: 5 !important;
+    background: rgba(9, 19, 44, .97) !important;
+  }
+  html body.chat-layout.chat-conversation .app-content,
+  html.cosmos-active body.chat-layout.chat-conversation .app-content,
+  html.nv-space body.chat-layout.chat-conversation .app-content {
+    display: flex !important;
+    flex: 1 1 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+  html body.chat-layout.chat-conversation .mensagem-container,
+  html.cosmos-active body.chat-layout.chat-conversation .mensagem-container,
+  html.nv-space body.chat-layout.chat-conversation .mensagem-container {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    align-self: stretch !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+  html body.chat-layout.chat-conversation .chat-box {
+    display: flex !important;
+    flex: 1 1 0 !important;
+    flex-direction: column !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    scroll-behavior: auto !important;
+    box-sizing: border-box !important;
+    padding: 14px 12px 22px !important;
+  }
+  html body.chat-layout.chat-conversation .form-mensagem {
+    position: relative !important;
+    inset: auto !important;
+    bottom: auto !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    padding: 9px 12px calc(9px + var(--nv3-safe-bottom, env(safe-area-inset-bottom,0px))) !important;
+    background: rgba(8, 17, 39, .98) !important;
+    border-top: 1px solid rgba(160,181,255,.18) !important;
+    z-index: 6 !important;
+  }
+  html body.chat-layout.chat-conversation .form-mensagem input[name="conteudo"] {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    box-sizing: border-box !important;
+    background-color: #1c294d !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+  html body.chat-layout.chat-conversation .form-mensagem button[type="submit"] {
+    height: 48px !important;
+    min-height: 48px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    flex: 0 0 48px !important;
+  }
+  /* Texto e horário ficam dentro do balão, mesmo com fonte ampliada. */
+  html body.chat-layout.chat-conversation .chat-box > .msg {
+    box-sizing: border-box !important;
+    display: block !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: fit-content !important;
+    max-width: 86% !important;
+    padding: 11px 14px !important;
+    margin: 0 !important;
+    font-size: 15px !important;
+    font-weight: 450 !important;
+    line-height: 1.5 !important;
+    overflow: visible !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+    text-align: left !important;
+    transform: none !important;
+  }
+  html body.chat-layout.chat-conversation .chat-box > .msg.eu { align-self: flex-end !important; }
+  html body.chat-layout.chat-conversation .chat-box > .msg.outro { align-self: flex-start !important; }
+  html body.chat-layout.chat-conversation .chat-box > .msg::after {
+    content: attr(data-time) !important;
+    display: block !important;
+    position: static !important;
+    float: none !important;
+    height: auto !important;
+    margin: 4px 0 0 !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+    text-align: right !important;
+    color: inherit !important;
+    opacity: .75 !important;
+    transform: none !important;
+  }
+  html body.chat-layout.chat-conversation .chat-box > .msg:not([data-time])::after,
+  html body.chat-layout.chat-conversation .chat-box > .msg[data-time=""]::after { content: none !important; }
+  html body.chat-layout.chat-conversation .mensagem-container::before {
+    background-position: center !important;
+    background-size: max(115vw, 550px) auto !important;
+  }
+}
+/* Em modo aplicativo, o teclado fica acima da barra de navegação do sistema.
+   Remover o safe-area inferior somente enquanto digitando evita um espaço extra. */
+@media (max-width: 760px) and (display-mode: standalone) {
+  html body.chat-layout.chat-conversation.nv3-keyboard-open .form-mensagem {
+    padding-bottom: 9px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.chat-layout.chat-conversation .mensagem-container::before { animation: none !important; }
+}
