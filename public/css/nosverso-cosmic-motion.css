@@ -1,0 +1,165 @@
+/* NÓSVERSO COSMIC MOTION 2026
+   Camada visual não invasiva: navegação intacta, animações atrás do conteúdo.
+   Depende do tema Orbital já instalado; não altera componentes interativos.
+*/
+html.cosmos-active body.app-layout,
+html.cosmos-active body.chat-layout {position:relative; isolation:isolate;}
+html.cosmos-active .ncm-meteor-sky {
+  position:fixed;inset:0;width:100%;height:100%;z-index:0;
+  pointer-events:none;display:block;contain:strict;opacity:.87;
+}
+/* Galaxy layer: fica dentro do feed, nunca acima de fotos ou controles. */
+html.cosmos-active .main-feed {position:relative;isolation:isolate;}
+html.cosmos-active .main-feed::before {
+  content:"";position:absolute;pointer-events:none;
+  top:110px;left:50%;width:min(950px,118vw);aspect-ratio:1;
+  transform:translateX(-43%);opacity:.57;
+  background:url('/img/nosverso-cosmic/galaxia-espiral.svg') center / contain no-repeat;
+  z-index:0;filter:drop-shadow(0 0 70px rgba(65,65,188,.33));
+  animation:ncm-galaxy-orbit 170s linear infinite;
+  transform-origin:center center;
+}
+html.cosmos-active .main-feed::after {
+  content:"";position:absolute;top:60px;left:0;right:0;height:880px;
+  pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 52% 33% at 55% 26%,rgba(98,62,215,.15),transparent 74%);
+}
+html.cosmos-active .main-feed .feed,
+html.cosmos-active .main-feed > :not(.feed) {position:relative;z-index:1;}
+@keyframes ncm-galaxy-orbit {
+  from {transform:translateX(-43%) rotate(0deg)}
+  to {transform:translateX(-43%) rotate(360deg)}
+}
+/* Nomes especiais, com apoio visual e ícones originais preservados. */
+@media (min-width:761px) {
+  html.cosmos-active .sidebar-nav .sidebar-link {
+    position:relative;
+    transition:background .22s ease,border-color .22s ease,color .22s ease!important;
+  }
+  html.cosmos-active .sidebar-nav .sidebar-link::before {
+    content:"";position:absolute;left:3px;top:11px;bottom:11px;width:3px;border-radius:10px;
+    background:linear-gradient(180deg,#82e8fe,#cda9ff);opacity:0;
+    transform:scaleY(.35);transition:opacity .2s,transform .2s;
+    pointer-events:none;
+  }
+  html.cosmos-active .sidebar-nav .sidebar-link:is(:hover,:focus-visible,.active)::before {
+    opacity:1;transform:scaleY(1);
+  }
+  html.cosmos-active .sidebar-nav .sidebar-link:is(:hover,:focus-visible) {
+    box-shadow:inset 0 0 22px rgba(117,140,234,.09)!important;
+  }
+  html.cosmos-active .sidebar-nav .sidebar-link span {font-weight:730;letter-spacing:.01em;}
+}
+/* Não prejudicar o mobile: o fundo permanece estático e leve. */
+@media (max-width:760px) {
+  html.cosmos-active .ncm-meteor-sky{display:none!important;}
+  html.cosmos-active .main-feed::before {
+    width:620px;top:65px;opacity:.19;
+    animation:none!important;
+    transform:translateX(-45%);
+  }
+  html.cosmos-active .main-feed::after{opacity:.45;}
+}
+@media (prefers-reduced-motion:reduce) {
+  html.cosmos-active .ncm-meteor-sky {display:none!important;}
+  html.cosmos-active .main-feed::before {animation:none!important;}
+  html.cosmos-active .sidebar-nav .sidebar-link,
+  html.cosmos-active .sidebar-nav .sidebar-link::before{transition:none!important;}
+}
+
+
+/* ================== DESCOBERTA DE CONEXÕES ==================
+   O elemento #usuariosOnline é o mesmo que feed.js atualiza. Apenas apresentação. */
+html.cosmos-active .barra-online {z-index:4;}
+html.cosmos-active .barra-online .suggestions-card {
+  border-radius:23px!important;
+  border:1px solid rgba(143,171,244,.19)!important;
+  background:linear-gradient(145deg,rgba(25,39,74,.93),rgba(8,16,37,.93))!important;
+  box-shadow:0 20px 46px #03081355!important;
+}
+html.cosmos-active .barra-online .account-header {display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px;}
+html.cosmos-active .barra-online .account-header strong {color:#edf6ff!important;font-weight:800;font-size:13px;}
+html.cosmos-active .barra-online .text-link {color:#a5ede4!important;font-weight:650;}
+html.cosmos-active .barra-online .suggestions-card > .user-row {margin-bottom:0;}
+html.cosmos-active .barra-online .suggestions-card > .user-row > img {border:2px solid #4ad9db!important;box-shadow:0 0 0 3px #3d6db32b;}
+html.cosmos-active .ncm-discovery-panel {
+  position:relative;overflow:hidden;padding:22px 16px 17px;margin-top:14px;
+  background:linear-gradient(152deg,rgba(26,42,81,.98),rgba(11,19,43,.98) 66%,rgba(18,19,51,.97));
+  border:1px solid rgba(125,171,249,.24);border-radius:26px;
+  box-shadow:0 20px 48px rgba(0,0,0,.29),inset 0 1px 0 rgba(226,238,255,.05);
+  isolation:isolate;
+}
+html.cosmos-active .ncm-discovery-panel::before {
+  content:'';position:absolute;pointer-events:none;z-index:-1;
+  width:250px;height:230px;right:-105px;top:-105px;border-radius:50%;
+  background:radial-gradient(circle,rgba(103,107,249,.33),rgba(34,125,214,.1) 45%,transparent 72%);
+  filter:blur(8px);
+}
+html.cosmos-active .ncm-discovery-header {position:relative;min-height:112px;padding-right:30px;margin-bottom:13px;}
+html.cosmos-active .ncm-discovery-kicker {
+  display:inline-flex;align-items:center;gap:7px;color:#a1e9e5;
+  text-transform:uppercase;letter-spacing:.15em;font-weight:850;font-size:9px;
+}
+html.cosmos-active .ncm-discovery-kicker::before {content:'';width:6px;height:6px;border-radius:50%;background:#8fe7db;box-shadow:0 0 11px #4cdcc4;}
+html.cosmos-active .ncm-discovery-header h3 {color:#f4f8ff!important;font-size:21px!important;font-weight:850!important;
+  letter-spacing:-.045em;line-height:1.16;margin:12px 0 7px!important;max-width:185px;
+  text-transform:none!important;}
+html.cosmos-active .ncm-discovery-intro {font-size:11.5px;line-height:1.5;max-width:210px;color:#b2c3e7;margin:0;}
+html.cosmos-active .ncm-discovery-planet {
+  pointer-events:none;position:absolute;right:-9px;top:-5px;width:91px;height:91px;
+  background:radial-gradient(circle at 33% 29%,#b9f8f4 1%,#6387fa 38%,#33408f 74%,#161f4b 100%);
+  border-radius:50%;box-shadow:inset -14px -9px 17px #0e1247a8,0 0 35px #637ff680;
+}
+html.cosmos-active .ncm-discovery-planet::before {
+  content:'';position:absolute;width:142px;height:36px;top:27px;left:-24px;
+  border:3px solid rgba(146,213,255,.75);border-left-color:rgba(146,213,255,.25);
+  border-radius:50%;transform:rotate(-27deg);box-shadow:0 0 18px #64a9e64d;
+}
+html.cosmos-active .ncm-discovery-planet::after {content:'';position:absolute;top:8px;left:13px;
+  width:20px;height:20px;background:rgba(255,255,255,.2);filter:blur(9px);border-radius:50%;}
+html.cosmos-active .ncm-discovery-count {color:#a2baf3;letter-spacing:.08em;text-transform:uppercase;
+  font-size:10px;font-weight:750;border-top:1px solid rgba(157,187,247,.16);
+  padding-top:13px;margin:5px 0 9px;}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline {display:grid;gap:9px;margin:0;padding:0;list-style:none;}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline > li {
+  display:flex!important;align-items:center!important;gap:8px!important;
+  margin:0!important;padding:10px 9px!important;min-height:64px;
+  border-radius:16px;border:1px solid rgba(140,167,219,.13);
+  background:rgba(100,132,203,.085);color:#eff5ff;
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline > li:hover {transform:translateY(-1px);border-color:rgba(113,202,239,.33);background:rgba(92,130,217,.13);}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .suggestion-user {
+  display:flex!important;align-items:center!important;gap:9px!important;
+  flex:1;min-width:0;padding:0!important;margin:0!important;
+  background:transparent!important;text-decoration:none!important;color:#f4f8ff!important;
+}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .suggestion-user img {
+  width:39px!important;height:39px!important;flex:0 0 39px!important;object-fit:cover;
+  border-radius:50%;border:2px solid rgba(129,199,244,.55);box-shadow:0 0 0 3px rgba(109,138,245,.1);
+}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .user-info{min-width:0;flex:1;}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .name {font-size:12.5px;font-weight:800!important;
+  color:#f5f7ff!important;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:107px;}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .sub {font-size:10px;color:#93afda!important;display:block;margin-top:3px;}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .follow-btn {
+  flex:0 0 auto;min-width:66px;min-height:33px;padding:6px 9px!important;
+  border-radius:11px!important;border:1px solid rgba(144,243,231,.35)!important;
+  background:linear-gradient(125deg,#b4f5e7,#86cfe8)!important;color:#102039!important;
+  font-size:11px!important;line-height:1.1;font-weight:850!important;cursor:pointer;
+  box-shadow:0 5px 16px rgba(68,170,204,.12);
+}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .follow-btn:hover:not(:disabled) {filter:brightness(1.09);}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .follow-btn:disabled {opacity:.55;cursor:wait;}
+html.cosmos-active .ncm-discovery-panel #usuariosOnline .empty-suggestion {
+  font-size:12px!important;color:#b3c5e5!important;line-height:1.5;padding:13px!important;
+}
+html.cosmos-active .ncm-discovery-footer {display:flex;align-items:center;gap:8px;margin-top:14px;
+  padding-top:13px;border-top:1px solid rgba(157,187,247,.15);color:#a8badb;font-size:10.5px;line-height:1.4;}
+html.cosmos-active .ncm-discovery-footer .ncm-spark {color:#91ede0;font-size:16px;}
+@media (min-width:1265px) {
+  html.cosmos-active .barra-online {width:330px!important;box-sizing:border-box;padding:23px 19px 18px!important;}
+}
+@media (prefers-reduced-motion:reduce) {
+  html.cosmos-active .ncm-discovery-panel #usuariosOnline > li {transition:none!important;transform:none!important;}
+}
