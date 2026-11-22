@@ -138,6 +138,7 @@ async function removeMedia(imagePath, folder) {
 async function initialize() {
   if (USING_POSTGRES) {
     await postgres.initialize();
+    await sinais2.initialize();
     await purgeExpiredStories();
     return;
   }
@@ -165,6 +166,7 @@ async function initialize() {
   await run('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users(username COLLATE NOCASE)');
   await run('CREATE INDEX IF NOT EXISTS idx_posts_author ON posts(usuario, criado_em DESC)');
   await run('CREATE INDEX IF NOT EXISTS idx_messages_pair ON messages(remetente, destinatario, id)');
+  await sinais2.initialize();
   await run(`CREATE TABLE IF NOT EXISTS post_likes (user_id INTEGER NOT NULL, post_id INTEGER NOT NULL, PRIMARY KEY(user_id, post_id), FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE)`);
   await run(`CREATE TABLE IF NOT EXISTS saved_posts (user_id INTEGER NOT NULL, post_id INTEGER NOT NULL, PRIMARY KEY(user_id, post_id), FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE)`);
   await run(`CREATE TABLE IF NOT EXISTS comments (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, post_id INTEGER NOT NULL, conteudo TEXT NOT NULL, criado_em DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE)`);
@@ -639,6 +641,12 @@ app.post('/api/follow/:username', requireLogin, withErrors(async (req, res) => {
   const count = await get('SELECT COUNT(*) AS count FROM follows WHERE following_id=?', [other.id]);
   res.json({ success: true, following: !previous, followers: count.count });
 }));
+
+// NOSVERSO-SINAIS-2:SERVER
+const sinais2 = require('./nosverso-sinais-2-server').register({
+  app, run, get, all, requireLogin, withErrors, clean, validId, notify,
+  usingPostgres: USING_POSTGRES, postgresPool: postgres?.pool
+});
 
 const CONTACTS_QUERY = `SELECT t.contato,u.avatar FROM (SELECT DISTINCT CASE WHEN remetente=? THEN destinatario ELSE remetente END AS contato FROM messages WHERE remetente=? OR destinatario=?) t LEFT JOIN users u ON u.username=t.contato COLLATE NOCASE ORDER BY t.contato`;
 const MESSAGES_QUERY = `SELECT id,remetente,destinatario,conteudo,enviado_em FROM messages WHERE (remetente=? AND destinatario=?) OR (remetente=? AND destinatario=?) ORDER BY id DESC LIMIT 150`;

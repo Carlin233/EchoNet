@@ -45,6 +45,8 @@
   <link rel="stylesheet" href="/css/nosverso-chat-reparado.css?v=20261122-2">
   <!-- NOSVERSO-CHAT-IOS-V3:CSS -->
   <link rel="stylesheet" href="/css/nosverso-chat-iphone-v3.css?v=20261122-3">
+  <!-- NOSVERSO-SINAIS-2:CSS -->
+  <link rel="stylesheet" href="/css/nosverso-sinais-2.css?v=2.0">
 </head>
 <body class="app-layout chat-layout <%= destinatario ? 'chat-conversation' : 'chat-list' %>">
   <%- include('partials/sidebar') %>
@@ -108,6 +110,12 @@
           <% } %>
         </div>
 
+        <!-- NOSVERSO-SINAIS-2:REPLY -->
+        <div class="sinais-typing" id="sinaisTyping" role="status" aria-live="polite" hidden></div>
+        <div class="sinais-reply-bar" id="sinaisReplyBar" hidden>
+          <div class="sinais-reply-label"><strong>Respondendo à mensagem</strong><span id="sinaisReplyText"></span></div>
+          <button type="button" id="sinaisCancelReply" aria-label="Cancelar resposta">✕</button>
+        </div>
         <form id="formMensagem" class="form-mensagem">
           <input type="hidden" name="destinatario" value="<%= destinatario %>">
           <input type="text" name="conteudo" placeholder="Mensagem..." maxlength="2000" required autocomplete="off">
@@ -133,7 +141,8 @@
   <%- include('partials/notifications') %>
 
   <script src="/js/common.js" defer></script><script src="/js/notifications.js?v=20261120" defer></script>
-  <script src="/js/chat.js?v=mobile-202611" defer></script>
+  <!-- NOSVERSO-SINAIS-2:JS -->
+  <script src="/js/nosverso-sinais-2.js?v=2.0" defer></script>
   <script src="/js/echonet-pwa.js?v=1" defer></script>
   <script src="/js/echonet-app-v2.js?v=20261120-3" defer></script>
   
