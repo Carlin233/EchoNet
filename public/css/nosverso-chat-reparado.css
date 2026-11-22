@@ -1,0 +1,402 @@
+/* NÓSVERSO SINAIS — correção visual isolada em /mensagens.
+   Não altera as rotas, o envio de mensagens, o CSRF ou o banco.
+   Carregado por último para neutralizar conflitos entre temas antigos. */
+:root {
+  --nv-chat-deep: #060d21;
+  --nv-chat-panel: #0c1733;
+  --nv-chat-panel2: #142747;
+  --nv-chat-line: rgba(168, 194, 253, .17);
+  --nv-chat-text: #f3f7ff;
+  --nv-chat-muted: #aebddd;
+  --nv-chat-aura: #8d80fa;
+}
+html body.chat-layout {
+  color: var(--nv-chat-text) !important;
+  background: #060d21 !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  max-height: 100dvh !important;
+  display: flex !important;
+  flex-direction: row !important;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+html body.chat-layout .app-content {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: var(--nv-chat-deep) !important;
+}
+/* CONTATOS — cartões escuros e foco visível */
+html body.chat-layout .lista-contatos {
+  flex: 0 0 342px !important;
+  width: 342px !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  max-width: 42vw;
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(160deg, #132443f5, #08142df8) !important;
+  border: 0 !important;
+  border-right: 1px solid var(--nv-chat-line) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+html body.chat-layout .lista-contatos h3 {
+  margin: 0 !important;
+  padding: 26px 22px 22px !important;
+  font-size: 26px !important;
+  color: #f9fbff !important;
+  border-bottom: 1px solid var(--nv-chat-line) !important;
+  letter-spacing: -.05em;
+}
+html body.chat-layout .lista-contatos h3::before {
+  content: 'CONSTELAÇÕES CONECTADAS';
+  display: block;
+  font: 800 10px/1.5 system-ui,sans-serif;
+  letter-spacing: .17em;
+  color: #9acbff;
+  margin-bottom: 6px;
+}
+html body.chat-layout .lista-contatos ul {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 10px 24px !important;
+  list-style: none;
+}
+html body.chat-layout .lista-contatos li { margin: 0 0 7px !important; }
+html body.chat-layout .lista-contatos a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 13px !important;
+  padding: 12px 13px !important;
+  border: 1px solid transparent !important;
+  border-radius: 17px !important;
+  background: transparent !important;
+  color: var(--nv-chat-text) !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: background .2s ease,border-color .2s ease !important;
+}
+html body.chat-layout .lista-contatos a:is(:hover,:focus-visible),
+html body.chat-layout .lista-contatos a.active {
+  background: linear-gradient(110deg,rgba(105,99,226,.27),rgba(52,139,205,.13)) !important;
+  border-color: rgba(159,171,255,.35) !important;
+}
+html body.chat-layout .lista-contatos a img {
+  flex: 0 0 49px !important;
+  height: 49px !important;
+  width: 49px !important;
+  max-width: 49px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(181,194,255,.4) !important;
+  background: #263b59 !important;
+  object-fit: cover !important;
+}
+html body.chat-layout .lista-contatos .nome {color:#fff!important;font-size:14px!important;font-weight:750!important;}
+html body.chat-layout .lista-contatos .preview {color:var(--nv-chat-muted)!important;font-size:12px!important;}
+/* CONVERSA — fundo galáctico atrás do conteúdo, sem interceptar cliques */
+html body.chat-layout .mensagem-container {
+  isolation: isolate;
+  position: relative !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  background: radial-gradient(ellipse at 52% 52%,#182149 0%,#080f26 72%,#040918 100%) !important;
+  color: var(--nv-chat-text) !important;
+}
+html body.chat-layout .mensagem-container::before {
+  content: '';
+  position: absolute;
+  inset: -32% -15%;
+  z-index: 0;
+  pointer-events: none;
+  background: url('/img/nosverso-chat/galaxia-chat.svg') center / min(90vh, 950px) auto no-repeat;
+  opacity: .46;
+  filter: saturate(1.35);
+  transform-origin: 50% 50%;
+  animation: nvchatGalaxyDrift 115s linear infinite;
+}
+html body.chat-layout .mensagem-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+   radial-gradient(circle at 15% 26%,rgba(210,227,255,.6) 1px,transparent 1.4px),
+   radial-gradient(circle at 86% 56%,rgba(162,181,255,.42) 1px,transparent 1.6px),
+   linear-gradient(180deg,rgba(5,10,27,.32),transparent 32%,rgba(5,10,27,.22));
+  background-size: 169px 193px,247px 219px,auto;
+  opacity:.63;
+}
+@keyframes nvchatGalaxyDrift { from {transform:rotate(0deg) scale(1)} to {transform:rotate(360deg) scale(1)} }
+html body.chat-layout .mensagem-container > * {position:relative;z-index:1;}
+html body.chat-layout .mensagem-topo {
+  min-height: 68px !important;
+  padding: 13px 22px !important;
+  background: rgba(12,24,51,.93) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--nv-chat-line) !important;
+  color:#f5f7ff!important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+}
+html body.chat-layout .mensagem-topo img {height:40px!important;width:40px!important;border-radius:50%!important;object-fit:cover!important;}
+html body.chat-layout .mensagem-topo span {color:#f5f7ff!important;font-weight:750!important;}
+html body.chat-layout .chat-box {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  gap: 11px !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 24px clamp(14px,3vw,32px) 30px !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--nv-chat-text) !important;
+  box-shadow: none !important;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+html body.chat-layout .chat-box .msg {
+  position: relative !important;
+  display: block !important;
+  max-width: min(74%, 540px) !important;
+  width: fit-content !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  border: 1px solid rgba(185,199,255,.13) !important;
+  border-radius: 21px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  font-weight: 450 !important;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  box-shadow: 0 8px 26px rgba(0,0,0,.18) !important;
+}
+html body.chat-layout .chat-box .msg.eu {
+  align-self: flex-end !important;
+  color:#fff!important;
+  background:linear-gradient(125deg,#7060d8,#4d63b2) !important;
+  border-bottom-right-radius: 7px !important;
+}
+html body.chat-layout .chat-box .msg.outro {
+  align-self: flex-start !important;
+  color:#edf5ff!important;
+  background:rgba(27,47,85,.93) !important;
+  border-bottom-left-radius: 7px !important;
+}
+html body.chat-layout .chat-box .msg::after {content:attr(data-time);display:block;text-align:right;margin-top:5px;font-size:10px;color:inherit;opacity:.7;}
+html body.chat-layout .chat-empty {color:#d4dfff!important;opacity:.9;line-height:1.7;text-align:center;}
+html body.chat-layout .form-mensagem {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 12px 18px calc(12px + env(safe-area-inset-bottom,0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid var(--nv-chat-line) !important;
+  border-radius: 0 !important;
+  background:rgba(9,20,43,.96) !important;
+  box-shadow: none !important;
+  min-height: 68px;
+  flex: 0 0 auto;
+}
+html body.chat-layout .form-mensagem input[name="conteudo"] {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 12px 18px !important;
+  font-size: 16px !important; /* evita zoom automático no iPhone */
+  line-height: 1.2 !important;
+  border: 1px solid rgba(168,190,250,.3) !important;
+  border-radius: 999px !important;
+  background:rgba(26,42,78,.96) !important;
+  color:#fff!important;
+  outline:none;
+}
+html body.chat-layout .form-mensagem input[name="conteudo"]:focus {border-color:#9ca7ff!important;box-shadow:0 0 0 3px rgba(140,129,244,.15)!important;}
+html body.chat-layout .form-mensagem input[name="conteudo"]::placeholder {color:#b4c1df!important;opacity:1;}
+html body.chat-layout .form-mensagem button[type="submit"] {
+  flex:0 0 48px !important;
+  height:48px !important;
+  min-width:48px !important;
+  width:48px !important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  border-radius:17px!important;
+  background:linear-gradient(135deg,#8c72fe,#7b8bf9)!important;
+  color:#fff!important;
+  box-shadow:0 7px 20px rgba(102,77,245,.28)!important;
+  cursor:pointer!important;
+  padding:0!important;
+}
+html body.chat-layout .form-mensagem button:disabled {opacity:.5;cursor:wait!important;}
+/* Conversas e placeholder */
+html body.chat-layout .mensagem-container-placeholder .chat-box {justify-content:center;}
+html body.chat-layout .mensagem-container-placeholder .chat-empty {margin:auto;}
+@media(min-width:761px) {
+  html body.chat-layout .mensagem-container-placeholder {min-width:0;}
+}
+/* MOBILE: o viewport do teclado define a altura; só a lista de mensagens rola. */
+@media(max-width:760px) {
+  html body.chat-layout {flex-direction:column!important;}
+  html body.chat-layout .lista-contatos{width:100%!important;max-width:100%!important;flex:1 1 auto!important;}
+  html body.chat-layout.chat-list .app-content {
+    height:auto!important;max-height:none!important;min-height:0!important;
+    margin:0 0 var(--mobile-nav-height,72px) 0!important;
+    width:100%!important;flex:1 1 auto!important;
+    padding:0!important;
+  }
+  html body.chat-layout.chat-list .mensagem-container {display:none!important;}
+  html body.chat-layout.chat-conversation {
+    position:fixed!important;
+    left:0!important;right:0!important;
+    top:var(--nv-chat-visible-top,0px)!important;
+    width:100%!important;
+    height:var(--nv-chat-visible-height,100dvh)!important;
+    max-height:var(--nv-chat-visible-height,100dvh)!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  html body.chat-layout.chat-conversation .sidebar {display:none!important;}
+  html body.chat-layout.chat-conversation .mobile-header,
+  html body.chat-layout.chat-conversation .mobile-header-chat {
+    flex:0 0 auto!important;
+    position:relative!important;
+    top:auto!important;
+    min-height:56px!important;
+    padding-top:env(safe-area-inset-top,0px)!important;
+    border:0!important;
+    border-bottom:1px solid var(--nv-chat-line)!important;
+    background:rgba(10,20,43,.96)!important;
+    color:#fff!important;
+    z-index:3!important;
+  }
+  html body.chat-layout.chat-conversation .mobile-header * {color:#f4f7ff!important;}
+  html body.chat-layout.chat-conversation .app-content {
+    flex:1 1 auto!important;
+    display:flex!important;
+    margin:0!important;
+    padding:0!important;
+    min-width:0!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+  html body.chat-layout.chat-conversation .lista-contatos{display:none!important;}
+  html body.chat-layout.chat-conversation .mensagem-container{
+    width:100%!important;min-width:0!important;
+    height:100%!important;min-height:0!important;max-height:100%!important;
+    flex:1 1 auto!important;
+    border:0!important;
+  }
+  html body.chat-layout.chat-conversation .mensagem-topo-desktop{display:none!important;}
+  html body.chat-layout.chat-conversation .chat-box{padding:16px 12px 20px!important;flex:1 1 auto!important;min-height:0!important;}
+  html body.chat-layout.chat-conversation .chat-box .msg{max-width:87%!important;}
+  html body.chat-layout.chat-conversation .form-mensagem{
+    min-height:0!important;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))!important;
+    flex-shrink:0!important;
+  }
+  html body.chat-layout.chat-conversation .form-mensagem input[name="conteudo"]{height:47px!important;min-height:47px!important;}
+  html body.chat-layout.chat-conversation .form-mensagem button[type="submit"]{height:47px!important;width:47px!important;min-width:47px!important;flex-basis:47px!important;}
+  html body.chat-layout .mensagem-container::before {inset:-20% -30%;background-size:125vw auto;opacity:.32;}
+}
+@media (prefers-reduced-motion: reduce) {
+ html body.chat-layout .mensagem-container::before{animation:none!important;}
+ html body.chat-layout .lista-contatos a{transition:none!important;}
+ html body.chat-layout .chat-box{scroll-behavior:auto!important;}
+}
+/* Especificidade maior do que os estilos Orbital/Neo antigos. */
+html.cosmos-active body.chat-layout .app-content,
+html.nv-space body.chat-layout .app-content {
+  display:flex!important;flex:1 1 auto!important;min-height:0!important;
+  height:100dvh!important;max-height:100dvh!important;
+  padding:0!important;overflow:hidden!important;
+}
+@media(max-width:760px) {
+ html.cosmos-active body.chat-layout.chat-list .app-content,
+ html.nv-space body.chat-layout.chat-list .app-content {
+    margin:0 0 var(--mobile-nav-height,72px) 0!important;
+    height:auto!important;max-height:none!important;padding:0!important;
+ }
+ html.cosmos-active body.chat-layout.chat-conversation .app-content,
+ html.nv-space body.chat-layout.chat-conversation .app-content {
+    height:auto!important;max-height:none!important;
+    margin:0!important;padding:0!important;width:100%!important;
+    flex:1 1 auto!important;min-height:0!important;
+ }
+}
+
+/* CORREÇÃO 2 — componentes que antes apareciam brancos. Mantido no fim da folha
+   para superar estilos antigos sem modificar scripts, eventos ou marcação. */
+html body.chat-layout .mensagem-topo,
+html body.chat-layout .mensagem-topo-desktop,
+html body.chat-layout .mobile-header-chat {
+  background-color: #101d3b !important; color: #f7f9ff !important;
+  border-color: rgba(173,195,251,.18) !important;
+}
+html body.chat-layout .mensagem-topo :is(span,strong,b,small),
+html body.chat-layout .mobile-header-chat :is(span,strong,b,small) {
+  color: #f7f9ff !important; -webkit-text-fill-color: #f7f9ff !important;
+}
+html body.chat-layout .lista-contatos a.active,
+html body.chat-layout .lista-contatos a.active:hover {
+  background: linear-gradient(120deg,rgba(101,98,218,.36),rgba(41,99,156,.26)) !important;
+  color: #fff !important;
+}
+html body.chat-layout .lista-contatos a.active :is(.nome,.preview) {
+  color: #f6f8ff !important; -webkit-text-fill-color: #f6f8ff !important;
+}
+html body.chat-layout .chat-box > .msg,
+html body.chat-layout .chat-box > .msg.outro {
+  background: rgba(28,47,85,.97) !important;
+  color: #eff5ff !important; -webkit-text-fill-color: #eff5ff !important;
+}
+html body.chat-layout .chat-box > .msg.eu {
+  background: linear-gradient(122deg,#7262dc,#516ac4) !important;
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+}
+html body.chat-layout .form-mensagem { background-color:#0b1530 !important; }
+html body.chat-layout .form-mensagem input[name="conteudo"] {
+  background-color:#1a2a4e !important; color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+/* Garantir que o fundo escuro nunca seja substituído por branco em telas pequenas. */
+@media(max-width:760px) {
+ html body.chat-layout.chat-conversation .mensagem-container,
+ html body.chat-layout.chat-conversation .app-content {background-color:#080e25 !important;}
+}
