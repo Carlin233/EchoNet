@@ -1,0 +1,145 @@
+/* NOSVERSO LOGIN COSMICO — isolado na pagina de login, nao altera feed/API. */
+:root { color-scheme: dark; }
+html:has(body.nv-cosmic-login) { min-height: 100%; background: #070e29; }
+body.nv-cosmic-login { --nv-white: #f9f8ff; --nv-muted: #d3d4f2; --nv-aqua: #99e9ff; --nv-purple: #ab9dff; --nv-pink: #f59ee8; margin:0!important; min-height:100vh!important; background:#081330!important; color:var(--nv-white)!important; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+body.nv-cosmic-login *,body.nv-cosmic-login *:before,body.nv-cosmic-login *:after{box-sizing:border-box;}
+body.nv-cosmic-login a { cursor:pointer; }
+body.nv-cosmic-login button { font-family:inherit; cursor:pointer; }
+.nv-cosmic-scene { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; background:#060f2c url('/img/nosverso-login/cosmo-sky.webp') center center/cover no-repeat; }
+.nv-cosmic-scene:after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(3,10,28,.19) 0%,transparent 48%,rgba(6,9,29,.32) 100%); }
+.nv-cosmic-haze { position:absolute; inset:-20%; background:radial-gradient(ellipse at 48% 40%,rgba(124,62,229,.18),transparent 34%),radial-gradient(ellipse at 12% 52%,rgba(61,113,255,.12),transparent 45%); animation:nv-haze 15s ease-in-out infinite alternate; }
+.nv-cosmic-star { position:absolute; z-index:1; width:4px; height:4px; border-radius:50%; background:white; box-shadow:0 0 15px 5px rgba(130,159,255,.6); animation:nv-starlight 3.8s ease-in-out infinite alternate; }
+.nv-star-one { top:18%;left:48%; }
+.nv-star-two { top:32%;left:94%; animation-delay:1.5s; transform:scale(.7); }
+.nv-cosmic-streak { position:absolute; top:17%; right:27%; width:145px; height:2px; transform:rotate(-26deg); border-radius:100%; background:linear-gradient(90deg, transparent,rgba(170,196,255,.04),#d8cbff); filter:drop-shadow(0 0 6px #b6a0ff); opacity:.75; }
+.nv-login-page { isolation:isolate; position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; width:100%; overflow:hidden; }
+.nv-login-page::before{content:"";position:absolute;pointer-events:none;top:160px;left:-120px;width:400px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(76,49,184,.12),transparent 72%);}
+.nv-login-header { width:min(1490px,92%); margin:0 auto; display:flex; align-items:center; min-height:128px; position:relative; z-index:6; }
+.nv-login-brand { display:inline-flex; align-items:center; gap:17px; text-decoration:none!important; color:#fff!important; filter:drop-shadow(0 0 12px rgba(119,122,237,.1)); }
+.nv-login-brand img { width:66px;height:66px;object-fit:contain; }
+.nv-login-brand strong { font-weight:800;letter-spacing:-.052em;font-size:clamp(26px,2.6vw,43px);line-height:1; }
+.nv-brand-divider { height:39px; width:1px; background:rgba(225,214,255,.55); }
+.nv-login-layout { position:relative; width:min(1490px,92%); margin:0 auto; display:grid; grid-template-columns:minmax(290px,1.08fr) minmax(245px,.8fr) minmax(340px,1fr); align-items:center; gap:clamp(12px,1.8vw,32px); flex:1; padding-bottom:58px; }
+.nv-login-story { align-self:center; z-index:4; padding-bottom:40px; }
+.nv-chips { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 35px; }
+.nv-chips span,.nv-highlights span { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 15px; border:1px solid rgba(203,177,255,.48); border-radius:100px; background:linear-gradient(120deg,rgba(83,60,164,.25),rgba(31,38,95,.21)); box-shadow:inset 0 1px rgba(255,255,255,.07); font-weight:650; color:#f5edff; font-size:clamp(11px,.85vw,14px); white-space:nowrap; }
+.nv-login-story h1 { margin:0 0 33px!important; color:#fff!important; font-size:clamp(40px,4.05vw,67px)!important; font-weight:850!important; letter-spacing:-.063em!important; line-height:1.08!important; text-shadow:0 2px 27px rgba(14,12,49,.15); }
+.nv-login-story h1 em { font-style:normal; background:linear-gradient(96deg,#a6e8ff 2%,#9ea7ff 51%,#f09bea 100%); -webkit-background-clip:text; background-clip:text; color:transparent; white-space:nowrap; }
+.nv-login-story>p { color:#e4e1ff; max-width:455px; font-weight:450;font-size:clamp(15px,1vw,18px);line-height:1.78; margin:0 0 32px; }
+.nv-highlights { display:flex;flex-wrap:wrap;gap:11px; }
+.nv-highlights span { padding:10px 14px;font-weight:500;font-size:12.5px; backdrop-filter:blur(10px);border-color:rgba(186,179,255,.36); }
+.nv-highlights b { font-weight:650; }
+/* Three-dimensional phone and independent orbital glow */
+.nv-phone-stage { position:relative; align-self:center; display:grid; place-items:center; height:min(600px,68vh); min-height:470px; z-index:2; perspective:1000px; transform:translateY(-5px); pointer-events:none; }
+.nv-phone-luminance {position:absolute; width:125%;height:108%;background:radial-gradient(circle at 48% 46%,rgba(161,92,250,.26),transparent 58%);filter:blur(21px);}
+.nv-phone-float { z-index:2; position:relative; transform:translateY(var(--nv-drift,0px)); animation:nv-float 6.1s ease-in-out infinite; filter:drop-shadow(-24px 20px 19px rgba(4,3,31,.55)); }
+.nv-phone-shell { position:relative; width:clamp(220px,18.3vw,285px);height:clamp(430px,35.5vw,555px); padding:8px; border:4px solid #8b9edc; border-radius:44px; background:linear-gradient(125deg,#7883bf 0%,#191736 38%,#6b54a9 71%,#baa2fa 100%); box-shadow:inset 0 0 0 2px rgba(251,247,255,.72), 10px 7px 0 rgba(36,24,75,.94),15px 13px 35px rgba(27,15,78,.5),0 0 50px rgba(114,84,250,.42);transform:rotate(-11deg) rotateY(-9deg) rotateX(2deg); }
+.nv-phone-shell:after {position:absolute;content:"";right:-14px;top:22%;height:63px;width:5px;background:linear-gradient(#d8bbff,#5d487e);border-radius:4px;}
+.nv-phone-screen {position:relative;width:100%;height:100%;overflow:hidden;border-radius:32px;background:radial-gradient(ellipse at 54% 35%,rgba(78,75,180,.7),transparent 50%),linear-gradient(180deg,#071b46 0%,#26205d 60%,#8969b7 77%,#172956 100%);color:white;}
+.nv-phone-screen:before {position:absolute;content:"";inset:0;background:radial-gradient(circle at 75% 17%,rgba(182,115,255,.15),transparent 42%),url('/img/nosverso-login/cosmo-sky.webp') center 30%/auto 100% no-repeat;opacity:.3;}
+.nv-phone-island{position:absolute;z-index:5;top:0;left:50%;transform:translateX(-50%);width:36%;height:19px;border-radius:0 0 17px 17px;background:#040a21;}
+.nv-phone-status {position:relative;z-index:4;padding:24px 20px 0;display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:white;}
+.nv-phone-identity {position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:clamp(65px,6.2vw,92px);}
+.nv-phone-identity img { width:73px;height:73px;filter:drop-shadow(0 0 22px rgba(198,180,255,.48)); }
+.nv-phone-identity strong {font-size:clamp(27px,2.25vw,36px);letter-spacing:-.055em;margin-top:6px;text-shadow:0 1px 10px rgba(0,0,0,.3);}
+.nv-phone-identity p {font-size:11px;line-height:1.6;font-weight:500;color:#e9e8ff;margin:15px 0 0;}
+.nv-phone-terrain {position:absolute;bottom:0;left:0;right:0;height:32%;background:linear-gradient(147deg,transparent 28%,#99a4dd 29% 45%,transparent 46%),linear-gradient(26deg,transparent 38%,#7b8ccd 39% 56%,transparent 57%),linear-gradient(170deg,transparent 42%,#343b7c 43% 58%,transparent 59%),linear-gradient(22deg,#17235b 20%,#6372b3 78%);clip-path:polygon(0 34%,16% 54%,42% 8%,70% 49%,100% 29%,100% 100%,0 100%);}
+.nv-phone-orbit { z-index:3; position:absolute;left:50%;top:53%;height:125px;width:138%;max-width:520px;border:2px solid rgba(240,165,255,.78);border-radius:50%;transform:translate(-50%,-50%) rotate(-21deg);box-shadow:0 0 15px rgba(246,128,255,.5),inset 0 0 18px rgba(246,128,255,.17); }
+.nv-orbit-two {opacity:.21;transform:translate(-50%,-50%) rotate(-21deg) scale(.91);}
+.nv-phone-orb {position:absolute;z-index:4;border-radius:50%;background:radial-gradient(circle at 32% 25%,white,#d8b5ff 37%,#ab7deb 72%);box-shadow:0 0 22px 9px rgba(211,146,255,.45);}
+.nv-orb-one {width:21px;height:21px;left:-13%;top:61%;}
+.nv-orb-two {width:15px;height:15px;right:-9%;top:36%;}
+.nv-phone-glimmer {position:absolute;z-index:5;top:26%;left:1%;font-size:28px;color:#ffcbff;text-shadow:0 0 14px #f1aaff;animation:nv-starlight 3s ease-in-out infinite alternate;}
+/* Working authentication card. Styling never changes form action, field names, or CSRF. */
+body.nv-cosmic-login .nv-login-forms.login-forms { display:flex!important; flex-direction:column!important; width:100%!important; max-width:490px!important; justify-self:end; align-items:stretch!important; gap:0!important; z-index:5; position:relative; padding:0!important; }
+body.nv-cosmic-login .nv-login-card.form-box { color:#fff!important; width:100%!important;max-width:none!important; position:relative; overflow:hidden; margin:0!important; padding:clamp(28px,3vw,45px)!important; border-radius:32px!important; border:1px solid rgba(210,194,255,.43)!important; background:linear-gradient(135deg,rgba(32,49,104,.76),rgba(36,36,94,.82) 59%,rgba(84,47,137,.77))!important; box-shadow:0 24px 90px rgba(2,6,29,.52),inset 0 1px 1px rgba(255,255,255,.22),0 0 30px rgba(133,113,255,.11)!important; backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px); text-align:center!important; }
+.nv-login-card:before { content:"";position:absolute;inset:-50% -70% auto auto;height:470px;width:470px;background:radial-gradient(circle,rgba(185,121,250,.20),transparent 60%);pointer-events:none; }
+.nv-card-emblem {position:relative;width:65px;height:65px;margin:0 auto 20px;border-radius:19px;background:linear-gradient(140deg,#435aab94,#70448d99);border:1px solid rgba(214,191,255,.58);display:grid;place-items:center;box-shadow:0 10px 28px rgba(38,15,81,.29);}
+.nv-card-emblem img {width:48px;height:48px;}
+.nv-card-sparkle {position:absolute;right:29px;top:23px;color:#f9bdff;font-size:25px;}
+body.nv-cosmic-login .nv-login-card h2 {font-size:clamp(25px,2.1vw,34px)!important;line-height:1.14!important;letter-spacing:-.048em!important;color:white!important;margin:0!important;font-weight:800!important;}
+.nv-login-card h2 span {background:linear-gradient(90deg,#a2c6ff,#cf94fa);color:transparent;-webkit-background-clip:text;background-clip:text;}
+.nv-login-subtitle {font-size:13px;line-height:1.5;color:#e1dfff;margin:12px 0 22px;}
+.nv-divider {display:flex;align-items:center;gap:16px;color:#ddabfa;font-size:20px;margin:0 0 18px;}
+.nv-divider:before,.nv-divider:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,#b1a1ef);}
+.nv-divider:after{background:linear-gradient(90deg,#b1a1ef,transparent);}
+body.nv-cosmic-login .nv-login-form.login-form {display:flex!important;flex-direction:column!important;gap:0!important;text-align:left!important;}
+.nv-login-form label {font-weight:700;color:#f3f2ff;font-size:13px;margin:4px 0 8px 3px;}
+.nv-field-wrap {position:relative;display:flex;align-items:center;margin-bottom:20px;min-height:54px;border-radius:14px;border:1px solid rgba(209,198,255,.42);background:rgba(13,23,61,.48);transition:border-color .2s, box-shadow .2s;}
+.nv-field-wrap:focus-within {border-color:#b4c8ff;box-shadow:0 0 0 4px rgba(158,121,255,.18);}
+.nv-field-wrap>svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);height:21px;width:21px;color:#d5d7fb;pointer-events:none;}
+body.nv-cosmic-login .nv-login-card .nv-field-wrap>input{width:100%!important;min-height:54px!important;padding:13px 49px!important;background:transparent!important;box-shadow:none!important;border:0!important;outline:none!important;color:#fff!important;font-size:14px!important;font-weight:450!important;letter-spacing:normal!important;border-radius:14px!important;margin:0!important;}
+.nv-field-wrap input::placeholder{color:#bbbde5!important;opacity:1;}
+.nv-show-password {position:absolute;right:9px;top:50%;transform:translateY(-50%);background:transparent!important;color:#e2ddff!important;border:0!important;border-radius:9px!important;padding:8px!important;width:36px;height:36px;display:grid;place-items:center;}
+.nv-show-password svg{width:21px;height:21px;}
+.nv-login-recovery{text-align:right;margin:-4px 0 19px;}
+.nv-login-recovery button {border:0;background:transparent;color:#d8a4ff;font-weight:700;font-size:12px;padding:4px 0;}
+.nv-login-recovery button:hover {text-decoration:underline;}
+body.nv-cosmic-login .nv-submit {display:flex!important;justify-content:center;align-items:center;gap:20px;width:100%!important;min-height:57px!important;margin:0!important;background:linear-gradient(102deg,#5d9cff,#7556f5 47%,#d865d5)!important;border:1px solid rgba(255,219,255,.79)!important;border-radius:16px!important;color:#fff!important;box-shadow:0 0 20px rgba(163,96,240,.3),inset 0 1px rgba(255,255,255,.3)!important;font-size:16px!important;font-weight:800!important;letter-spacing:-.025em;transition:transform .18s,box-shadow .18s;}
+.nv-submit span:last-child{font-size:24px;line-height:1;}
+.nv-submit:hover{transform:translateY(-2px);box-shadow:0 6px 26px rgba(163,96,240,.45)!important;}
+.nv-register {margin-top:26px;display:flex;flex-direction:column;gap:19px;color:#d8d7f0;font-size:13px;}
+.nv-register>span {display:flex;align-items:center;gap:15px;justify-content:center;}
+.nv-register>span:before,.nv-register>span:after {content:"";height:1px;background:linear-gradient(90deg,transparent,#afb0d9);flex:1;}
+.nv-register>span:after {background:linear-gradient(90deg,#afb0d9,transparent);}
+.nv-register button {width:100%;min-height:52px;border:1px solid rgba(209,200,255,.74);border-radius:14px;background:rgba(10,22,64,.21);color:#fff;font-weight:750;font-size:14px;}
+.nv-register button:hover{background:rgba(172,147,255,.16);}
+.nv-login-footer {color:#c9c7e6;font-size:11px;margin:14px 0 0;text-align:center;text-shadow:0 1px 7px #07132e;}
+/* Existing registration and password recovery dialogs, styled to match. */
+body.nv-cosmic-login .modal {z-index:2000!important;backdrop-filter:blur(12px);background:rgba(5,9,29,.78)!important;}
+body.nv-cosmic-login .modal-content {max-width:430px!important;max-height:min(92vh,850px);overflow:auto;background:linear-gradient(150deg,#1d2c5b,#302458)!important;border:1px solid #6769a4!important;box-shadow:0 25px 95px #050a29c9;border-radius:24px!important;color:#fff!important;padding:32px!important;}
+body.nv-cosmic-login .modal-content h2 {color:#fff!important;font-size:22px!important;}
+body.nv-cosmic-login .modal-content input {font-size:15px!important;min-height:44px!important;color:#fff!important;background:#0e1a3f!important;border:1px solid #6671a4!important;border-radius:11px!important;padding:12px!important;}
+body.nv-cosmic-login .modal-content input::placeholder{color:#d4d5e9;}
+body.nv-cosmic-login .modal-content button[type="submit"] {background:linear-gradient(90deg,#6179ff,#bd65d9)!important;color:#fff!important;border-radius:11px!important;padding:12px!important;font-weight:750!important;}
+body.nv-cosmic-login .modal-content .close-btn{color:#fff!important;background:transparent!important;}
+body.nv-cosmic-login .error-message{color:#ffd3df!important;}
+body.nv-cosmic-login .success-message{color:#9effd7!important;}
+/* Tablet: preserve the phone while giving the form adequate space. */
+@media (max-width:1180px) and (min-width:801px){
+  .nv-login-header {min-height:100px;}
+  .nv-login-layout {grid-template-columns:minmax(0,1fr) minmax(0,.83fr) minmax(315px,1fr);width:96%;gap:5px;}
+  .nv-login-story h1 {font-size:clamp(32px,3.6vw,50px)!important;}
+  .nv-login-story>p {font-size:13px;}
+  .nv-chips span{padding:9px 10px;}
+  .nv-highlights span{padding:8px;}
+  .nv-phone-stage {transform:scale(.78);}
+  body.nv-cosmic-login .nv-login-card.form-box {padding:26px!important;}
+}
+/* Mobile: phone floats behind login card and remains visibly above it. */
+@media (max-width:800px){
+  body.nv-cosmic-login {min-height:100dvh!important;}
+  .nv-cosmic-scene { background-position:58% center; }
+  .nv-login-page {display:block;min-height:100dvh;padding-bottom:max(28px,env(safe-area-inset-bottom));}
+  .nv-login-header {min-height:82px;width:90%;justify-content:center;}
+  .nv-login-brand {gap:12px;}
+  .nv-login-brand img {height:52px;width:52px;}
+  .nv-login-brand strong {font-size:30px;}
+  .nv-brand-divider {height:32px;}
+  .nv-login-layout {display:flex!important;flex-direction:column!important;gap:0!important;width:100%!important;max-width:600px!important;padding:0 16px!important;margin:auto!important;}
+  .nv-login-story {display:none!important;}
+  .nv-phone-stage {width:100%;height:315px;min-height:315px;align-self:center;margin-top:-3px;transform:scale(.83) translateY(-13px);transform-origin:center top;z-index:2;}
+  .nv-phone-shell {width:197px;height:381px;border-radius:35px;}
+  .nv-phone-screen {border-radius:25px;}
+  .nv-phone-identity {margin-top:52px;}
+  .nv-phone-identity img{width:55px;height:55px;}
+  .nv-phone-identity strong{font-size:29px;}
+  .nv-phone-identity p{font-size:9px;margin-top:9px;}
+  .nv-phone-orbit{width:360px;height:102px;}
+  .nv-orb-one {left:12%;}
+  .nv-orb-two {right:8%;}
+  body.nv-cosmic-login .nv-login-forms.login-forms {align-self:stretch!important;max-width:520px!important;width:100%!important;margin-top:-28px!important;z-index:4!important;}
+  body.nv-cosmic-login .nv-login-card.form-box {padding:29px clamp(18px,5vw,34px)!important;border-radius:28px!important;background:linear-gradient(145deg,rgba(23,44,98,.91),rgba(39,34,87,.94) 60%,rgba(85,43,125,.92))!important;}
+  .nv-card-emblem {width:56px;height:56px;margin-bottom:16px;}
+  body.nv-cosmic-login .nv-login-card h2 {font-size:clamp(23px,6.2vw,31px)!important;}
+  .nv-login-subtitle {font-size:12.5px;}
+  .nv-field-wrap {margin-bottom:16px;}
+  .nv-register{margin-top:22px;}
+  .nv-login-footer{padding-bottom:9px;}
+}
+@media (max-width:370px){.nv-login-header{min-height:75px;}.nv-phone-stage{height:275px;min-height:275px;transform:scale(.69) translateY(-30px);}.nv-login-forms.login-forms{margin-top:-22px!important;}body.nv-cosmic-login .nv-login-card.form-box{padding:22px 16px!important;}.nv-login-card h2{font-size:22px!important;}}
+@media (max-height:680px) and (min-width:801px){.nv-login-header{min-height:79px;}.nv-login-layout{padding-bottom:12px;}.nv-phone-stage{height:490px;}.nv-login-story{padding:0}.nv-chips{margin-bottom:18px}.nv-login-story h1{font-size:clamp(35px,3.4vw,57px)!important;margin-bottom:15px!important}.nv-login-story>p{margin-bottom:14px;}.nv-login-card.form-box{padding:25px!important;}.nv-card-emblem{width:52px;height:52px;margin-bottom:10px}.nv-login-card .nv-login-subtitle{margin:7px 0 10px}.nv-field-wrap{margin-bottom:12px;}}
+@keyframes nv-float{0%,100%{transform:translateY(-8px)}50%{transform:translateY(10px)}}
+@keyframes nv-haze{0%{transform:translate3d(-8px,0,0) scale(1)}100%{transform:translate3d(13px,-10px,0) scale(1.02)}}
+@keyframes nv-starlight{from{opacity:.26}to{opacity:1}}
+@media (prefers-reduced-motion: reduce){.nv-cosmic-scene *,.nv-phone-float,.nv-phone-glimmer{animation:none!important;transition:none!important;}}

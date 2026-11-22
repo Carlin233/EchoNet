@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="cosmos-active">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="csrf-token" content="__CSRF_TOKEN__">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#050917">
-  <meta name="description" content="Entre no EchoNet para compartilhar momentos, conversar e criar novas conexões.">
-  <title>Entrar no Nósverso • Edição de Natal</title>
+  <meta name="theme-color" content="#0a1436">
+  <meta name="description" content="Nósverso — compartilhe momentos, viva conexões.">
+  <title>Entrar no Nósverso • Seu universo de conexões</title>
   <link rel="stylesheet" href="/css/login.css">
   <link rel="stylesheet" href="/css/mobile-optimizations.css">
-  <link rel="stylesheet" href="/css/echonet-modern.css?v=20261120-2">
-  <link rel="stylesheet" href="/css/echonet-login-natal.css?v=20261120-1">
   <!-- EchoNet PWA -->
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="192x192" href="/img/pwa/icon-192.png">
@@ -21,106 +19,87 @@
   <link rel="stylesheet" href="/css/echonet-pwa.css?v=1">
   <link rel="stylesheet" href="/css/echonet-app-v2.css?v=2">
   <link rel="stylesheet" href="/css/echonet-mobile-fix.css?v=20261120-1">
-  
-  
-  
-  
-  
-  
-  
-  <!-- NOSVERSO-ORBITAL:css -->
-  <link rel="stylesheet" href="/css/nosverso-orbital.css?v=20261121-3">
-  <!-- NOSVERSO-ORBITAL:icons -->
   <link rel="icon" type="image/png" href="/img/nosverso-orbital/icon-192.png">
   <link rel="apple-touch-icon" href="/img/nosverso-orbital/icon-192.png">
-  <!-- NOSVERSO-COSMIC-MOTION:css -->
-  <link rel="stylesheet" href="/css/nosverso-cosmic-motion.css?v=20261122-2">
+  <!-- NOVO LOGIN COSMICO: visual e autenticação separados -->
+  <link rel="stylesheet" href="/css/nosverso-login-cosmico.css?v=20261122-1">
 </head>
-<body class="echonet-login-natal">
-  <div class="natal-backdrop" aria-hidden="true">
-    <div class="natal-aurora aurora-a"></div>
-    <div class="natal-aurora aurora-b"></div>
-    <div class="natal-moon"></div>
-    <div class="natal-stars"></div>
-    <div class="natal-santa-flight"><img src="/img/echonet-santa.svg" alt=""></div>
-    <div class="natal-snow" id="natalSnow"></div>
-    <div class="natal-landscape"></div>
-  </div>
-
-  <div class="login-page natal-login-page">
-    <div class="natal-shell">
-      <header class="natal-header">
-        <a class="natal-brand" href="/login.html" aria-label="EchoNet, página de entrada">
-          <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 9.5C4.8 14 4.9 23 9.2 27.7L8 34l7.6-4.2c7.1 2.3 14.8-1.4 17.1-8.6C35.4 12.6 28.3 5.8 19.8 6.2c-4.3.2-7.8 1.3-10.8 3.3Z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/><path d="M13 19.6v-3M18 23v-9M23 25v-12M28 20v-4" stroke="white" stroke-width="2.6" stroke-linecap="round"/></svg></span>
-          <span>Echo<span class="gradient-word">Net</span></span>
-        </a>
-        <span class="natal-edition"><span aria-hidden="true">✦</span> Edição especial de Natal <span aria-hidden="true">❄</span></span>
-      </header>
-
-      <main class="natal-main">
-        <section class="natal-pitch" aria-label="Bem-vindo ao EchoNet">
-          <div class="natal-eyebrow"><span aria-hidden="true">✦</span> Uma nova forma de se conectar</div>
-          <h1>Compartilhe momentos.<br><span class="gradient-word">Viva conexões.</span></h1>
-          <p>Seu espaço para conversar, descobrir novidades e ficar perto de quem importa — com um toque especial de magia neste Natal.</p>
-          <div class="natal-highlights" aria-label="Destaques do EchoNet">
-            <span><span class="highlight-mark" aria-hidden="true">✦</span> Histórias</span>
-            <span><span class="highlight-mark" aria-hidden="true">♡</span> Conexões</span>
-            <span><span class="highlight-mark" aria-hidden="true">↗</span> Conversas</span>
-          </div>
-        </section>
-
-        <div class="natal-phone-area" aria-hidden="true">
-          <div class="natal-phone-halo"></div>
-          <div class="natal-phone-float">
-            <div class="natal-phone">
-              <div class="natal-phone-screen">
-                <div class="natal-phone-status"><span>9:41</span><span>◔ ▰</span></div>
-                <div class="natal-phone-logo"><div class="phone-wave">⌁</div><strong>Echo<span>Net</span></strong></div>
-                <div class="natal-phone-tag">O melhor do momento é compartilhar.</div>
-                <div class="natal-phone-landscape">
-                  <span class="tree tree-one">♠</span><span class="tree tree-two">♠</span><span class="tree tree-three">♠</span>
-                  <span class="natal-phone-home">⌂</span><span class="natal-phone-home second-home">⌂</span>
-                </div>
-              </div>
+<body class="nv-cosmic-login">
+<div class="nv-cosmic-scene" aria-hidden="true">
+  <div class="nv-cosmic-haze"></div>
+  <div class="nv-cosmic-star nv-star-one"></div>
+  <div class="nv-cosmic-star nv-star-two"></div>
+  <div class="nv-cosmic-streak"></div>
+</div>
+<div class="nv-login-page" id="nv-login-page">
+  <header class="nv-login-header">
+    <a class="nv-login-brand" href="/login.html" aria-label="Nósverso — Início">
+      <img src="/img/nosverso-login/planet.svg" alt="" width="66" height="66">
+      <span aria-hidden="true" class="nv-brand-divider"></span>
+      <strong>Nósverso</strong>
+    </a>
+  </header>
+  <main class="nv-login-layout">
+    <section class="nv-login-story" aria-labelledby="nv-login-headline">
+      <div class="nv-chips"><span>✧ Conecte-se</span><span>◉ Converse</span><span>✦ Compartilhe</span></div>
+      <h1 id="nv-login-headline">Compartilhe<br>momentos.<br><em>Viva conexões.</em></h1>
+      <p>Seu espaço para conversar, descobrir novidades e ficar perto de quem importa — em um universo feito de pessoas.</p>
+      <div class="nv-highlights"><span>▧ <b>Histórias</b></span><span>♡ <b>Conexões</b></span><span>◌ <b>Conversas</b></span></div>
+    </section>
+    <div class="nv-phone-stage" aria-hidden="true">
+      <div class="nv-phone-luminance"></div>
+      <div class="nv-phone-float">
+        <div class="nv-phone-shell">
+          <div class="nv-phone-screen">
+            <div class="nv-phone-island"></div>
+            <div class="nv-phone-status"><span>9:41</span><span>▴ ● ▰</span></div>
+            <div class="nv-phone-identity">
+              <img src="/img/nosverso-login/planet.svg" alt="">
+              <strong>Nósverso</strong>
+              <p>O melhor do momento<br>é compartilhar.</p>
             </div>
+            <div class="nv-phone-terrain"></div>
           </div>
-          <span class="natal-orbit one"></span><span class="natal-orbit two"></span>
-          <span class="natal-phone-glimmer">✧</span>
         </div>
-
-        <section class="login-forms" aria-label="Acessar sua conta">
-          <div class="form-box natal-login-card">
-            <div class="natal-card-sparkle" aria-hidden="true">✦</div>
-            <div class="natal-card-icon" aria-hidden="true">✳</div>
-            <h2>Bem-vindo ao <span class="gradient-word">EchoNet!</span></h2>
-            <p class="natal-subtitle">Entre na sua conta e continue compartilhando.</p>
-            <div class="natal-card-divider" aria-hidden="true"><span>✧</span></div>
-            <form action="/login" method="POST" class="login-form">
-              <input type="hidden" name="_csrf" value="__CSRF_TOKEN__">
-              <p id="loginError" class="error-message" role="alert" style="display:none"></p>
-              <label class="natal-field-label" for="login-email">Seu e-mail</label>
-              <div class="natal-input-wrap">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="2.8" y="5" width="18.4" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                <input id="login-email" type="email" name="email" placeholder="Digite seu e-mail" required autocomplete="username">
-              </div>
-              <label class="natal-field-label" for="login-password">Sua senha</label>
-              <div class="natal-input-wrap">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="4.5" y="10" width="15" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                <input id="login-password" type="password" name="password" placeholder="Digite sua senha" minlength="8" required autocomplete="current-password">
-                <button type="button" id="toggleLoginPassword" class="natal-password-toggle" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar ou ocultar senha"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg></button>
-              </div>
-              <div class="natal-login-help"><button type="button" id="openRecoveryBtn">Esqueceu a senha?</button></div>
-              <button type="submit" class="natal-enter-button"><span>Entrar no EchoNet</span><span aria-hidden="true">→</span></button>
-            </form>
-            <div class="natal-join"><span>Primeira vez por aqui?</span><button type="button" id="openModalBtn">Criar uma conta grátis</button></div>
-          </div>
-          <p class="login-footer">Nósverso © 2026 <span aria-hidden="true">·</span> Feito para conectar pessoas</p>
-        </section>
-      </main>
+      </div>
+      <div class="nv-phone-orbit nv-orbit-one"></div>
+      <div class="nv-phone-orbit nv-orbit-two"></div>
+      <div class="nv-phone-orb nv-orb-one"></div>
+      <div class="nv-phone-orb nv-orb-two"></div>
+      <div class="nv-phone-glimmer">✦</div>
     </div>
-  </div>
+    <section class="nv-login-forms login-forms" aria-label="Acessar sua conta">
+      <div class="nv-login-card form-box">
+        <div class="nv-card-emblem"><img src="/img/nosverso-login/planet.svg" alt="" width="48" height="48"></div>
+        <span class="nv-card-sparkle" aria-hidden="true">✦</span>
+        <h2>Bem-vindo ao <span>Nósverso!</span></h2>
+        <p class="nv-login-subtitle">Entre na sua conta e continue compartilhando.</p>
+        <div class="nv-divider" aria-hidden="true"><span>✦</span></div>
+        <form action="/login" method="POST" class="login-form nv-login-form">
+          <input type="hidden" name="_csrf" value="__CSRF_TOKEN__">
+          <p id="loginError" class="error-message" role="alert" style="display:none"></p>
+          <label for="nv-email">Seu e-mail</label>
+          <div class="nv-field-wrap">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5h17v11h-17z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m4.5 7.5 7.5 6 7.5-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <input id="nv-email" type="email" name="email" placeholder="Digite seu e-mail" autocomplete="username" required>
+          </div>
+          <label for="nv-password">Sua senha</label>
+          <div class="nv-field-wrap">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><rect x="5.5" y="10" width="13" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
+            <input id="nv-password" type="password" name="password" placeholder="Digite sua senha" autocomplete="current-password" minlength="8" required>
+            <button type="button" class="nv-show-password" id="toggleLoginPassword" title="Mostrar senha" aria-label="Mostrar senha" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M2.5 12S6 6.8 12 6.8 21.5 12 21.5 12s-3.5 5.2-9.5 5.2S2.5 12 2.5 12Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/></svg></button>
+          </div>
+          <div class="nv-login-recovery"><button type="button" id="openRecoveryBtn">Esqueceu a senha?</button></div>
+          <button type="submit" class="nv-submit"><span>Entrar no Nósverso</span><span aria-hidden="true">→</span></button>
+        </form>
+        <div class="nv-register"><span>Primeira vez por aqui?</span><button type="button" id="openModalBtn">Criar uma conta grátis</button></div>
+      </div>
+      <p class="nv-login-footer">Nósverso © 2026 · Um universo de conexões.</p>
+    </section>
+  </main>
+</div>
 
-  <div class="modal" id="modalCadastro">
+<div class="modal" id="modalCadastro">
     <div class="modal-content">
       <button type="button" class="close-btn" id="closeModalCadastro" aria-label="Fechar">&times;</button>
       <h2>Criar sua conta</h2>
@@ -235,15 +214,8 @@
       }
     });
   </script>
-  <script src="/js/echonet-login-natal.js?v=20261120-1" defer></script>
   <script src="/js/echonet-pwa.js?v=1" defer></script>
   <script src="/js/echonet-app-v2.js?v=20261120-3" defer></script>
-  
-  
-  
-  <!-- NOSVERSO-ORBITAL:js -->
-  <script src="/js/nosverso-orbital.js?v=20261121-3" defer></script>
-  <!-- NOSVERSO-COSMIC-MOTION:js -->
-  <script src="/js/nosverso-cosmic-motion.js?v=20261122-2" defer></script>
+  <script defer src="/js/nosverso-login-cosmico.js?v=20261122-1"></script>
 </body>
 </html>
