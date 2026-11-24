@@ -49,6 +49,8 @@
   <link rel="stylesheet" href="/css/nosverso-sinais-2.css?v=2.0">
   <!-- NOSVERSO-SINAIS-2-1:CORRECAO -->
   <link rel="stylesheet" href="/css/nosverso-sinais-2-1-fix.css?v=2.1.1">
+  <!-- NOSVERSO-SINAIS-2-2:CSS -->
+  <link rel="stylesheet" href="/css/nosverso-sinais-2-2.css?v=2.2.0">
 </head>
 <body class="app-layout chat-layout <%= destinatario ? 'chat-conversation' : 'chat-list' %>">
   <%- include('partials/sidebar') %>
@@ -118,9 +120,17 @@
           <div class="sinais-reply-label"><strong>Respondendo à mensagem</strong><span id="sinaisReplyText"></span></div>
           <button type="button" id="sinaisCancelReply" aria-label="Cancelar resposta">✕</button>
         </div>
+        <!-- NOSVERSO-SINAIS-2-2:COMPOSER -->
+        <div class="sinais22-panel" id="sinais22Preview" hidden><div class="sinais22-preview-content"><span id="sinais22PreviewText"></span><div id="sinais22PreviewMedia"></div></div><button type="button" id="sinais22CancelFile" aria-label="Remover anexo">Remover</button></div>
+        <div class="sinais22-panel" id="sinais22Status" role="status" aria-live="polite" hidden></div>
         <form id="formMensagem" class="form-mensagem">
           <input type="hidden" name="destinatario" value="<%= destinatario %>">
-          <input type="text" name="conteudo" placeholder="Mensagem..." maxlength="2000" required autocomplete="off">
+          <div class="sinais22-tools">
+            <button type="button" id="sinais22Attach" class="sinais22-tool" aria-label="Anexar foto ou vídeo" title="Anexar foto ou vídeo">📎</button>
+            <button type="button" id="sinais22Record" class="sinais22-tool" aria-label="Gravar áudio" title="Gravar áudio" aria-pressed="false">🎙️</button>
+            <input type="file" id="sinais22File" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" hidden>
+          </div>
+          <input type="text" name="conteudo" placeholder="Mensagem..." maxlength="2000" autocomplete="off">
           <button type="submit" aria-label="Enviar">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7.5 20-4.5-8-8-4.5L22 2Z"/><path d="M22 2 10 14"/></svg>
           </button>
@@ -144,7 +154,8 @@
 
   <script src="/js/common.js" defer></script><script src="/js/notifications.js?v=20261120" defer></script>
   <!-- NOSVERSO-SINAIS-2:JS -->
-  <script src="/js/nosverso-sinais-2.js?v=2.0" defer></script>
+  <!-- NOSVERSO-SINAIS-2-2:JS -->
+  <script src="/js/nosverso-sinais-2-2.js?v=2.2.0" defer></script>
   <script src="/js/echonet-pwa.js?v=1" defer></script>
   <script src="/js/echonet-app-v2.js?v=20261120-3" defer></script>
   

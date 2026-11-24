@@ -139,6 +139,7 @@ async function initialize() {
   if (USING_POSTGRES) {
     await postgres.initialize();
     await sinais2.initialize();
+    await sinais22.initialize();
     await purgeExpiredStories();
     return;
   }
@@ -167,6 +168,7 @@ async function initialize() {
   await run('CREATE INDEX IF NOT EXISTS idx_posts_author ON posts(usuario, criado_em DESC)');
   await run('CREATE INDEX IF NOT EXISTS idx_messages_pair ON messages(remetente, destinatario, id)');
   await sinais2.initialize();
+    await sinais22.initialize();
   await run(`CREATE TABLE IF NOT EXISTS post_likes (user_id INTEGER NOT NULL, post_id INTEGER NOT NULL, PRIMARY KEY(user_id, post_id), FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE)`);
   await run(`CREATE TABLE IF NOT EXISTS saved_posts (user_id INTEGER NOT NULL, post_id INTEGER NOT NULL, PRIMARY KEY(user_id, post_id), FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE)`);
   await run(`CREATE TABLE IF NOT EXISTS comments (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, post_id INTEGER NOT NULL, conteudo TEXT NOT NULL, criado_em DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE)`);
@@ -646,6 +648,16 @@ app.post('/api/follow/:username', requireLogin, withErrors(async (req, res) => {
 const sinais2 = require('./nosverso-sinais-2-server').register({
   app, run, get, all, requireLogin, withErrors, clean, validId, notify,
   usingPostgres: USING_POSTGRES, postgresPool: postgres?.pool
+});
+
+// NOSVERSO-SINAIS-2-2:SERVER
+const sinais22 = require('./nosverso-sinais-2-2-server').register({
+  app,run,get,all,requireLogin,withErrors,notify,
+  usingPostgres:USING_POSTGRES,postgresPool:postgres?.pool,
+  supabaseAdmin,cloudinary,multer,uploadDir:UPLOAD_DIR,publicRoot:path.join(ROOT,'public'),
+  privateDir:path.resolve(process.env.SINAIS_PRIVATE_UPLOAD_DIR || (DATA_DIR ? path.join(DATA_DIR,'chat-private') : path.join(ROOT,'private-chat-media'))),
+  durableLocal:Boolean(process.env.SINAIS_PRIVATE_UPLOAD_DIR || DATA_DIR),
+  bucket:process.env.SINAIS_MEDIA_BUCKET || 'echonet-chat-private'
 });
 
 const CONTACTS_QUERY = `SELECT t.contato,u.avatar FROM (SELECT DISTINCT CASE WHEN remetente=? THEN destinatario ELSE remetente END AS contato FROM messages WHERE remetente=? OR destinatario=?) t LEFT JOIN users u ON u.username=t.contato COLLATE NOCASE ORDER BY t.contato`;

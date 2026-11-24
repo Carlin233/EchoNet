@@ -33,3 +33,6 @@ public/uploads/**
 Thumbs.db
 .vscode/
 .idea/
+
+# Mídias privadas do Sinais (nunca enviar para o Git)
+private-chat-media/

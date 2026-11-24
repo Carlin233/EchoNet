@@ -1,0 +1,35 @@
+/* Sinais 2.2: mídias, gravação e recibos. Carregar APÓS CSS 2.1; sem mudar o viewport/teclado V3. */
+html body.chat-layout.chat-conversation .chat-box > .msg:has(> .sinais22-media){min-width:min(238px,75vw)!important;max-width:min(85%,460px)!important;}
+html body.chat-layout.chat-conversation .msg .sinais22-media{display:block!important;box-sizing:border-box!important;position:static!important;min-width:0!important;width:100%!important;max-width:100%!important;height:auto!important;margin:0 0 8px!important;overflow:hidden!important;border-radius:14px;background:rgba(7,17,39,.24)}
+html body.chat-layout.chat-conversation .msg .sinais22-media a{display:block;cursor:zoom-in;}
+html body.chat-layout.chat-conversation .msg .sinais22-media img,html body.chat-layout.chat-conversation .msg .sinais22-media video{display:block;max-width:100%!important;width:100%;height:auto;max-height:320px;object-fit:contain;border-radius:13px;background:#070e22;}
+html body.chat-layout.chat-conversation .msg .sinais22-media audio{display:block;max-width:100%;width:100%;height:44px;margin:3px 0;}
+html body.chat-layout.chat-conversation .msg .sinais22-audio-label{display:block;padding:6px 8px 0;font-weight:600;font-size:12px;line-height:1.3;color:#d9e7ff;}
+html body.chat-layout.chat-conversation .msg .sinais22-receipt{display:block;position:relative;width:100%;box-sizing:border-box;min-height:14px;font-size:10px;text-align:right;opacity:.82;line-height:1.3;margin-top:5px;color:#e9e7ff;}
+html body.chat-layout.chat-conversation .msg .sinais22-receipt.is-read{color:#b6f4ff;opacity:1;font-weight:700;}
+html body.chat-layout.chat-conversation #formMensagem{gap:8px;}
+html body.chat-layout.chat-conversation #formMensagem .sinais22-tools{flex:0 0 auto;display:flex;gap:5px;align-items:center;}
+html body.chat-layout.chat-conversation #formMensagem .sinais22-tool{flex:0 0 auto!important;display:inline-flex!important;align-items:center;justify-content:center;width:38px!important;height:38px!important;min-width:38px!important;padding:0!important;border-radius:50%!important;font-size:19px!important;line-height:1!important;background:rgba(87,108,194,.32)!important;border:1px solid rgba(198,214,255,.32)!important;color:#fff!important;box-shadow:none!important;cursor:pointer;}
+html body.chat-layout.chat-conversation #formMensagem .sinais22-tool.is-recording{background:#b52e5f!important;animation:sinais22-pulse 1s ease-in-out infinite alternate;}
+html body.chat-layout.chat-conversation #formMensagem .sinais22-tool:disabled{opacity:.45;cursor:wait;}
+html body.chat-layout.chat-conversation #formMensagem input[name="conteudo"]{min-width:0;flex:1;}
+html body.chat-layout.chat-conversation .sinais22-panel:not([hidden]){display:flex;align-items:center;gap:10px;flex:0 0 auto;padding:8px 14px;color:#e6efff;background:rgba(11,24,52,.98);border-top:1px solid rgba(170,194,255,.2);font-size:12px;box-sizing:border-box;}
+html body.chat-layout.chat-conversation .sinais22-panel[hidden]{display:none!important;}
+html body.chat-layout.chat-conversation .sinais22-panel span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+html body.chat-layout.chat-conversation .sinais22-panel button{border:1px solid rgba(181,208,255,.4);border-radius:10px;padding:5px 9px;color:#fff;background:transparent;cursor:pointer;}
+html body.chat-layout.chat-conversation #sinais22Status{color:#bfe4ff;}
+html body.chat-layout.chat-conversation #sinais22Status:not([hidden]){padding:5px 14px;}
+@keyframes sinais22-pulse{from{filter:brightness(1)}to{filter:brightness(1.5)}}
+@media(max-width:760px){
+  html body.chat-layout.chat-conversation .chat-box > .msg:has(> .sinais22-media){max-width:90%!important;min-width:min(218px,73vw)!important;}
+  html body.chat-layout.chat-conversation #formMensagem{gap:5px!important;padding-left:8px!important;padding-right:8px!important;}
+  html body.chat-layout.chat-conversation #formMensagem .sinais22-tool{width:34px!important;min-width:34px!important;height:34px!important;font-size:17px!important;}
+  html body.chat-layout.chat-conversation .msg .sinais22-media video{max-height:250px;}
+}
+@media(prefers-reduced-motion:reduce){html body.chat-layout.chat-conversation #formMensagem .sinais22-tool.is-recording{animation:none;}}
+
+/* Pré-visualização local antes de confirmar o envio. */
+html body.chat-layout.chat-conversation #sinais22Preview .sinais22-preview-content{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+html body.chat-layout.chat-conversation #sinais22PreviewMedia{display:flex;align-items:center;min-width:0;max-width:100%;}
+html body.chat-layout.chat-conversation #sinais22PreviewMedia img,html body.chat-layout.chat-conversation #sinais22PreviewMedia video{display:block;max-width:108px;max-height:90px;object-fit:contain;border-radius:9px;background:#050d1c;}
+html body.chat-layout.chat-conversation #sinais22PreviewMedia audio{max-width:min(220px,60vw);height:36px;}
